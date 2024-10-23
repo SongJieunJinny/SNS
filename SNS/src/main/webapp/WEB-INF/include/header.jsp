@@ -371,34 +371,31 @@ $(document).ready(function() {
 			return false;
 		}
 
-	    // 회원가입 요청 전에 확인 메시지
-	    if (confirm("회원가입을 완료하시겠습니까?") == true) {
-	        // 폼 데이터 비동기적으로 전송
-	        var form = document.getElementById("joinFn");
-	        
-	        $.ajax({
-	            url: "<%= request.getContextPath() %>/user/join.do",  // 요청 URL
-	            type: "post",  // 요청 방식
-	            data: new FormData(form),  // 폼 데이터 전송
-	            processData: false,  // 자동 데이터 처리 방지
-	            contentType: false,  // 요청 시 Content-Type 설정 방지
-	            success: function(result) {
-					result = result.trim();
-   	            	
-	   	            switch(result) {
-		                 case "success":
-		                	 openLoginModal();
-		                     break;
-		                 case "error":
-		                	 $(".msg").html("회원가입에 실패했습니다. 다시 시도해주세요.");
-		                     break;
-		                 default :
-		                	 alert("서버와의 연결에 실패했습니다. 나중에 다시 시도해 주세요.");
-		                     break;
-		             }
-	            }
-	        });
-	    }
+        // 폼 데이터 비동기적으로 전송
+        var form = document.getElementById("joinFn");
+        
+        $.ajax({
+            url: "<%= request.getContextPath() %>/user/join.do",  // 요청 URL
+            type: "post",  // 요청 방식
+            data: new FormData(form),  // 폼 데이터 전송
+            processData: false,  // 자동 데이터 처리 방지
+            contentType: false,  // 요청 시 Content-Type 설정 방지
+            success: function(result) {
+				result = result.trim();
+  	            	
+   	            switch(result) {
+	                 case "success":
+	                	 openLoginModal();
+	                     break;
+	                 case "error":
+	                	 $(".msg").html("회원가입에 실패했습니다. 다시 시도해주세요.");
+	                     break;
+	                 default :
+	                	 alert("서버와의 연결에 실패했습니다. 나중에 다시 시도해 주세요.");
+	                     break;
+	             }
+            }
+        });
 	}
 
     
@@ -427,34 +424,33 @@ $(document).ready(function() {
 			return false;
 		}
 		
-		if(confirm("로그인하시겠습니까?") == true){
-   	        // 폼 데이터 비동기적으로 전송
-   	        var form = document.getElementById("loginFn");
-   	        console.log(document.loginFn.uid.value);
-   	        $.ajax({
-   	        	url:"<%= request.getContextPath() %>/user/login.do",
-   	        	type:"post",
-   	        	data:{
-   	        		uid: $("#login_uid").val(),
-   	        		upw: $("#login_upw").val()
-   	        	},
-   	        	success:function(result){
-   	        		result = result.trim();
-	   	            switch(result) {
-		                 case "success":
-		                	 /* alert("로그인에 성공"); */
-		   	                 window.location.href = "<%= request.getContextPath() %>";
-		                     break;
-		                 case "error":
-		                	 openLoginModal();
-	   	                     alert("로그인에 실패하셨습니다.");
-		                     break;
-		                 default :
-		                	 alert("서버와의 연결에 실패했습니다. 나중에 다시 시도해 주세요.");
-		                     break;
-		             }
-   	        	}
-   	        });
+ 	    // 폼 데이터 비동기적으로 전송
+ 	    var form = document.getElementById("loginFn");
+ 	    console.log(document.loginFn.uid.value);
+ 	    $.ajax({
+        	url:"<%= request.getContextPath() %>/user/login.do",
+        	type:"post",
+        	data:{
+        		uid: $("#login_uid").val(),
+        		upw: $("#login_upw").val()
+        	},
+        	success:function(result){
+        		result = result.trim();
+ 	            switch(result) {
+                case "success":
+               	 /* alert("로그인에 성공"); */
+  	                 window.location.href = "<%= request.getContextPath() %>";
+                    break;
+                case "error":
+               	 openLoginModal();
+ 	                     alert("로그인에 실패하셨습니다.");
+                    break;
+                default :
+               	 alert("서버와의 연결에 실패했습니다. 나중에 다시 시도해 주세요.");
+                    break;
+           		 }
+        	}
+        });
    	       <%--  $.ajax({
    	            url: "<%= request.getContextPath() %>/user/login.do",  // 요청 URL
    	            type: "post",  // 요청 방식
@@ -478,7 +474,6 @@ $(document).ready(function() {
 		             }
    	            }
    	        }); --%>
-		}
 	}
 
 	// 파일 업로드 초기화
