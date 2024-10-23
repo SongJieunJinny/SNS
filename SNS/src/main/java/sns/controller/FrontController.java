@@ -43,9 +43,6 @@ public class FrontController extends HttpServlet {
 		}else if(comments[0].equals("admin")) {
 			AdminController admin = new AdminController(request,response,comments);
 			//SampleController 에게 처리 전달
-		}else if(comments[0].equals("index.do")|| comments[0].equals("index.jsp")) {
-			IndexController index = new IndexController(request,response,comments);
-			//SampleController 에게 처리 전달
 		}
 	}
 

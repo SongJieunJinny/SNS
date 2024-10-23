@@ -4,8 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.PreparedStatement; 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.UUID;
 
@@ -13,12 +14,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.swing.text.View;
 
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 import sns.util.DBConn;
+import sns.vo.BoardVO;
 import sns.vo.UserVO;
 
 
@@ -180,7 +181,44 @@ public class BoardController {
 	public void view (HttpServletRequest request
 			, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
-		request.getRequestDispatcher("/WEB-INF/board/view.jsp").forward(request, response);
+		ArrayList <BoardVO> board = new ArrayList<>();
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+		try {
+			conn = DBConn.conn();
+			String sql = " SELECT b.*,u.unick "
+					+"   FROM board b , user u "
+				    +"  WHERE b.uno = u.uno";
+			
+			psmt = conn.prepareStatement(sql);
+			rs = psmt.executeQuery();
+			
+			while(rs.next()) {
+				BoardVO vo = new BoardVO();
+				 vo.setBno(rs.getInt("bno"));
+				 vo.setHit(rs.getInt("hit"));
+				 vo.setTitle(rs.getString("title"));
+				 vo.setContent(rs.getString("content"));
+				 vo.setRdate(rs.getString("rdate"));
+				 vo.setState(rs.getString("state"));
+				 vo.setUnick(rs.getString("unick"));
+				board.add(vo);
+			}
+			
+			request.setAttribute("board", board);
+			//2. WEB-INF/notice/list.jsp Æ÷¿öµå
+			request.getRequestDispatcher("/WEB-INF/board/view.jsp").forward(request, response);
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				DBConn.close(rs, psmt, conn);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
 		
 	}
 	

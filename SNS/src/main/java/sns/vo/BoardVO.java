@@ -8,10 +8,11 @@ public class BoardVO {
 	private String rdate;
 	private String content;
 	private int uno;
+	private String unick;
 	
 	public BoardVO() {}
 
-	public BoardVO(int bno, int uno, String title, String content, String rdate, int hit, String state) {
+	public BoardVO(int bno, int uno, String title, String content, String rdate, int hit, String state,String unick) {
 		
 		this.bno = bno;
 		this.uno = uno;
@@ -20,9 +21,10 @@ public class BoardVO {
 		this.rdate = rdate;
 		this.hit = hit;
 		this.state = state;
- 
+		this.unick = unick;
 	}
 
+	public String getUnick() {return unick;}
 	public int getBno() {return bno;}
 	public String getTitle() {return title;}
 	public int getHit() {return hit;}
@@ -30,7 +32,8 @@ public class BoardVO {
 	public String getRdate() {return rdate;}
 	public String getContent() {return content;}
 	public int getUno() {return uno;}
-
+	
+	public void setUnick(String unick) {this.unick = unick;}
 	public void setBno(int bno) {this.bno = bno;}
 	public void setTitle(String title) {this.title = title;}
 	public void setHit(int hit) {this.hit = hit;}

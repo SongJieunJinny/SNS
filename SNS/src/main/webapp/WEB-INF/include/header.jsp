@@ -57,9 +57,8 @@ $(document).ready(function() {
             modeText.textContent = newMode === 'dark' ? '라이트모드' : '다크모드';
         });
     }
-
     // 페이지 로드 시 다크모드 초기화
-    DarkMode();
+    DarkMode();				
     
     $(".icon").mouseover(function() {
         $(this).addClass('round');  // round 클래스 추가

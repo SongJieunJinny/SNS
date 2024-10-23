@@ -2,6 +2,9 @@
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/include/header.jsp" %>
 <%@ include file="/WEB-INF/include/nav.jsp" %>
+<%
+	ArrayList<BoardVO> board = (ArrayList<BoardVO>)request.getAttribute("board"); 
+%>
 <!--웹페이지 본문-->
 <section class="scrollable">
 	<div id="indexDiv">
