@@ -44,7 +44,7 @@ public class IndexController {
 				 vo.setState(rs.getString("state"));
 				 vo.setUno(rs.getInt("uno"));
 				board.add(vo);
-			}
+			} 
 			
 			request.setAttribute("board", board);
 			//2. WEB-INF/notice/list.jsp Æ÷¿öµå

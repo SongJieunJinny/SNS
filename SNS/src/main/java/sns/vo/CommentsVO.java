@@ -8,7 +8,7 @@ public class CommentsVO {
 	private String content;
 	private String rdate;
 	private String state;
-	
+	 
 	
 	public int getCno() {return cno;}
 	public int getBno() {return bno;}

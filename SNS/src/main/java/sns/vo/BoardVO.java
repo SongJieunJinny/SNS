@@ -20,7 +20,7 @@ public class BoardVO {
 		this.rdate = rdate;
 		this.hit = hit;
 		this.state = state;
-
+ 
 	}
 
 	public int getBno() {return bno;}

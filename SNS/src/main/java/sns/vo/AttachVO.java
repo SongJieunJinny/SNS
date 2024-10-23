@@ -1,7 +1,7 @@
 package sns.vo;
 
 public class AttachVO {
-
+ 
 	private int ano; 		// 외래키
 	private int bno; 		// 외래키
 	private String pname;

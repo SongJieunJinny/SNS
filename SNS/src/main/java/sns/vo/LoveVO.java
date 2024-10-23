@@ -14,5 +14,5 @@ public class LoveVO {
 	public void setUno(int uno) {this.uno = uno;}
 	
 	
-	
+	 
 }
