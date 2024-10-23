@@ -14,41 +14,43 @@ public class FrontController extends HttpServlet {
     public FrontController() {}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("frontcontroller ½ÇÇà url:"+request.getRequestURI());
+		System.out.println("frontcontroller ì‹¤í–‰ url:"+request.getRequestURI());
 		
-		//1. ¿äÃ» uri Á¤º¸¸¦ °¡Áö°í ¿Â´Ù
+		//1. ìš”ì²­ uri ì •ë³´ë¥¼ ê°€ì§€ê³  ì˜¨ë‹¤
 		String uri = request.getRequestURI();
 		
-		//2. ÇÁ·ÎÁ§Æ® °æ·Î¸¦ °¡Áö°í ¿Â´Ù.
+		//2. í”„ë¡œì íŠ¸ ê²½ë¡œë¥¼ ê°€ì§€ê³  ì˜¨ë‹¤.
 		String contextPath = request.getContextPath();
-		//3. ¿äÃ» uri¿¡¼­ ÇÊ¿ä¾ø´Â ÇÁ·ÎÁ§Æ® °æ·Î¸¦ Á¦¿ÜÇÑ uri¸¦ °¡Áö°í ¿Â´Ù
+		//3. ìš”ì²­ uriì—ì„œ í•„ìš”ì—†ëŠ” í”„ë¡œì íŠ¸ ê²½ë¡œë¥¼ ì œì™¸í•œ urië¥¼ ê°€ì§€ê³  ì˜¨ë‹¤
 		String comment = uri.substring(contextPath.length()+1);
 		/*
-		/frontControllerPJT/sample/main.do¿¡¼­
-		/frontControllerPJT/ ºÎºĞÀÌ Àß¸²
+		/frontControllerPJT/sample/main.doì—ì„œ
+		/frontControllerPJT/ ë¶€ë¶„ì´ ì˜ë¦¼
 		 */
 		System.out.println(comment);
 		
-		//4. 3¹ø¿¡¼­ Ã£Àº ¿äÃ» °æ·Î¿¡¼­ /¸¦ ±âÁØÀ¸·Î ¹®ÀÚ¿­À» ÀÚ¸¥´Ù.
+		//4. 3ë²ˆì—ì„œ ì°¾ì€ ìš”ì²­ ê²½ë¡œì—ì„œ /ë¥¼ ê¸°ì¤€ìœ¼ë¡œ ë¬¸ìì—´ì„ ìë¥¸ë‹¤.
 		String[] comments = comment.split("/");
 		System.out.println("comments[0] : "+comments[0]);
 		
-		//5. ¸¸µé¾îÁø ¹®ÀÚ¿­ ¹è¿­ÀÇ Ã¹¹øÂ° ¹®ÀÚ¿­ÀÌ ¾î¶² ÄÁÆ®·Ñ·¯·Î ±â´ÉÀ» ¿äÃ»ÇØ¾ßÇÒÁö °áÁ¤ÇÑ´Ù.
+		//5. ë§Œë“¤ì–´ì§„ ë¬¸ìì—´ ë°°ì—´ì˜ ì²«ë²ˆì§¸ ë¬¸ìì—´ì´ ì–´ë–¤ ì»¨íŠ¸ë¡¤ëŸ¬ë¡œ ê¸°ëŠ¥ì„ ìš”ì²­í•´ì•¼í• ì§€ ê²°ì •í•œë‹¤.
 		if(comments[0].equals("board")) {
 			BoardController board = new BoardController(request,response,comments);
+			//SampleController ì—ê²Œ ì²˜ë¦¬ ì „ë‹¬
 		}else if(comments[0].equals("user")) {
-			System.out.println(request.getParameter("uid"));
 			UserController user = new UserController(request,response,comments);
+			//SampleController ì—ê²Œ ì²˜ë¦¬ ì „ë‹¬
 		}else if(comments[0].equals("admin")) {
-			ComplaintBoardController complain = new ComplaintBoardController(request,response,comments);
+			AdminController admin = new AdminController(request,response,comments);
+			//SampleController ì—ê²Œ ì²˜ë¦¬ ì „ë‹¬
+		}else if(comments[0].equals("index.do")|| comments[0].equals("index.jsp")) {
+			IndexController index = new IndexController(request,response,comments);
+			//SampleController ì—ê²Œ ì²˜ë¦¬ ì „ë‹¬
 		}
-		/*
-		 * else if(comments[0].equals("index.do") || comments[0].equals("index.jsp")) {
-		 * IndexController index = new IndexController(request,response,comments); }
-		 */
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("test post!!"+request.getParameter("title"));
 		doGet(request, response);
 	}
 }

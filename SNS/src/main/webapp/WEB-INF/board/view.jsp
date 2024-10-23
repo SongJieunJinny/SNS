@@ -32,11 +32,11 @@
 			    <button class="ssBtn">팔로우</button>
 			</div>
 		&nbsp;
-		2024.10.22 16:04&nbsp;
-		추천수&nbsp; 20&nbsp;
-		조회수&nbsp; 20
+		2024.10.22 16:04&nbsp; <!-- 값 넣어줘야함  -->
+		추천수&nbsp; 20&nbsp;    <!-- 값 넣어줘야함  -->
+		조회수&nbsp; 20		   <!-- 값 넣어줘야함  -->
 		</div><br>
-		<div>맛있는 딸기 타르트</div>
+		<div>맛있는 딸기 타르트</div> <!-- 값 넣어줘야함  -->
 		<!-- 댓글위치 -->
 		<div class="comment_inner">
 			<table>
@@ -61,6 +61,7 @@
 				</tr>
 			</table>
 			<!-- 댓글목록 출력 -->
+			<form >
 			<div class="commentDiv">
 				<div style="display: flex; align-items: center; gap: 10px;">
         			<div class="view_profil">
@@ -83,6 +84,7 @@
 			  	    </div>
 		  	    </div>
 			</div>	
+			</form>
 			</div>
         </div>
 	</div>
