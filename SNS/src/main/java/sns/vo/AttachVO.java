@@ -6,7 +6,7 @@ public class AttachVO {
 	private int bno; 		// ¿Ü·¡Å°
 	private String pname;
 	private String fname;
-	
+	 
 	public int getAno() {return ano;}
 	public int getBno() {return bno;}
 	public String getPname() {return pname;}
