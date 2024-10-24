@@ -56,17 +56,8 @@
 			data: form,
             success: function(response) {
                 if (response.trim() === 'success') {
-                    alert('글이 성공적으로 등록되었습니다.');
                     // location.href > 페이지를 새로 고침하는 방법
-                    <%-- location.href = '<%=request.getContextPath()%>/index.jsp'; --%>
-                    // 작성된 게시글을 index 페이지의 listDiv에 추가
-                    $('#listDiv').prepend(response);
-                    /*
-                    // 작성 후 입력창 초기화
-                    $('#title').val('');
-                    $('#content').val('');
-                    $('#attach').val('');
-                    */
+                    location.href = '<%=request.getContextPath()%>/index.jsp';
                 } else {
                     alert('글 등록에 실패했습니다. 다시 시도해주세요.');
                 }

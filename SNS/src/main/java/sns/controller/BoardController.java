@@ -36,7 +36,9 @@ public class BoardController {
 			}
 		
 		}else if (comments[comments.length-1].equals("view.do")) {
-			view(request,response);
+			if(request.getMethod().equals("GET")) {
+				view(request,response);
+			}
 		}
 		
 		
@@ -51,7 +53,7 @@ public class BoardController {
 			, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		/* String uploadPath = request.getServletContext().getRealPath("/upload"); */
-		String uploadPath = "D:\\pij\\workspace\\SNS\\src\\main\\webapp\\upload";
+		String uploadPath = "D:\\pij\\Team\\first-SNS\\SNS\\src\\main\\webapp\\upload";
 		System.out.println("서버의 업로드 폴더 경로 : " + uploadPath);
 		HttpSession session = request.getSession();
 		UserVO loginUser = (UserVO)session.getAttribute("loginUser");
@@ -181,21 +183,40 @@ public class BoardController {
 	public void view (HttpServletRequest request
 			, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
-		ArrayList <BoardVO> board = new ArrayList<>();
+		int bno = Integer.parseInt(request.getParameter("bno"));
 		Connection conn = null;
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
+		
+		PreparedStatement psmtHit = null;
+		int hit = 0;
+		
 		try {
 			conn = DBConn.conn();
-			String sql = " SELECT b.*,u.unick "
+			// 조회수 증가
+		String sqlHit = " UPDATE board"
+					  + "    SET hit = hit+1"
+					  + "  WHERE bno =? ";
+		psmtHit = conn.prepareStatement(sqlHit);
+		psmtHit.setInt(1,bno);
+		psmtHit.executeUpdate();
+		System.out.println("hit의 숫자 " + hit);
+		System.out.println("View method called for bno: " + bno);
+		
+			
+			String sql = " SELECT b.*,u.unick,"
+					+ " (select count(*) from love where b.bno = bno and state='E') as cnt"
 					+"   FROM board b , user u "
-				    +"  WHERE b.uno = u.uno";
+				    +"  WHERE b.uno = u.uno"
+				    + " AND bno =? ";
+			
 			
 			psmt = conn.prepareStatement(sql);
+			psmt.setInt(1, bno);
 			rs = psmt.executeQuery();
 			
-			while(rs.next()) {
-				BoardVO vo = new BoardVO();
+			BoardVO vo = new BoardVO();
+			if(rs.next()) {
 				 vo.setBno(rs.getInt("bno"));
 				 vo.setHit(rs.getInt("hit"));
 				 vo.setTitle(rs.getString("title"));
@@ -203,17 +224,18 @@ public class BoardController {
 				 vo.setRdate(rs.getString("rdate"));
 				 vo.setState(rs.getString("state"));
 				 vo.setUnick(rs.getString("unick"));
-				board.add(vo);
-			}
-			
-			request.setAttribute("board", board);
+				 vo.setRecommend(rs.getInt("cnt"));
+				// 메모리에 추가된 hit의 증가를 데이터베이스에 추가 
+			}			
+			    request.setAttribute("vo", vo);
 			//2. WEB-INF/notice/list.jsp 포워드
 			request.getRequestDispatcher("/WEB-INF/board/view.jsp").forward(request, response);
-			
 		}catch(Exception e) {
 			e.printStackTrace();
+			e.getMessage();
 		}finally {
 			try {
+				DBConn.close(psmtHit,null);
 				DBConn.close(rs, psmt, conn);
 			}catch(Exception e) {
 				e.printStackTrace();

@@ -70,21 +70,24 @@ $(document).ready(function() {
  	// 모달 띄우기 버튼
     $(".listDiv").click(function() {
         $("#modal").fadeIn(); // 모달 창 보이게 하기
-        
+        let bno = $(this).attr('id');
         $.ajax({
             url: "<%= request.getContextPath() %>/board/view.do",
+            data: {bno:bno},
             type: "get",
             success: function(data) {
                 $("#modalBody").html(data);
 				
                 // 동적으로 로드된 스크립트 실행
-                $('script').each(function() {
+                // success가 발생하면 2의 배수만큼 증가함
+                // eval은 보안상 위험때문에 사용하면 안됨.(안에 작성한 함수를 강제로 실행시킴)
+                /* $('script').each(function() {
                     if (this.src) {
                         $.getScript(this.src);
                     } else {
                         eval($(this).text());
                     }
-                });
+                }); */
                 
                 resetEvents();
 

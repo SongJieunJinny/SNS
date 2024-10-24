@@ -427,7 +427,11 @@ aside {
     position: relative; /* 부모 요소의 위치를 기준으로 설정 */
     transition: visibility 0.2s ease-out, opacity 0.2s ease-out;
 }
-
+.listDiv img{
+	width: 250px;
+    height: 250px;
+    border-radius: 20px;
+}
 .pwChange_title a{
 	text-decoration-line:none;
 	font-size:36px;

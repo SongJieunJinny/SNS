@@ -1,5 +1,10 @@
+<%@page import="sns.vo.BoardVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="java.sql.*" %>
+<%
+	BoardVO vo = (BoardVO)request.getAttribute("vo");
+%>
 <!--웹페이지 본문-->
 <div class="view_div">
     <div class="view_inner">
@@ -32,9 +37,9 @@
 			    <button class="ssBtn">팔로우</button>
 			</div>
 		&nbsp;
-		2024.10.22 16:04&nbsp; <!-- 값 넣어줘야함  -->
-		추천수&nbsp; 20&nbsp;    <!-- 값 넣어줘야함  -->
-		조회수&nbsp; 20		   <!-- 값 넣어줘야함  -->
+		<%= vo.getRdate() %>&nbsp; <!-- 값 넣어줘야함  -->
+		추천수&nbsp; <%= vo.getRecommend() %>&nbsp;    <!-- 값 넣어줘야함  -->
+		조회수&nbsp; <%= vo.getHit() %>		   <!-- 값 넣어줘야함  -->
 		</div><br>
 		<div>맛있는 딸기 타르트</div> <!-- 값 넣어줘야함  -->
 		<!-- 댓글위치 -->
