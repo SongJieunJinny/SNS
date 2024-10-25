@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ page import="sns.vo.*" %>
 <%
-BoardVO vo = (BoardVO)request.getAttribute("board");
+BoardVO vo = (BoardVO)request.getAttribute("vo");
 
 UserVO viewUser = null;
 int uno = 0;
@@ -16,7 +16,8 @@ if(session.getAttribute("loginUser") != null){
     <div class="view_inner">
     	<label>
 			<span class="imgSpan" style="width: 550px; height: 550px; cursor: default;">
-				<img style="width: 550px; height: 550px; border-radius: 40px;" src="<%= request.getContextPath() %>/upload/<%= vo.getPname() %>">
+				<img style="width: 550px; height: 550px; border-radius: 40px;" 
+				src="<%= request.getContextPath() %>/upload/<%= vo.getPname() %>">
 			</span>
 		</label>
        	<div class="view_content" style="width: 50%;">
