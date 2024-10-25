@@ -93,9 +93,10 @@ window.onload = function(){
           <%
           for(BoardVO bo : indexBoard){ 
        	  %>
-        		<div class="listDiv" id="<%=bo.getBno() %>">
+        		<div class="listDiv" id="<%=bo.getBno() %>" >
 	           	 	 <!-- 이미지 -->
-	            	  <img src="<%=request.getContextPath()%>/upload/<%=bo.getPname() %>">
+	            	  <img style="width: 250px; height: 250px; border-radius: 20px;" 
+	            	  src="<%=request.getContextPath()%>/upload/<%=bo.getPname() %>">
 	            	  
 	          		</div>  
           <%
