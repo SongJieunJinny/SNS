@@ -44,11 +44,48 @@
 					board.add(vo);
 				}
 				request.setAttribute("board", board);
-				%>
    
-<%
 	ArrayList<BoardVO> indexBoard = (ArrayList<BoardVO>)request.getAttribute("board"); 
 %>
+<script>
+window.onload = function(){
+	$(".listDiv").click(function() {
+	    $("#modal").fadeIn(); // 모달 창 보이게 하기
+	    
+	    let bno = $(this).attr('id');
+	    console.log(bno);
+	    
+	    $.ajax({
+	        url: "<%= request.getContextPath() %>/board/view.do",
+	        data : {bno:bno},
+	        type: "get",
+	        success: function(data) {
+	            $("#modalBody").html(data);
+				
+	            // 동적으로 로드된 스크립트 실행
+	            $('script').each(function() {
+	                if (this.src) {
+	                    $.getScript(this.src);
+	                } else {
+	                    eval($(this).text());
+	                }
+	            });
+	
+	            // 다크모드 초기화 다시 실행
+	            DarkMode();
+	            
+	            loadReco(bno);
+	        }
+	    });
+	});
+	
+	$(window).click(function(event) {
+	    if ($(event.target).is("#modal")) {
+	        $("#modal").fadeOut(); // 모달 창 숨기기
+	    }
+	});
+}
+</script>
 <!--웹페이지 본문-->
 <section class="scrollable">
 	<div id="indexDiv">
@@ -66,7 +103,6 @@
           System.out.println("Image Path: " + imagePath);
           }
           %>
-          }
       </div> 
 </section>
 <%@ include file="/WEB-INF/include/aside.jsp" %>

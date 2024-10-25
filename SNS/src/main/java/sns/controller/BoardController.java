@@ -39,6 +39,10 @@ public class BoardController {
 			if(request.getMethod().equals("GET")) {
 				view(request,response);
 			}
+		}else if (comments[comments.length-1].equals("loadReco.do")) {
+			loadReco(request,response);
+		}else if (comments[comments.length-1].equals("recoAdd.do")) {
+			recoAdd(request,response);
 		}
 		
 		
@@ -187,7 +191,7 @@ public class BoardController {
 		Connection conn = null;
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
-		
+		BoardVO vo = new BoardVO();
 		PreparedStatement psmtHit = null;
 		int hit = 0;
 		
@@ -204,30 +208,35 @@ public class BoardController {
 		System.out.println("View method called for bno: " + bno);
 		
 			
-			String sql = " SELECT b.*,u.unick,"
-					+ " (select count(*) from love where b.bno = bno and state='E') as cnt"
-					+"   FROM board b , user u "
-				    +"  WHERE b.uno = u.uno"
-				    + " AND bno =? ";
-			
-			
-			psmt = conn.prepareStatement(sql);
-			psmt.setInt(1, bno);
-			rs = psmt.executeQuery();
-			
-			BoardVO vo = new BoardVO();
-			if(rs.next()) {
-				 vo.setBno(rs.getInt("bno"));
-				 vo.setHit(rs.getInt("hit"));
-				 vo.setTitle(rs.getString("title"));
-				 vo.setContent(rs.getString("content"));
-				 vo.setRdate(rs.getString("rdate"));
-				 vo.setState(rs.getString("state"));
-				 vo.setUnick(rs.getString("unick"));
-				 vo.setRecommend(rs.getInt("cnt"));
+		String sql = " SELECT b.*,u.unick,a.pname,a.fname, "
+				+"   (select count(*) from love where bno = b.bno) as cnt, "
+				+"   (select pname from user where uno = b.uno) as upname "
+				+"   FROM board b "
+				+ " inner join user u " 
+				+ " on b.uno = u.uno "
+				+ " inner join attach a " 
+				+ " on b.bno = a.bno "
+				+"  WHERE b.bno=? and state='E' ";
+		
+		psmt = conn.prepareStatement(sql);
+		psmt.setInt(1, bno);
+		rs = psmt.executeQuery();
+		
+		if(rs.next()) {
+			 vo.setBno(rs.getInt("bno"));
+			 vo.setUno(rs.getInt("uno"));
+			 vo.setTitle(rs.getString("title"));
+			 vo.setContent(rs.getString("content"));
+			 vo.setRdate(rs.getString("rdate"));
+			 vo.setState(rs.getString("state"));
+			 vo.setUnick(rs.getString("unick"));
+			 vo.setPname(rs.getString("pname"));
+			 vo.setFname(rs.getString("fname"));
+			 vo.setUpname(rs.getString("upname"));
+			 vo.setRecommend(rs.getInt("cnt"));
 				// 메모리에 추가된 hit의 증가를 데이터베이스에 추가 
 			}			
-			    request.setAttribute("vo", vo);
+		    request.setAttribute("vo", vo);
 			//2. WEB-INF/notice/list.jsp 포워드
 			request.getRequestDispatcher("/WEB-INF/board/view.jsp").forward(request, response);
 		}catch(Exception e) {
@@ -244,4 +253,103 @@ public class BoardController {
 		
 	}
 	
+	
+	public void loadReco(HttpServletRequest request
+			, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		
+		String bno = request.getParameter("bno");
+		String uno = "0";
+		String lState = "D";
+		
+		HttpSession session = request.getSession();
+		if(session.getAttribute("loginUser") != null){
+			UserVO user = (UserVO)session.getAttribute("loginUser");
+			uno = user.getUno();
+		}
+		System.out.println("받은 bno 값: " + bno + ", uno : " + uno);
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+		
+		try {
+		    conn = DBConn.conn();
+
+		    // 사용자가 이 게시물을 추천했는지 확인
+		    String checkReco = "select * from love where uno = ? and bno = ?";
+		    System.out.println("sql checkReco: "+checkReco);
+		    psmt = conn.prepareStatement(checkReco);
+		    psmt.setString(1, uno);
+		    psmt.setString(2, bno);
+		    
+		    rs = psmt.executeQuery();
+		    
+		    if(rs.next()) {
+		    	lState = "E";
+		    }
+		    
+		    request.setAttribute("lState", lState);
+		    request.setAttribute("bno", bno);
+			request.getRequestDispatcher("/WEB-INF/board/loadReco.jsp").forward(request, response);
+
+		} catch (Exception e) {
+		    e.printStackTrace();
+		} finally {
+		    try {
+				DBConn.close(rs, psmt, conn);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void recoAdd(HttpServletRequest request
+			, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		HttpSession session = request.getSession();
+		UserVO user = (UserVO)session.getAttribute("loginUser");
+		String uno = user.getUno();
+		String bno = request.getParameter("bno"); 
+
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+		String sql = "";
+
+
+		try {
+		    conn = DBConn.conn();
+
+		    sql = "select lno from love where uno = ? and bno = ?";
+		    psmt = conn.prepareStatement(sql);
+		    psmt.setString(1, uno);
+		    psmt.setString(2, bno);
+
+		    rs = psmt.executeQuery();
+
+		    if (rs.next()) {
+		        // 추천이 이미 존재하면 delete
+		    	sql = "delete from love where uno = ? and bno = ?";
+		        psmt = conn.prepareStatement(sql);
+		        psmt.setString(1, uno);
+		        psmt.setString(2, bno);
+		    } else {
+		        // 추천이 없으면 insert
+		        sql = "insert into love (uno, bno) values (?, ?)";
+		        psmt = conn.prepareStatement(sql);
+		        psmt.setString(1, uno);
+		        psmt.setString(2, bno);
+		    }
+		    psmt.executeUpdate();
+
+		} catch (Exception e) {
+		    e.printStackTrace();
+		} finally {
+		    try {
+				DBConn.close(rs, psmt, conn);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
 }

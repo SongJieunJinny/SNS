@@ -145,12 +145,4 @@
         </div> 
        </div>
 </section>
-<!-- view 페이지 모달창 -->
-<div id="modal" style="display:none;">
-    <div class="modal-content">
-        <div id="modalBody">
-            <!-- 게시글 내용이 여기에 표시됨 -->
-        </div>
-    </div>
-</div>
 <%@ include file="../include/aside.jsp" %>

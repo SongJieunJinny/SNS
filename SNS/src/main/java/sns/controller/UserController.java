@@ -33,7 +33,6 @@ public class UserController {
 			if(request.getMethod().equals("GET")) {
 				login(request,response);
 			}else if (request.getMethod().equals("POST")) {
-				
 				loginOk(request,response);
 			}
 		}else if(comments[comments.length-1].equals("logout.do")) {
@@ -61,7 +60,11 @@ public class UserController {
 				profileModifyOk(request,response);
 			}
 		}else if(comments[comments.length-1].equals("findId.do")) {
-			findId(request,response);
+			if(request.getMethod().equals("GET")) {
+				findId(request,response);
+			}else if (request.getMethod().equals("POST")) {
+				findIdOk(request,response);
+			}
 		}else if(comments[comments.length-1].equals("findIdResult.do")) {
 			if (request.getMethod().equals("POST")) {
 				findIdResult(request,response);
@@ -144,8 +147,8 @@ public class UserController {
 	public void mypage(HttpServletRequest request
 			, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		UserVO loginUser = (UserVO)session.getAttribute("loginUser");
-		String uno = loginUser.getUno();
+		/* UserVO loginUser = (UserVO)session.getAttribute("loginUser"); */
+		String uno = request.getParameter("uno");
 		
 		Connection conn = null;			//DB 연결
 		PreparedStatement psmt = null;	//SQL 등록 및 실행. 보안이 더 좋음!
@@ -178,7 +181,7 @@ public class UserController {
 				request.getRequestDispatcher("/WEB-INF/user/mypage.jsp").forward(request, response);
 			}else {
 				//회원조회 실패할 경우
-				response.sendRedirect(request.getContextPath()+"/login.do");
+				response.sendRedirect(request.getContextPath());
 			}
 		}catch(Exception e){
 			e.printStackTrace();
@@ -200,11 +203,7 @@ public class UserController {
 			, HttpServletResponse response) throws IOException {
 		request.setCharacterEncoding("UTF-8");
 		/* String uploadPath = request.getServletContext().getRealPath("/upload"); */
-		/*
-		 * String uploadPath =
-		 * "C:\\Users\\DEV\\Desktop\\JangAWS\\01.java\\workspace\\sns\\src\\main\\webapp\\upload";
-		 */
-		String uploadPath = "C:\\Users\\DEV\\Desktop\\JangAWS\\팀프로젝트\\project\\first-SNS\\sns\\src\\main\\webapp\\upload";
+		String uploadPath = "C:\\DEV\\GIT\\first-SNS\\sns\\src\\main\\webapp\\upload";
 		System.out.println("서버의 업로드 폴더 경로 : " + uploadPath);
 
 		int size = 10 * 1024 * 1024;
@@ -482,7 +481,11 @@ public class UserController {
 	
 	public void profileModifyOk(HttpServletRequest request, HttpServletResponse response) throws IOException {
 	    request.setCharacterEncoding("UTF-8");
-	    String uploadPath = "C:\\Users\\DEV\\Desktop\\JangAWS\\팀프로젝트\\project\\first-SNS\\sns\\src\\main\\webapp\\upload";
+		/*
+		 * String uploadPath =
+		 * "C:\\Users\\DEV\\Desktop\\JangAWS\\01.java\\workspace\\sns\\src\\main\\webapp\\upload";
+		 */
+	    String uploadPath = "C:\\DEV\\GIT\\first-SNS\\sns\\src\\main\\webapp\\upload";
 	    System.out.println("서버의 업로드 폴더 경로 : " + uploadPath);
 	    
 	    int size = 10 * 1024 * 1024; // 최대 10MB 파일 허용
@@ -598,6 +601,10 @@ public class UserController {
 	                
 	                // 세션에 변경된 사용자 정보 저장
 	                session.setAttribute("loginUser", user);
+					/*
+					 * request.getRequestDispatcher("/WEB-INF/user/mypage.jsp").forward(request,
+					 * response);
+					 */
 	                response.sendRedirect(request.getContextPath()+"/user/mypage.do");
 	            }
 	        }
@@ -609,6 +616,33 @@ public class UserController {
 	public void findId(HttpServletRequest request
 			, HttpServletResponse response) throws ServletException, IOException {
 		request.getRequestDispatcher("/WEB-INF/user/findId.jsp").forward(request, response);
+	}
+	
+	public void findIdOk(HttpServletRequest request
+			, HttpServletResponse response) throws IOException {
+		/*
+		 * Connection conn = null; //DB 연결 PreparedStatement psmt = null; //SQL 등록 및 실행.
+		 * 보안이 더 좋음! ResultSet rs = null; //조회 결과를 담음
+		 * 
+		 * String email = request.getParameter("uemail"); //try 영역 try{ conn =
+		 * DBConn.conn();
+		 * 
+		 * String sql = "select uid from user where uemail=?"; psmt =
+		 * conn.prepareStatement(sql); psmt.setString(1, email);
+		 * 
+		 * rs = psmt.executeQuery(); if(rs.next()){
+		 * System.out.println("findIdOk rs : rs.next() 실행됨"); String uid =
+		 * rs.getString("uid"); request.setAttribute("uid",uid);
+		 * 
+		 * response.setContentType("text/html;charset=UTF-8"); PrintWriter out =
+		 * response.getWriter(); out.print("success"); out.flush(); out.close(); }else {
+		 * response.setContentType("text/html;charset=UTF-8"); PrintWriter out =
+		 * response.getWriter(); out.print("error"); out.flush(); out.close(); }
+		 * }catch(Exception e){ e.printStackTrace(); PrintWriter out =
+		 * response.getWriter(); out.print("error"); out.flush(); out.close(); }finally{
+		 * try { DBConn.close(rs, psmt, conn); }catch(Exception e) {
+		 * e.printStackTrace(); } }
+		 */
 	}
 	
 	public void findIdResult(HttpServletRequest request

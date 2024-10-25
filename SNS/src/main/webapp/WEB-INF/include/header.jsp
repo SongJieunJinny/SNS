@@ -58,7 +58,23 @@ $(document).ready(function() {
         });
     }
     // 페이지 로드 시 다크모드 초기화
-    DarkMode();				
+    DarkMode();		
+    
+    $("#menuA").click(function(event) {
+        $("#menutableA").toggle();  // 보이기/숨기기
+        event.stopPropagation();    // 이벤트 전파 방지
+    });
+
+    // 문서의 다른 부분 클릭 시 #menutableA 숨기기
+    $(document).click(function() {
+        $("#menutableA").hide();
+    });
+
+    // #menutableA 내부 클릭 시 이벤트 전파 방지
+    $("#menutableA").click(function(event) {
+        event.stopPropagation();    // 이벤트 전파 방지
+    });
+    
     
     $(".icon").mouseover(function() {
         $(this).addClass('round');  // round 클래스 추가
@@ -66,43 +82,6 @@ $(document).ready(function() {
         $(this).removeClass('round');  // round 클래스 제거
     });
     
-    /* view 페이지 띄우는 모달 */   
- 	// 모달 띄우기 버튼
-    $(".listDiv").click(function() {
-        $("#modal").fadeIn(); // 모달 창 보이게 하기
-        let bno = $(this).attr('id');
-        $.ajax({
-            url: "<%= request.getContextPath() %>/board/view.do",
-            data: {bno:bno},
-            type: "get",
-            success: function(data) {
-                $("#modalBody").html(data);
-				
-                // 동적으로 로드된 스크립트 실행
-                // success가 발생하면 2의 배수만큼 증가함
-                // eval은 보안상 위험때문에 사용하면 안됨.(안에 작성한 함수를 강제로 실행시킴)
-                /* $('script').each(function() {
-                    if (this.src) {
-                        $.getScript(this.src);
-                    } else {
-                        eval($(this).text());
-                    }
-                }); */
-                
-                resetEvents();
-
-                // 다크모드 초기화 다시 실행
-                DarkMode();
-            }
-        });
-    });
-
-    $(window).click(function(event) {
-        if ($(event.target).is("#modal")) {
-            $("#modal").fadeOut(); // 모달 창 숨기기
-        }
-    });
-
     // 회원가입, 로그인 모달
     $(".userHeader a").click(function() {
         $("#user_modal").fadeIn();
@@ -643,6 +622,35 @@ function DoEmail() {
 	});		
 }
 
+function loadReco(bno) {
+    $.ajax({
+        url: "<%= request.getContextPath() %>/board/loadReco.do",
+        type: "get",
+        data: { bno: bno},
+        success: function(data) {
+        	console.log("loadReco data:"+data);
+            $("#reco").html(data);
+        },
+        error: function(xhr, status, error) {
+            console.error("AJAX 요청 실패: ", status, error);  // 오류 확인
+        }
+    });
+}
+function recoAdd(bno) {
+	let loginUno = '<%= session.getAttribute("loginUser") %>';
+	console.log(loginUno);
+	
+	if(loginUno != 'null'){
+	    $.ajax({
+	        url: "<%= request.getContextPath() %>/board/recoAdd.do",
+	        type: "post",
+	        data: { bno: bno },
+	        success: function() {
+	            loadReco(bno);  // 추천 상태를 다시 로드
+	        }
+	    });
+	}
+}
 </script>
 <body>
 	<!-- header 검색창, 프로필이미지, 알림, 메시지 -->
