@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ page import="sns.vo.*" %>
 <%
-BoardVO vo = (BoardVO)request.getAttribute("vo");
+BoardVO vo = (BoardVO)request.getAttribute("board");
 
 UserVO viewUser = null;
 int uno = 0;
