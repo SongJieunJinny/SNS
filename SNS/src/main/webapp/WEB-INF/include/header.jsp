@@ -36,26 +36,6 @@ let IsDuplicate = false;
 let NickDuplicate = false;
 let emailcode = false;
 $(document).ready(function() {
-	function DarkMode() {
-        const currentMode = localStorage.getItem('mode') || 'light';
-        const modeText = document.getElementById('modeText');
-        if (currentMode === 'dark') {
-            document.body.classList.add('dark-mode');
-            modeText.textContent = '라이트모드';
-        } else {
-            document.body.classList.remove('dark-mode');
-            modeText.textContent = '다크모드';
-        }
-
-        // 다크모드 토글 버튼 클릭 이벤트
-        document.getElementById('modeToggle').addEventListener('click', function() {
-            document.body.classList.toggle('dark-mode');
-            const newMode = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
-            localStorage.setItem('mode', newMode);
-            modeText.textContent = newMode === 'dark' ? '라이트모드' : '다크모드';
-        });
-    }
-	
 	// 페이지 로드 시 다크모드 초기화
     DarkMode();	
     
@@ -152,51 +132,6 @@ $(document).ready(function() {
     $("#uid").focus();
     $("#login_uid").focus();
     
-    function resetEvents() {
-        $("#uid, #upw, #upwcheck, #unick, #uemail, #login_uid, #login_upw").on("input", function() {
-            DoReset();
-        });
-
-        // 회원가입 버튼에 다시 이벤트 연결
-        $("#joinBtn").on("click", function() {
-            DoJoin();
-        });
-
-        // 로그인 버튼에 다시 이벤트 연결
-        $("#loginBtn").on("click", function() {
-            DoLogin();
-        });
-    }
-    
-     
-    
-    /* 회원가입 */
-    function openLoginModal() {
-        $("#user_modal").fadeIn();
-        
-        $.ajax({
-            url: "<%= request.getContextPath() %>/user/login.do",
-            type: "get",
-            success: function(data) {
-                $("#user_modalBody").html(data);
-
-                // 동적으로 로드된 스크립트 실행
-                $('script').each(function() {
-                    if (this.src) {
-                        $.getScript(this.src);
-                    } else {
-                        eval($(this).text());
-                    }
-                });
-
-                resetEvents();
-                DarkMode();
-            }
-        });
-    }
-    
-    
-    
     $("#uid").on("input", function() {
 	    var userid = $(this).val();
 	    
@@ -262,123 +197,6 @@ $(document).ready(function() {
 	    }
 	});
 	
-	function DoJoin() {
-	    let id = document.getElementById("uid");
-
-	    // 아이디 검사
-	    if (id.value == "") {
-	        $(".msg").html("아이디를 입력해주세요");
-	        id.focus();
-	        return false;
-	    } else if (id.value.length < 4) {
-	        $(".msg").html("아이디는 4글자 이상 입력해주세요");
-	        id.focus();
-	        return false;
-	    }else if (id.value.length > 12) {
-	        $(".msg").html("아이디는 12글자 이하로 입력해주세요");
-	        id.focus();
-	        return false;
-	    } else if (!/^[a-z0-9]+$/.test(id.value)) {
-	        $(".msg").html("아이디는 영어 소문자와 숫자만 가능합니다");
-	        id.focus();
-	        return false;
-	    } else if (IsDuplicate == true) {
-	        $(".msg").html("중복된 아이디입니다");
-	        id.focus();
-	        return false;
-	    }
-
-	    // 비밀번호 검사
-	    let pass = document.getElementById("upw");
-	    if(pass.value == "") {
-	        $(".msg").html("비밀번호를 입력해주세요");
-	        pass.focus();
-	        return false;
-	    }else if(pass.value.length < 4) {
-	        $(".msg").html("비밀번호는 4글자 이상 입력해주세요");
-	        pass.focus();
-	        return false;
-	    }else if(pass.value.length > 20) {
-	        $(".msg").html("비밀번호는 20글자 이하로 입력해주세요");
-	        pass.focus();
-	        return false;
-	    }
-
-	    // 비밀번호 확인
-	    let pwCheck = document.getElementById("upwcheck");
-	    if (pwCheck.value == "") {
-	        $(".msg").html("비밀번호 확인을 입력해주세요");
-	        pwCheck.focus();
-	        return false;
-	    } else if (pwCheck.value != pass.value) {
-	        $(".msg").html("비밀번호가 일치하지 않습니다");
-	        pwCheck.focus();
-	        return false;
-	    }
-
-	    // 닉네임 2글자 이상
-	    let userNick = document.getElementById("unick");
-	    if (userNick.value == "") {
-	        $(".msg").html("닉네임을 입력해주세요");
-	        userNick.focus();
-	        return false;
-	    } else if (userNick.value.length < 2) {
-	        $(".msg").html("닉네임은 2글자 이상 입력해주세요");
-	        userNick.focus();
-	        return false;
-	    }else if (userNick.value.length > 20) {
-	        $(".msg").html("닉네임은 20글자 이하로 입력해주세요");
-	        userNick.focus();
-	        return false;
-	    } else if (NickDuplicate == true) {
-	        $(".msg").html("이미 사용중인 닉네임입니다");
-	        userNick.focus();
-	        return false;
-	    }
-
-	    // 이메일 입력 확인
-	    let mail = document.getElementById("uemail");
-	    var emailPattern = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
-	    if(mail.value == "") {
-	        $(".msg").html("이메일을 입력해주세요");
-	        mail.focus();
-	        return false;
-	    }else if (!emailPattern.test(mail.value)) {
-	        $(".msg").html("유효한 이메일 주소를 입력하세요");
-	        mail.focus();
-	        return false;
-	    }if(emailcode == false)	{
-	    	$(".msg").html("이메일 인증을 해주세요.");
-			$("#code").focus();
-			return false;
-		}
-
-        // 폼 데이터 비동기적으로 전송
-        var form = document.getElementById("joinFn");
-        
-        $.ajax({
-            url: "<%= request.getContextPath() %>/user/join.do",  // 요청 URL
-            type: "post",  // 요청 방식
-            data: new FormData(form),  // 폼 데이터 전송
-            processData: false,  // 자동 데이터 처리 방지
-            contentType: false,  // 요청 시 Content-Type 설정 방지
-            success: function(result) {
-				result = result.trim();
-  	            	
-   	            switch(result) {
-	                 case "success":
-	                	 openLoginModal();
-	                     break;
-	                 case "error":
-	                	 $(".msg").html("회원가입에 실패했습니다. 다시 시도해주세요.");
-	                     break;
-	                 default :
-	                	 alert("서버와의 연결에 실패했습니다. 나중에 다시 시도해 주세요.");
-	                     break;
-	             }
-            }
-        });
-	}
 
     
 	/* 로그인 */
@@ -389,51 +207,7 @@ $(document).ready(function() {
 		}
 	});
 	
-	function DoReset(){
-		$(".msg").html("");  // 메시지 내용 지우기
-	}	
 	
-	function DoLogin(){
-		if($("#login_uid").val() == ""){
-			$(".msg").html("아이디를 입력해주세요.");
-			$("#login_uid").focus();
-			return false;
-		}
-		
-		if($("#login_upw").val() == ""){
-			$(".msg").html("비밀번호를 입력해주세요.");
-			$("#login_upw").focus();
-			return false;
-		}
-		
- 	    // 폼 데이터 비동기적으로 전송
- 	    var form = document.getElementById("loginFn");
- 	    console.log(document.loginFn.uid.value);
- 	    $.ajax({
-        	url:"<%= request.getContextPath() %>/user/login.do",
-        	type:"post",
-        	data:{
-        		uid: $("#login_uid").val(),
-        		upw: $("#login_upw").val()
-        	},
-        	success:function(result){
-        		result = result.trim();
- 	            switch(result) {
-                case "success":
-  	                location.reload();
-                    break;
-                case "error":
-               	 openLoginModal();
- 	                alert("로그인에 실패하셨습니다.");
-                    break;
-                default :
-               	    alert("서버와의 연결에 실패했습니다. 나중에 다시 시도해 주세요.");
-                    break;
-           		 }
-        	}
-        });
-	}
-
 	// 파일 업로드 초기화
     $(".deleteFile").css("display", "none");
     $("#preview").css("display", "none");
@@ -514,16 +288,55 @@ function findPage(type) {
 	    url = "<%= request.getContextPath() %>/user/findId.do";
 	}else if(type === "findPw") {
 	    url = "<%= request.getContextPath() %>/user/findPw.do";
+	}else if(type === "findPwOk") {
+		if($("#find_uid").val() == ""){
+			$(".msg").html("아이디를 입력해주세요.");
+			$("#find_uid").focus();
+			return false;
+		}
+		let mail = document.getElementById("uemail");
+	    var emailPattern = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+	    if(mail.value == "") {
+	        $(".msg").html("이메일을 입력해주세요");
+	        mail.focus();
+	        return false;
+	    }else if (!emailPattern.test(mail.value)) {
+	        $(".msg").html("유효한 이메일 주소를 입력하세요");
+	        mail.focus();
+	        return false;
+	    }if(emailcode == false)	{
+	    	$(".msg").html("이메일 인증을 해주세요.");
+			$("#code").focus();
+			return false;
+		}
+	    url = "<%= request.getContextPath() %>/user/findPw.do";
 	}else if(type === "pwChange") {
 	    url = "<%= request.getContextPath() %>/user/pwChange.do";
 	}else{
+		let mail = document.getElementById("uemail");
+	    var emailPattern = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+	    if(mail.value == "") {
+	        $(".msg").html("이메일을 입력해주세요");
+	        mail.focus();
+	        return false;
+	    }else if (!emailPattern.test(mail.value)) {
+	        $(".msg").html("유효한 이메일 주소를 입력하세요");
+	        mail.focus();
+	        return false;
+	    }if(emailcode == false)	{
+	    	$(".msg").html("이메일 인증을 해주세요.");
+			$("#code").focus();
+			return false;
+		}
+		
 		url = "<%= request.getContextPath() %>/user/findIdResult.do";
 	}
 
     
     $.ajax({
         url: url,
-        type: "get",
+        type: (type === "findPwOk") ? "post" : "get",
+      	data: (type === "findPwOk") ? {uid: $("#find_uid").val(), uemail: $("#uemail").val()} : {},
         success: function(data) {
             $("#user_modalBody").html(data); // 모달 내부에 페이지 로드
             
@@ -538,6 +351,279 @@ function findPage(type) {
             
             resetEvents();
             DarkMode();
+        }
+    });
+}
+
+function DoChange(){
+	if($("#pUpw").val() == ""){
+		$(".msg").html("비밀번호를 입력해주세요.");
+		$("#pUpw").focus();
+		return false;
+	}
+	
+    if ($("#pUpwcheck").val() == "") {  // 수정된 ID 참조
+        $(".msg").html("비밀번호 확인을 입력해주세요");
+        $("#pUpwcheck").focus();
+        return false;
+    } else if ($("#pUpwcheck").val() != $("#pUpw").val()) {  // 수정된 ID 참조
+        $(".msg").html("비밀번호가 일치하지 않습니다");
+        $("#pUpwcheck").focus();
+        return false;
+    }
+    
+    $.ajax({
+    	url:"<%= request.getContextPath() %>/user/pwChange.do",
+    	type:"post",
+    	data:{
+    		uid: $("#pUid").val(),
+    		uemail: $("#pUemail").val(),
+    		upw: $("#pUpw").val()
+    	},
+    	success:function(result){
+    		result = result.trim();
+	        switch(result) {
+	            case "success":
+	            	openLoginModal();
+	                break;
+	            case "error":
+	                alert("비밀번호 재설정에 실패하셨습니다.");
+	                break;
+	            default :
+	           		alert("서버와의 연결에 실패했습니다. 나중에 다시 시도해 주세요.");
+              		break;
+       		 }
+    	}
+    });
+}
+
+
+function DarkMode() {
+    const currentMode = localStorage.getItem('mode') || 'light';
+    const modeText = document.getElementById('modeText');
+    if (currentMode === 'dark') {
+        document.body.classList.add('dark-mode');
+        modeText.textContent = '라이트모드';
+    } else {
+        document.body.classList.remove('dark-mode');
+        modeText.textContent = '다크모드';
+    }
+
+    // 다크모드 토글 버튼 클릭 이벤트
+    document.getElementById('modeToggle').addEventListener('click', function() {
+        document.body.classList.toggle('dark-mode');
+        const newMode = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
+        localStorage.setItem('mode', newMode);
+        modeText.textContent = newMode === 'dark' ? '라이트모드' : '다크모드';
+    });
+}
+
+function resetEvents() {
+    $("#uid, #upw, #upwcheck, #unick, #uemail, #login_uid, #login_upw, #find_uid").on("input", function() {
+        DoReset();
+    });
+
+    // 회원가입 버튼에 다시 이벤트 연결
+    $("#joinBtn").on("click", function() {
+        DoJoin();
+    });
+
+    // 로그인 버튼에 다시 이벤트 연결
+    $("#loginBtn").on("click", function() {
+        DoLogin();
+    });
+}
+
+
+
+/* 회원가입 */
+function openLoginModal() {
+    $("#user_modal").fadeIn();
+    
+    $.ajax({
+        url: "<%= request.getContextPath() %>/user/login.do",
+        type: "get",
+        success: function(data) {
+            $("#user_modalBody").html(data);
+
+            // 동적으로 로드된 스크립트 실행
+            $('script').each(function() {
+                if (this.src) {
+                    $.getScript(this.src);
+                } else {
+                    eval($(this).text());
+                }
+            });
+
+            resetEvents();
+            DarkMode();
+        }
+    });
+}
+
+
+function DoReset(){
+	$(".msg").html("");  // 메시지 내용 지우기
+}
+
+
+function DoLogin(){
+	if($("#login_uid").val() == ""){
+		$(".msg").html("아이디를 입력해주세요.");
+		$("#login_uid").focus();
+		return false;
+	}
+	
+	if($("#login_upw").val() == ""){
+		$(".msg").html("비밀번호를 입력해주세요.");
+		$("#login_upw").focus();
+		return false;
+	}
+	
+	    // 폼 데이터 비동기적으로 전송
+	    var form = document.getElementById("loginFn");
+	    console.log(document.loginFn.uid.value);
+	    $.ajax({
+    	url:"<%= request.getContextPath() %>/user/login.do",
+    	type:"post",
+    	data:{
+    		uid: $("#login_uid").val(),
+    		upw: $("#login_upw").val()
+    	},
+    	success:function(result){
+    		result = result.trim();
+            switch(result) {
+            case "success":
+           	 /* alert("로그인에 성공"); */
+                <%-- window.location.href = "<%= request.getContextPath() %>"; --%>
+                location.reload();
+                break;
+             case "error":
+           	    openLoginModal();
+                alert("로그인에 실패하셨습니다.");
+                break;
+             default :
+           	 	alert("서버와의 연결에 실패했습니다. 나중에 다시 시도해 주세요.");
+                break;
+       		 }
+    	}
+    });
+}
+
+function DoJoin() {
+    let id = document.getElementById("uid");
+
+    // 아이디 검사
+    if (id.value == "") {
+        $(".msg").html("아이디를 입력해주세요");
+        id.focus();
+        return false;
+    } else if (id.value.length < 4) {
+        $(".msg").html("아이디는 4글자 이상 입력해주세요");
+        id.focus();
+        return false;
+    }else if (id.value.length > 12) {
+        $(".msg").html("아이디는 12글자 이하로 입력해주세요");
+        id.focus();
+        return false;
+    } else if (!/^[a-z0-9]+$/.test(id.value)) {
+        $(".msg").html("아이디는 영어 소문자와 숫자만 가능합니다");
+        id.focus();
+        return false;
+    } else if (IsDuplicate == true) {
+        $(".msg").html("중복된 아이디입니다");
+        id.focus();
+        return false;
+    }
+
+    // 비밀번호 검사
+    let pass = document.getElementById("upw");
+    if(pass.value == "") {
+        $(".msg").html("비밀번호를 입력해주세요");
+        pass.focus();
+        return false;
+    }else if(pass.value.length < 4) {
+        $(".msg").html("비밀번호는 4글자 이상 입력해주세요");
+        pass.focus();
+        return false;
+    }else if(pass.value.length > 20) {
+        $(".msg").html("비밀번호는 20글자 이하로 입력해주세요");
+        pass.focus();
+        return false;
+    }
+
+    // 비밀번호 확인
+    let pwCheck = document.getElementById("upwcheck");
+    if (pwCheck.value == "") {
+        $(".msg").html("비밀번호 확인을 입력해주세요");
+        pwCheck.focus();
+        return false;
+    } else if (pwCheck.value != pass.value) {
+        $(".msg").html("비밀번호가 일치하지 않습니다");
+        pwCheck.focus();
+        return false;
+    }
+
+    // 닉네임 2글자 이상
+    let userNick = document.getElementById("unick");
+    if (userNick.value == "") {
+        $(".msg").html("닉네임을 입력해주세요");
+        userNick.focus();
+        return false;
+    } else if (userNick.value.length < 2) {
+        $(".msg").html("닉네임은 2글자 이상 입력해주세요");
+        userNick.focus();
+        return false;
+    }else if (userNick.value.length > 20) {
+        $(".msg").html("닉네임은 20글자 이하로 입력해주세요");
+        userNick.focus();
+        return false;
+    } else if (NickDuplicate == true) {
+        $(".msg").html("이미 사용중인 닉네임입니다");
+        userNick.focus();
+        return false;
+    }
+
+    // 이메일 입력 확인
+    let mail = document.getElementById("uemail");
+    var emailPattern = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+    if(mail.value == "") {
+        $(".msg").html("이메일을 입력해주세요");
+        mail.focus();
+        return false;
+    }else if (!emailPattern.test(mail.value)) {
+        $(".msg").html("유효한 이메일 주소를 입력하세요");
+        mail.focus();
+        return false;
+    }if(emailcode == false)	{
+    	$(".msg").html("이메일 인증을 해주세요.");
+		$("#code").focus();
+		return false;
+	}
+
+    // 폼 데이터 비동기적으로 전송
+    var form = document.getElementById("joinFn");
+    
+    $.ajax({
+        url: "<%= request.getContextPath() %>/user/join.do",  // 요청 URL
+        type: "post",  // 요청 방식
+        data: new FormData(form),  // 폼 데이터 전송
+        processData: false,  // 자동 데이터 처리 방지
+        contentType: false,  // 요청 시 Content-Type 설정 방지
+        success: function(result) {
+			result = result.trim();
+	            	
+	            switch(result) {
+                 case "success":
+                	 openLoginModal();
+                     break;
+                 case "error":
+                	 $(".msg").html("회원가입에 실패했습니다. 다시 시도해주세요.");
+                     break;
+                 default :
+                	 alert("서버와의 연결에 실패했습니다. 나중에 다시 시도해 주세요.");
+                     break;
+             }
         }
     });
 }
