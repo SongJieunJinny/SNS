@@ -168,7 +168,7 @@ $(document).ready(function() {
         });
     }
     
-    
+     
     
     /* 회원가입 */
     function openLoginModal() {
@@ -420,8 +420,6 @@ $(document).ready(function() {
         		result = result.trim();
  	            switch(result) {
                 case "success":
-               	 /* alert("로그인에 성공"); */
-  	                <%-- window.location.href = "<%= request.getContextPath() %>"; --%>
   	                location.reload();
                     break;
                 case "error":
