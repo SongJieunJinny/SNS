@@ -43,7 +43,13 @@ public class BoardController {
 			loadReco(request,response);
 		}else if (comments[comments.length-1].equals("recoAdd.do")) {
 			recoAdd(request,response);
+		}else if (comments[comments.length-1].equals("modify.do")) {
+			if(request.getMethod().equals("GET")) {
+				modify(request,response);
+			}
+				
 		}
+			
 		
 		
 	}
@@ -58,7 +64,6 @@ public class BoardController {
 		request.setCharacterEncoding("UTF-8");
 		/* String uploadPath = request.getServletContext().getRealPath("/upload"); */
 		String uploadPath = "D:\\pij\\Team\\first-SNS\\SNS\\src\\main\\webapp\\upload";
-		System.out.println("서버의 업로드 폴더 경로 : " + uploadPath);
 		HttpSession session = request.getSession();
 		UserVO loginUser = (UserVO)session.getAttribute("loginUser");
 		int uno = Integer.parseInt(loginUser.getUno()); 
@@ -91,9 +96,11 @@ public class BoardController {
 		    filename = multi.getFilesystemName(fileid);  // 원본 파일 이름 가져오기
 
 		    if (filename != null) {
-		        System.out.println("업로드된 파일 이름: " + filename);
-		        System.out.println("title:"+title);
-		        System.out.println("content:"+content);
+				/*
+				  System.out.println("업로드된 파일 이름: " + filename);
+				  System.out.println("title:"+title); 
+				  System.out.println("content:"+content);
+				 */
 		        
 		        // 물리 파일 이름 생성 (UUID 사용)
 		        phyname = UUID.randomUUID().toString();  
@@ -204,8 +211,10 @@ public class BoardController {
 		psmtHit = conn.prepareStatement(sqlHit);
 		psmtHit.setInt(1,bno);
 		psmtHit.executeUpdate();
-		System.out.println("hit의 숫자 " + hit);
-		System.out.println("View method called for bno: " + bno);
+		/*
+		  System.out.println("hit의 숫자 " + hit);
+		  System.out.println("View method called for bno: " + bno);
+		 */
 		
 			
 		String sql = " SELECT b.*,u.unick,a.pname,a.fname, "
@@ -352,4 +361,65 @@ public class BoardController {
 			}
 		}
 	}
+
+	public void modify(HttpServletRequest request
+			, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		int bno = Integer.parseInt(request.getParameter("bno"));
+		Connection conn =null;
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+		String sql = "";
+		BoardVO vo = new BoardVO();
+		try {
+			conn = DBConn.conn();
+			sql = " SELECT b.* from board b INNER JOIN attach a "
+					+ " ON b.bno = a.bno "
+					+ " WHERE bno = ?";
+			psmt= conn.prepareStatement(sql);
+			psmt.setInt(1,bno);
+			rs = psmt.executeQuery();
+			if(rs.next()) {
+				vo.setBno(rs.getInt("bno"));
+				vo.setTitle(rs.getString("title"));
+				vo.setState(rs.getString("state"));
+				vo.setContent(rs.getString("content"));
+				vo.setUno(rs.getInt("uno"));
+				vo.setPname(rs.getString("pname"));
+				request.setAttribute("vo", vo);
+			}
+			request.getRequestDispatcher("/WEB-INF/board/modify.jsp").forward(request,response);
+			
+		}catch(Exception e) {
+			
+		}finally {
+			try {
+				DBConn.close(rs, psmt, conn);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
 }
+
