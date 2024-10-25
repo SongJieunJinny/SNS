@@ -85,6 +85,26 @@ window.onload = function(){
 	    }
 	});
 }
+
+function DarkMode() {
+    const currentMode = localStorage.getItem('mode') || 'light';
+    const modeText = document.getElementById('modeText');
+    if (currentMode === 'dark') {
+        document.body.classList.add('dark-mode');
+        modeText.textContent = '라이트모드';
+    } else {
+        document.body.classList.remove('dark-mode');
+        modeText.textContent = '다크모드';
+    }
+
+    // 다크모드 토글 버튼 클릭 이벤트
+    document.getElementById('modeToggle').addEventListener('click', function() {
+        document.body.classList.toggle('dark-mode');
+        const newMode = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
+        localStorage.setItem('mode', newMode);
+        modeText.textContent = newMode === 'dark' ? '라이트모드' : '다크모드';
+    });
+}
 </script>
 <!--웹페이지 본문-->
 <section class="scrollable">

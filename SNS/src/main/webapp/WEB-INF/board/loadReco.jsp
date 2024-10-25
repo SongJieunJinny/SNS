@@ -26,7 +26,7 @@ if(lState.equals("E")) {
     // 추천하지 않은 상태일 때
 %>
     <img style="width:30px; cursor:pointer;" 
-         src="https://img.icons8.com/?size=100&id=87&format=png&color=000000" 
+         src="https://img.icons8.com/?size=100&id=7697&format=png&color=767676" 
          onclick="recoAdd('<%= lBno %>')" />
 <%
 }

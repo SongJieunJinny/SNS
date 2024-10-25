@@ -435,7 +435,7 @@ body.dark-mode .view_inner img{
     border-radius: 5px;
     padding: 10px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    width: 160px;
+    width: 100px;
     top: 100%; /* #menuA의 바로 아래 위치 */
     left: 0; /* #menuA의 왼쪽과 맞춤 */
     z-index: 1000;
@@ -446,7 +446,7 @@ body.dark-mode .view_inner img{
     background-color: white;
     border: none;
     font-size: 18px;
-    width: 120px;
+    width: 80px;
     height: 40px;
     cursor: pointer;
 }

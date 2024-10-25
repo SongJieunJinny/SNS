@@ -41,7 +41,7 @@ if(session.getAttribute("loginUser") != null){
 				            <img style="width:20px; cursor:pointer;" 
 				                 src="https://img.icons8.com/?size=100&id=8773&format=png&color=767676" 
 				                 onclick="complainAdd(<%= vo.getBno() %>)" />
-				            <button id="infoBtn">게시글신고</button>
+				            <button id="infoBtn">신고</button>
 				        </div>
 				        <%
 						if(session.getAttribute("loginUser") != null){
