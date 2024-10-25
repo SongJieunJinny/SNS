@@ -31,14 +31,12 @@ if(session.getAttribute("loginUser") != null) {
   <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/sns.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <script src="<%= request.getContextPath() %>/js/jquery-3.7.1.js"></script> 
-</head> 
-<script>
+  <script>
 let IsDuplicate = false;
 let NickDuplicate = false;
 let emailcode = false;
 $(document).ready(function() {
-    // 다크모드 초기화 함수
-    function DarkMode() {
+	function DarkMode() {
         const currentMode = localStorage.getItem('mode') || 'light';
         const modeText = document.getElementById('modeText');
         if (currentMode === 'dark') {
@@ -57,9 +55,11 @@ $(document).ready(function() {
             modeText.textContent = newMode === 'dark' ? '라이트모드' : '다크모드';
         });
     }
-    // 페이지 로드 시 다크모드 초기화
-    DarkMode();		
+	
+	// 페이지 로드 시 다크모드 초기화
+    DarkMode();	
     
+	// #menuA 클릭 시 #menutableA 토글
     $("#menuA").click(function(event) {
         $("#menutableA").toggle();  // 보이기/숨기기
         event.stopPropagation();    // 이벤트 전파 방지
@@ -74,7 +74,7 @@ $(document).ready(function() {
     $("#menutableA").click(function(event) {
         event.stopPropagation();    // 이벤트 전파 방지
     });
-    
+
     
     $(".icon").mouseover(function() {
         $(this).addClass('round');  // round 클래스 추가
@@ -433,29 +433,6 @@ $(document).ready(function() {
            		 }
         	}
         });
-   	       <%--  $.ajax({
-   	            url: "<%= request.getContextPath() %>/user/login.do",  // 요청 URL
-   	            type: "post",  // 요청 방식
-   	            data: new FormData(form),  // 폼 데이터 전송
-   	            processData: false,  // 자동 데이터 처리 방지
-   	            contentType: false,  // 요청 시 Content-Type 설정 방지
-   	            success: function(result) {
-   	            	result = result.trim();
-	   	            switch(result) {
-		                 case "success":
-		                	 alert("로그인에 성공");
-		   	                 window.location.href = "<%= request.getContextPath() %>";
-		                     break;
-		                 case "error":
-		                	 openLoginModal();
-	   	                     alert("로그인에 실패하셨습니다.");
-		                     break;
-		                 default :
-		                	 alert("서버와의 연결에 실패했습니다. 나중에 다시 시도해 주세요.");
-		                     break;
-		             }
-   	            }
-   	        }); --%>
 	}
 
 	// 파일 업로드 초기화
@@ -622,6 +599,7 @@ function DoEmail() {
 	});		
 }
 
+/* 추천 테이블 */
 function loadReco(bno) {
     $.ajax({
         url: "<%= request.getContextPath() %>/board/loadReco.do",
@@ -652,6 +630,8 @@ function recoAdd(bno) {
 	}
 }
 </script>
+</head> 
+
 <body>
 	<!-- header 검색창, 프로필이미지, 알림, 메시지 -->
 	<header>
@@ -696,7 +676,7 @@ function recoAdd(bno) {
 	        if(userPname != null && !userPname.equals("")){
         	%>
         	<img id="previewProfil" class="circular-img" 
-        	onclick="location.href='<%= request.getContextPath() %>/user/mypage.do'"
+        	onclick="location.href='<%= request.getContextPath() %>/user/mypage.do?uno=<%= loginNo %>'"
 	            style="border:none;" 
 	            src="<%= request.getContextPath()%>/upload/<%= userPname %>"
            		alt="첨부된 이미지" style="max-width: 100%; height: auto;" />
