@@ -9,7 +9,6 @@
 		const attach = $('#attach').val();
 		const title = $('#title').val();
 		const content = $('#content').val();
-		
 		// form에 담는 이유는 , attach같은 첨부파일은 바이너리 파일이므로 , String으로 보낼 수 없음 따라서 , 
 		// 새로운 form에 appand를 사용해서 담아야함
 		 var form = new FormData();
