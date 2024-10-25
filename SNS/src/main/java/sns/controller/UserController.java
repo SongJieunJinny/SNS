@@ -598,6 +598,7 @@ public class UserController {
 	                
 	                // 세션에 변경된 사용자 정보 저장
 	                session.setAttribute("loginUser", user);
+	                response.sendRedirect(request.getContextPath()+"/user/mypage.do");
 	            }
 	        }
 	    } catch (Exception e) {
