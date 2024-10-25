@@ -28,7 +28,7 @@
 				</form>
 			</div>
 		</div>
-	</div>
+	</div>  
 </section>
 	<script src="../jquery-3.7.1.js"></script>
 <script>
