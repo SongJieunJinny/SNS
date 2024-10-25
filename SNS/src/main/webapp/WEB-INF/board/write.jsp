@@ -3,37 +3,10 @@
 <%@ include file="../include/header.jsp" %>
 <%@ include file="../include/nav.jsp" %>
 <!--웹페이지 본문-->
-<section>
-	<div class="writeDiv">
-		<div class="leftDiv">
-			<label>
-				<span class="imgSpan">사진넣기</span>
-				<input type="file" style="display: none;" name="attach" id="attach">
-				<!-- 스크립트 프리뷰 추가 -->
-			</label>
-		</div>
-		<div class="rightDiv">
-			<input type="text" class="titleInput" placeholder="글제목" id="title" name="title">
-			<br><br>
-			<input type="text" class="contentInput" placeholder="글내용" id="content"name="content">
-			<br><br>
-			<div class="btnDiv">
-				<form name="write" method="post" action="">
-				<!-- type을 버튼으로 설정해야함 : 버튼으로 설정하지 않은경우 받아올 수 없음-->
-					<input class="btnR" type="button" onclick="submitPost()" value="등록">
-					&nbsp;&nbsp;
-					<input class="btnC" type="reset" value="취소">
-				</form>
-			</div>
-		</div>
-	</div>
-</section>
-	<script src="../jquery-3.7.1.js"></script>
 <script>
 	function submitPost(){
-		alert(1);
-		const attach = $('#attach').val();
 		// 제이쿼리 기본 문법 >> $(선택자).동작함수1().동작함수2()
+		const attach = $('#attach').val();
 		const title = $('#title').val();
 		const content = $('#content').val();
 		
@@ -47,10 +20,10 @@
 	     //console.log($(form).serializeArray());
 		
 		$.ajax({
-			// 방법    
-			type : 'post',
 			//매개변수 는 컨트롤러에 매핑된 URL과 일치해야 하는 것을 url가리킵니다 
 			url : '<%=request.getContextPath()%>/board/write.do',
+			// 방법    
+			type : 'post',
 			processData : false,
             contentType : false,
 			data: form,
@@ -68,5 +41,31 @@
 		});
 	}
 </script>
+<section>
+	<div class="writeDiv">
+		<div class="leftDiv">
+			<label>
+				<span class="imgSpan">사진넣기</span>
+				<input type="file" style="display: none;" name="attach" id="attach">
+				<!-- 스크립트 프리뷰 추가 -->
+			</label>
+		</div>
+		<div class="rightDiv">
+			<input type="text" class="titleInput" placeholder="글제목"  name="title" id="title">
+			<br><br>
+			<input type="text" class="contentInput" placeholder="글내용" name="content" id="content">
+			<br><br>
+			<div class="btnDiv">
+				<form name="write" method="post" action="">
+				<!-- type을 버튼으로 설정해야함 : 버튼으로 설정하지 않은경우 받아올 수 없음-->
+					<input class="btnR" type="button" onclick="submitPost()" value="등록">
+					&nbsp;&nbsp;
+					<input class="btnC" type="reset" value="취소">
+				</form>
+			</div>
+		</div>
+	</div>
+</section>
+
 
 <%@ include file="../include/aside.jsp" %>

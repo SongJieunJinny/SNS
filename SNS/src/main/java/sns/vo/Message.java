@@ -6,10 +6,8 @@ public class Message {
 	private int tuno ;
 	private String text ;
 	private String rdate ;
-	public int getMno() {
-		return mno;
-	}
 	
+	public int getMno() {return mno;}
 	public int getUno() {return uno;}
 	public int getTuno() {return tuno;}
 	public String getText() {return text;}
