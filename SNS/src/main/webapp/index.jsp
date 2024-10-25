@@ -67,6 +67,7 @@ window.onload = function(){
 	                if (this.src) {
 	                    $.getScript(this.src);
 	                } else {
+	                	// eval 대체 할 수 있는 함수 > new function 
 	                    eval($(this).text());
 	                }
 	            });
