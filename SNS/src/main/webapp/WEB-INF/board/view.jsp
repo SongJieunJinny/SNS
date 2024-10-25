@@ -45,7 +45,7 @@
 		<!-- 댓글위치 -->
 		<div class="comment_inner">
 			<table>
-				<tr>
+				<tr>  
 					<td colspan="3">
 						<div class="search-wrapper">
 							<div class="input-container" id="seach-container"
