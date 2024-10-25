@@ -168,7 +168,7 @@ $(document).ready(function() {
         });
     }
     
-    
+     
     
     /* 회원가입 */
     function openLoginModal() {
@@ -420,15 +420,14 @@ $(document).ready(function() {
         		result = result.trim();
  	            switch(result) {
                 case "success":
-               	 /* alert("로그인에 성공"); */
-  	                 window.location.href = "<%= request.getContextPath() %>";
+  	                location.reload();
                     break;
                 case "error":
                	 openLoginModal();
- 	                     alert("로그인에 실패하셨습니다.");
+ 	                alert("로그인에 실패하셨습니다.");
                     break;
                 default :
-               	 alert("서버와의 연결에 실패했습니다. 나중에 다시 시도해 주세요.");
+               	    alert("서버와의 연결에 실패했습니다. 나중에 다시 시도해 주세요.");
                     break;
            		 }
         	}
