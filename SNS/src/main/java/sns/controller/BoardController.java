@@ -72,7 +72,7 @@ public class BoardController {
 		}
 
 		// input 타입에 파일이 여러개 존재하는 경우  
-		Enumeration files = multi.getFileNames();
+		Enumeration files = multi.getFileNames(); 
 		/*
 			// 파일이 input 타입에 한 개만 존재하는 경우 
 			multi.getFilesystemName("attach");

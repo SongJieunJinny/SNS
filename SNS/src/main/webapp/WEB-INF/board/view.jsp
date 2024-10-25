@@ -8,7 +8,7 @@
 <!--웹페이지 본문-->
 <div class="view_div">
     <div class="view_inner">
-    	<label>
+    	<label> 
 			<span class="imgSpan" style="width: 550px; height: 550px;">사진</span>
 		</label>
        	<div class="view_content" style="width: 50%;">
