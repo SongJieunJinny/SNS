@@ -5,7 +5,7 @@
 <!--웹페이지 본문-->
 <section>
 	<div class="writeDiv">
-		<div class="leftDiv">  
+		<div class="leftDiv">   
 			<label>
 				<span class="imgSpan"><img src="./490_2342_3934.jpg" alt="고양이" 
 					style="width: 100%;height: 100%; border-radius: 40px;"></span>

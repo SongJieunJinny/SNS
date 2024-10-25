@@ -66,7 +66,7 @@ $(document).ready(function() {
         $(this).removeClass('round');  // round 클래스 제거
     });
     
-    /* view 페이지 띄우는 모달 */  
+    /* view 페이지 띄우는 모달 */   
  	// 모달 띄우기 버튼
     $(".listDiv").click(function() {
         $("#modal").fadeIn(); // 모달 창 보이게 하기

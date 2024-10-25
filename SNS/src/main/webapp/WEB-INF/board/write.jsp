@@ -47,7 +47,7 @@
 	     //console.log($(form).serializeArray());
 		
 		$.ajax({
-			// 방법   
+			// 방법    
 			type : 'post',
 			//매개변수 는 컨트롤러에 매핑된 URL과 일치해야 하는 것을 url가리킵니다 
 			url : '<%=request.getContextPath()%>/board/write.do',

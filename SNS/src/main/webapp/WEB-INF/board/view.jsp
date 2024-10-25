@@ -43,7 +43,7 @@
 		</div><br>
 		<div>맛있는 딸기 타르트</div> <!-- 값 넣어줘야함  -->
 		<!-- 댓글위치 -->
-		<div class="comment_inner">
+		<div class="comment_inner"> 
 			<table>
 				<tr>  
 					<td colspan="3">

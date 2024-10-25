@@ -45,7 +45,7 @@
 				}
 				request.setAttribute("board", board);
 				%>
-  
+   
 <%
 	ArrayList<BoardVO> indexBoard = (ArrayList<BoardVO>)request.getAttribute("board"); 
 %>
