@@ -26,7 +26,8 @@
 						   +" 	    ,a.fname"
 						   +" 	FROM board b"
 						   +"   INNER JOIN attach a"
-						   +" 	ON b.bno = a.bno";
+						   +" 	ON b.bno = a.bno " 
+						   +" where state='E' ";
 				sql += " ORDER BY b.rdate desc";
 
 				psmt= conn.prepareStatement(sql);

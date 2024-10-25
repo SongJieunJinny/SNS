@@ -48,12 +48,12 @@ function submitPost(){
 	// 제이쿼리 기본 문법 >> $(선택자).동작함수1().동작함수2()
 	const title = $('#title').val();
 	const content = $('#content').val();
-	
+	// 첨부파일을 넣지 않았을 때 
 	if(!attach) {
         alert('첨부파일을 선택해주세요.');
         return false;
     }
-    
+	// 첨부파일을 넣었을 때 
     if(!title.trim()) {
         alert('제목을 입력해주세요.');
         return false;
