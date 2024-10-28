@@ -55,7 +55,6 @@ function deleteFn(){
 			         src="https://img.icons8.com/?size=100&id=87&format=png&color=000000" /> -->
 				</div>
 				<!-- 이미지 다운로드 -->
-<%-- 				<a href="down.jsp?bno=<%= vo.getBno() %>"> --%>
 				<a href="<%= request.getContextPath() %>/upload/<%= vo.getPname() %>" download="<%= request.getContextPath() %>/upload/<%= vo.getFname() %>">
 					<img id="downIcon" style="width:30px;" src="https://img.icons8.com/?size=100&id=gElSR9wTv6aF&format=png&color=000000">
 				</a>
