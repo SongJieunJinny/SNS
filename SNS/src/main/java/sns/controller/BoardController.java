@@ -44,6 +44,10 @@ public class BoardController {
 			loadReco(request,response);
 		}else if (comments[comments.length-1].equals("recoAdd.do")) {
 			recoAdd(request,response);
+		}else if (comments[comments.length-1].equals("modify.do")) {
+			if(request.getMethod().equals("GET")) {
+				modify(request,response);
+			}
 		}
 		
 	}
@@ -352,5 +356,49 @@ public class BoardController {
 			}
 		}
 	}
+	
+	public void modify(HttpServletRequest request
+			, HttpServletResponse response) throws ServletException, IOException {
 		
+		int bno =Integer.parseInt(request.getParameter("bno"));
+		
+		Connection conn =null;
+		PreparedStatement psmt= null;
+		ResultSet rs = null;
+		String sql = "";
+		
+		try {
+			conn =DBConn.conn();
+			sql = "select * "
+					+ " from board b"
+					+ " INNER JOIN attach a"
+					+ "ON b.bno = a.bno"
+					+ " where b.bno=?";
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(1, bno);
+			rs = psmt.executeQuery();
+			
+			BoardVO vo = new BoardVO();
+			if(rs.next()) {
+				vo.setBno(rs.getInt("bno"));
+				vo.setTitle(rs.getString("title"));
+				vo.setContent(rs.getString("content"));
+				vo.setPname(rs.getString("pname"));
+				vo.setFname(rs.getString("fname"));
+			}
+			request.setAttribute("vo", vo);
+			request.getRequestDispatcher("/WEB-INF/board/modify.jsp").forward(request, response);
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally {
+			try {
+				DBConn.close(rs, psmt, conn);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+	}
+	
 }
