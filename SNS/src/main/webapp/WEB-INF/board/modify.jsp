@@ -26,7 +26,7 @@
 							<input type="hidden" name ="bno" value="<%=vo.getBno()%>" id="bno">
 							<input class="userBtn" type="button" value="수정" onclick="modifyFn()">
 							<input class="userBtn" type="button" value="취소" 
-							onclick="location.href='view.do?=<%=vo.getBno()%>'">
+							onclick="location.href='<%= request.getContextPath() %>'">
 						</div>
 					</div>
 				</div>
