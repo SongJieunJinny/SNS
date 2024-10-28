@@ -4,14 +4,26 @@ public class CommentsVO {
 
 	private int cno;
 	private int bno;
+	private int uno;
 	private int ano;
 	private String content;
 	private String rdate;
 	private String state;
 	 
+	public CommentsVO(int cno, int bno, int uno, int ano, String content, String rdate, String state) {
+		this.cno = cno;
+		this.bno = bno;
+		this.uno = uno;
+		this.ano = ano;
+		this.content = content;
+		this.rdate = rdate;
+		this.state = state;
+	}
+	
 	
 	public int getCno() {return cno;}
 	public int getBno() {return bno;}
+	public int getUno() {return uno;}
 	public int getAno() {return ano;}
 	public String getContent() {return content;}
 	public String getRdate() {return rdate;}
@@ -20,6 +32,7 @@ public class CommentsVO {
 	
 	public void setCno(int cno) {this.cno = cno;}
 	public void setBno(int bno) {this.bno = bno;}
+	public void setUno(int uno) {this.bno = uno;}
 	public void setAno(int ano) {this.ano = ano;}
 	public void setContent(String content) {this.content = content;}
 	public void setRdate(String rdate) {this.rdate = rdate;}
