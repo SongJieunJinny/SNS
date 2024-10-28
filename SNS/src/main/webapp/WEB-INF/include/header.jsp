@@ -712,6 +712,8 @@ function recoAdd(bno) {
 	            loadReco(bno);  // 추천 상태를 다시 로드
 	        }
 	    });
+	}else{
+		alert("로그인 후 추천가능합니다.");
 	}
 }
 
@@ -751,84 +753,174 @@ function complainAdd(bno) {
 <body>
 	<!-- header 검색창, 프로필이미지, 알림, 메시지 -->
 	<header>
-        <div class="search_inner">
-            <form action="index.jsp" method="get" name="searchFn" style="padding-bottom:30px;">
-                <div class="search-wrapper">
-                    <div id="seach-container"
-                    style="box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                    background-color: white;
-                    border-radius: 20px;
-                    width:80%; height: 42px;
-                    margin-top: 1.5%; margin-left: 7%;
-                    ">
-                        <i class="fas fa-search" id="searchIcon"></i>
-                        <input type="text" name="searchValue" id="search" placeholder="검색">
-                        <i class="fas fa-times" id="clearBtn"></i>
-                    </div>
-                </div>
-            </form>
-        </div>
-        <%
-		if(loginUser != null){
-		%>
-        <!-- 로그인했을 경우 -->
-        <div class="userHeader_login">
-	        <!-- 알림 표시 -->
-	        <div class="icon">
-      	   		<img src="https://img.icons8.com/?size=100&id=3334&format=png&color=767676">
-      	   		<div class="login-hover-menu">
-		            <p>알림</p>
+		<div class="top-bar">
+			<%-- <div class="logo_inner">
+	            <!-- 로고 표시 -->
+		        <div class="icon" onclick="location.href='<%= request.getContextPath() %>'">
+	      	   		<img id="logo" src="<%= request.getContextPath() %>/image/logo.jpg">
+	      	   		<div class="login-hover-menu">
+			            <p>홈이동</p>
+			        </div>
 		        </div>
+	        </div> --%>
+	        <div class="search_inner">
+	            <form action="index.jsp" method="get" name="searchFn" style="padding-bottom:30px;">
+	                <div class="search-wrapper">
+	                    <div id="seach-container"
+	                    style="display: flex;  align-items: center;
+	                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	                    background-color: white;
+	                    border-radius: 25px;
+	                    width:45%; height: 52px;
+	                    margin-top: 1.5%; margin-left:40%;
+	                    ">
+			      	   		<img id="searchIcon" 
+			      	   		onclick="location.href='<%= request.getContextPath() %>'"
+			      	   		src="<%= request.getContextPath() %>/image/logo.jpg">
+	                        <input type="text" name="searchValue" id="search" placeholder="검색">
+	                        <i class="fas fa-times" id="clearBtn"></i>
+	                    </div>
+	                </div>
+	            </form>
 	        </div>
-	        <!-- 메시지 표시 -->
-	        <div class="icon">
-	       		<img src="https://img.icons8.com/?size=100&id=37966&format=png&color=767676">
-	       		<div class="login-hover-menu">
-		            <p>메시지</p>
-		        </div>
-	        </div>
-	        <!-- 프로필이미지 -->
 	        <%
-	        if(userPname != null && !userPname.equals("")){
-        	%>
-        	<img id="previewProfil" class="circular-img" 
-        	onclick="location.href='<%= request.getContextPath() %>/user/mypage.do?uno=<%= loginNo %>'"
-	            style="border:none;" 
-	            src="<%= request.getContextPath()%>/upload/<%= userPname %>"
-           		alt="첨부된 이미지" style="max-width: 100%; height: auto;" />
-        	<%-- <img id="previewProfil" class="circular-img" 
-        	onclick="location.href='<%= request.getContextPath() %>/user/mypage.do'"
-	            style="border:none;" 
-	            src="<%= userPname != null && !userPname.equals("") 
-	            ? request.getContextPath()+"/upload/" + userPname 
-           		: "https://img.icons8.com/?size=100&id=115346&format=png&color=000000" %>" 
-           		alt="첨부된 이미지" style="max-width: 100%; height: auto;" /> --%>
-        	<%
-	        }else{
-	        	String firstNick = loginUser.getUnick().substring(0, 1);
-        	%>
-	        <div class="icon profileicon" 
-	        onclick="location.href='<%= request.getContextPath() %>/user/mypage.do'"
-	        style="background-color:#EEEEEE; border-radius: 50%; cursor: pointer;
-	        display: flex; justify-content: center; align-items: center; margin-left:10px;
-	         font-size: 24px; font-weight: bold; width: 70px; height: 70px;">
-		        <%= firstNick %>
-        	</div>
-        	<%
-	        }
+			if(loginUser != null){
+			%>
+	        <!-- 로그인했을 경우 -->
+	        <div class="userHeader_login">
+	    	    <%-- <div class="icon">
+		        	<a href="<%= request.getContextPath() %>/board/write.do">
+	                    <img style="margin-top:16px;"
+	                    src="https://img.icons8.com/?size=100&id=59864&format=png&color=767676" alt="글쓰기">
+	                </a>
+	                <div class="login-hover-menu">
+	                    <p>글쓰기</p>
+	                </div>
+	            </div> --%>
+		        <!-- 알림 표시 -->
+		        <div class="icon">
+	      	   		<img src="https://img.icons8.com/?size=100&id=3334&format=png&color=767676">
+	      	   		<div class="login-hover-menu">
+			            <p>알림</p>
+			        </div>
+		        </div>
+		        <!-- 메시지 표시 -->
+		        <div class="icon">
+		       		<img src="https://img.icons8.com/?size=100&id=37966&format=png&color=767676">
+		       		<div class="login-hover-menu">
+			            <p>메시지</p>
+			        </div>
+		        </div>
+		        <!-- 프로필이미지 -->
+		        <%
+		        if(userPname != null && !userPname.equals("")){
+	        	%>
+	        	<div class="icon">
+		        	<img id="previewProfil" class="circular-img" 
+		        	onclick="location.href='<%= request.getContextPath() %>/user/mypage.do?uno=<%= loginNo %>'"
+			            style="border:none;" 
+			            src="<%= request.getContextPath()%>/upload/<%= userPname %>"
+		           		alt="첨부된 이미지" style="max-width: 100%; height: auto;" />
+		        	<%-- <img id="previewProfil" class="circular-img" 
+		        	onclick="location.href='<%= request.getContextPath() %>/user/mypage.do'"
+			            style="border:none;" 
+			            src="<%= userPname != null && !userPname.equals("") 
+			            ? request.getContextPath()+"/upload/" + userPname 
+		           		: "https://img.icons8.com/?size=100&id=115346&format=png&color=000000" %>" 
+		           		alt="첨부된 이미지" style="max-width: 100%; height: auto;" /> --%>
+	           		<div class="login-hover-menu">
+			            <p>프로필</p>
+			        </div>
+	         	</div>
+	        	<%
+		        }else{
+		        	String firstNick = loginUser.getUnick().substring(0, 1);
+	        	%>
+	        	<div class="icon">
+			        <div class="icon profileicon" 
+			        onclick="location.href='<%= request.getContextPath() %>/user/mypage.do'"
+			        style="background-color:#EEEEEE; border-radius: 50%; cursor: pointer;
+			        display: flex; justify-content: center; align-items: center; margin-left:10px;
+			         font-size: 24px; font-weight: bold; width: 70px; height: 70px;">
+				        <%= firstNick %>
+		        	</div>
+		        	<div class="login-hover-menu">
+			            <p>프로필</p>
+			        </div>
+	        	</div>
+	        	<%
+		        }
+		        %>
+	        </div>
+			<%
+			}else{
+			%>
+	        <!-- 로그인하지 않았을 경우 -->
+	        <div class="userHeader">
+	            <a id="join">회원가입</a>&nbsp;|&nbsp; 
+				<a id="login">로그인</a>
+	        </div>
+			<%	
+			}
+			%>
+		</div>	
+	<nav>
+     	<ul>
+           <li>
+                <!-- 다크모드&라이트모드 전환 -->
+                <div class="menu-item" id="modeToggle">
+                    <a>
+                        <img src="https://img.icons8.com/?size=100&id=101342&format=png&color=767676" alt="다크모드 전환">
+                    </a>
+                    <div class="hover-menu">
+	                    <p id="modeText">다크모드</p>
+	                </div>
+                </div>
+            </li>
+            <%
+			if(loginUser != null){
+			%>
+			<li>
+				<div class="menu-item">
+		        	<a href="<%= request.getContextPath() %>/board/write.do">
+	                    <img src="https://img.icons8.com/?size=100&id=59864&format=png&color=767676" alt="글쓰기">
+	                </a>
+	                <div class="hover-menu">
+	                    <p>글쓰기</p>
+	                </div>
+	            </div>
+			</li>
+            <!-- 로그인한 경우 로그아웃 -->
+			<li>
+                <div class="menu-item">
+                    <a href="<%= request.getContextPath() %>/user/logout.do">
+                        <img class="logout" src="https://img.icons8.com/?size=100&id=BvRKVanAagI0&format=png&color=767676" alt="로그아웃">
+                    </a>
+                    <div class="hover-menu">
+	                    <p>로그아웃</p>
+	                </div>
+                </div>
+            </li> 
+          	<%
+           	if(loginUser.getUauthor().equals("A")){
 	        %>
-        </div>
-		<%
-		}else{
-		%>
-        <!-- 로그인하지 않았을 경우 -->
-        <div class="userHeader">
-            <a id="join">회원가입</a> | 
-			<a id="login">로그인</a>
-        </div>
-		<%	
-		}
-		%>
+            <!-- 관리자의 경우 신고내역확인 -->
+			<li>
+                <div class="menu-item">
+                    <a href="<%= request.getContextPath() %>/admin/blackList.do">
+                        <img src="https://img.icons8.com/?size=100&id=8773&format=png&color=767676" alt="관리자 신고 관리">
+                    </a>
+                    <div class="hover-menu">
+	                    <p>신고관리</p>
+	                </div>
+                </div>
+            </li>
+          	<%
+            	}
+			}
+			%>
+        </ul>
+    </nav>
 	</header>
 	<!-- 회원가입,로그인 모달창 -->
 	<div id="user_modal" style="display:none;">
