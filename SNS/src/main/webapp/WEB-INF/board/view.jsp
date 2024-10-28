@@ -31,7 +31,7 @@ function deleteFn(){
 		// ajax에서 ""와 ''를 구별하지 않으나, 통일성을 위해 둘 중 하나를 선택해서 사용해야한다.
 		error : function(xhr, status, error){
 			alert("서버 오류가 발생했습니다.");
-		}
+		} 
 	});
 }
 </script>
