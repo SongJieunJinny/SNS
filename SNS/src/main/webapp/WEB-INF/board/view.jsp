@@ -77,7 +77,7 @@ function deleteFn(){
 						        <div class="menu-container">
 						            <i class="fas fa-solid fa-eraser"></i>
 						            <button id="infoBtn" onclick="deleteFn()">삭제</button>
-						            <input type="hidden" id= bno name="bno" value="<%=vo.getBno()%>">
+						            <input type="hidden" id="bno" name="bno" value="<%=vo.getBno()%>">
 						        </div>
 					        </form>
 							<%
