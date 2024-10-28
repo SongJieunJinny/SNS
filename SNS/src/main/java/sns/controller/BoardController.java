@@ -65,7 +65,8 @@ public class BoardController {
 			, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		/* String uploadPath = request.getServletContext().getRealPath("/upload"); */
-		String uploadPath = "C:\\Users\\502\\git\\first-SNS\\SNS\\src\\main\\webapp\\upload";
+		// 경로 계속 수정해줘야함 
+		String uploadPath = "D:\\pij\\Team\\first-SNS\\SNS\\src\\main\\webapp\\upload";
 		System.out.println("서버의 업로드 폴더 경로 : " + uploadPath);
 		HttpSession session = request.getSession();
 		UserVO loginUser = (UserVO)session.getAttribute("loginUser");
