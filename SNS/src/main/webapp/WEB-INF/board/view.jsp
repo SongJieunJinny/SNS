@@ -16,15 +16,15 @@ if(session.getAttribute("loginUser") != null){
     <div class="view_inner">
     	<label>
 			<span class="imgSpan" style="width: 550px; height: 550px; cursor: default;">
-				<img style="width: 550px; height: 550px; border-radius: 40px;" 
-				src="<%= request.getContextPath() %>/upload/<%= vo.getPname() %>">
+				<img style="width: 550px; height: 550px; border-radius: 40px;" src="<%= request.getContextPath() %>/upload/<%= vo.getPname() %>">
 			</span>
 		</label>
-		
        	<div class="view_content" style="width: 50%;">
        		<div class="icon-container">
 				<!-- 추천표시되는곳 -->
 				<div id="reco" style="width:30px; cursor:pointer;">
+					<!-- <img style="width:30px; cursor:pointer;" 
+			         src="https://img.icons8.com/?size=100&id=87&format=png&color=000000" /> -->
 				</div>
 				<!-- 이미지 다운로드 -->
 <%-- 				<a href="down.jsp?bno=<%= vo.getBno() %>"> --%>
@@ -51,7 +51,7 @@ if(session.getAttribute("loginUser") != null){
 					        <!-- 게시글수정 -->
 					        <div class="menu-container">
 					            <i class="fas fa-solid fa-pen-nib"></i>
-					            <button id="infoBtn" onclick="location.href='<%=request.getContextPath()%>/board/modify.do?bno=<%= vo.getBno() %>'">수정</button>
+					            <button id="infoBtn">수정</button>
 					        </div>
 					        <!-- 게시글삭제 -->
 					        <div class="menu-container">
@@ -76,25 +76,40 @@ if(session.getAttribute("loginUser") != null){
 				    </div>
 				</div>
 			</div>
-			<form action="modify.do" method="post">
-		       	<p style="font-size:26px; margin:10px 0;"><%= vo.getTitle() %></p>  <!-- 제목 -->
-				<div style="font-size:16px; margin-top:5px;">
-					<div class="view_profil">
-				        <!-- 프로필 이미지가 있을 경우 -->
-				        <img id="previewProfil" class="circular-img" 
-				       		 onclick="location.href='<%= request.getContextPath() %>/user/mypage.do?uno=<%= vo.getUno() %>'"
-				             style="border:none; width:50px; height:50px; cursor:pointer; " 
-				             src="<%= request.getContextPath() %>/upload/<%= vo.getUpname() %>" alt="프로필 이미지" />
-					    <span><%= vo.getUnick() %></span>         				    <!-- 닉네임 -->
-					    <button class="ssBtn">팔로우</button>
-					</div>
-				&nbsp;
-				<%= vo.getRdate() %>&nbsp;    <!-- 날짜 -->
-				추천수&nbsp; <%= vo.getRecommend() %>&nbsp;
-				조회수&nbsp; <%= vo.getHit() %>
-				</div><br>
-				<div><%= vo.getContent() %></div>	
-			</form>
+       	<p style="font-size:26px; margin:10px 0;"><%= vo.getTitle() %></p>
+		<div style="font-size:16px; margin-top:5px;">
+			<div class="view_profil">
+				<%
+				if(vo.getUpname() != null && !vo.getUpname().equals("")){
+				%>
+		        <!-- 프로필 이미지가 있을 경우 -->
+		        <img id="previewProfil" class="circular-img" 
+		       		 onclick="location.href='<%= request.getContextPath() %>/user/mypage.do?uno=<%= vo.getUno() %>'"
+		             style="border:none; width:50px; height:50px; cursor:pointer; " 
+		             src="<%= request.getContextPath() %>/upload/<%= vo.getUpname() %>" alt="프로필 이미지" />
+				<%
+				}else{
+					String firstNick = vo.getUnick().substring(0, 1);
+	        	%>
+		        <div class="icon profileicon" 
+			        onclick="location.href='<%= request.getContextPath() %>/user/mypage.do?uno=<%= vo.getUno() %>'"
+			        style="background-color:#EEEEEE; border-radius: 50%; cursor: pointer;
+			        display: flex; justify-content: center; align-items: center; 
+			        font-size: 24px; font-weight: bold; width: 50px; height: 50px;">
+			        <%= firstNick %>
+	        	</div>
+	        	<%
+				}
+				%>
+			    <span><%= vo.getUnick() %></span>
+			    <button class="ssBtn">팔로우</button>
+			</div>
+		&nbsp;
+		<%= vo.getRdate() %>&nbsp;
+		추천수&nbsp; <%= vo.getRecommend() %>&nbsp;
+		조회수&nbsp; <%= vo.getHit() %>
+		</div><br>
+		<div><%= vo.getContent() %></div>
 		<!-- 댓글위치 -->
 		<div class="comment_inner">
 			<table>

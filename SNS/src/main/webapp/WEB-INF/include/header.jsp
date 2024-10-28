@@ -836,14 +836,12 @@ function complainAdd(bno) {
 		        }else{
 		        	String firstNick = loginUser.getUnick().substring(0, 1);
 	        	%>
-	        	<div class="icon">
-			        <div class="icon profileicon" 
-			        onclick="location.href='<%= request.getContextPath() %>/user/mypage.do'"
+		        <div class="icon profileicon" 
+			        onclick="location.href='<%= request.getContextPath() %>/user/mypage.do?uno=<%= loginNo %>'"
 			        style="background-color:#EEEEEE; border-radius: 50%; cursor: pointer;
 			        display: flex; justify-content: center; align-items: center; margin-left:10px;
-			         font-size: 24px; font-weight: bold; width: 70px; height: 70px;">
-				        <%= firstNick %>
-		        	</div>
+			        font-size: 24px; font-weight: bold; width: 70px; height: 70px;">
+			        <%= firstNick %>
 		        	<div class="login-hover-menu">
 			            <p>프로필</p>
 			        </div>
