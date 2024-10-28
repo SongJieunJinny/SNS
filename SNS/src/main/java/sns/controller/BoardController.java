@@ -65,15 +65,12 @@ public class BoardController {
 			, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		/* String uploadPath = request.getServletContext().getRealPath("/upload"); */
-		/*
-		 * String uploadPath =
-		 * "C:\\Users\\DEV\\Desktop\\JangAWS\\01.java\\workspace\\sns\\src\\main\\webapp\\upload";
-		 */
-		String uploadPath = "C:\\DEV\\GIT\\first-SNS\\sns\\src\\main\\webapp\\upload";
+		String uploadPath = "C:\\Users\\502\\git\\first-SNS\\SNS\\src\\main\\webapp\\upload";
 		System.out.println("서버의 업로드 폴더 경로 : " + uploadPath);
 		HttpSession session = request.getSession();
 		UserVO loginUser = (UserVO)session.getAttribute("loginUser");
 		int uno = Integer.parseInt(loginUser.getUno()); 
+		System.out.println(uno);
 		
 		int size = 10 * 1024 * 1024;
 		MultipartRequest multi;
@@ -97,7 +94,7 @@ public class BoardController {
 		String phyname = null;   // 서버에 저장될 파일 이름
 		String title = multi.getParameter("title");
 		String content = multi.getParameter("content");
-		
+		System.out.println(content);
 		if (files.hasMoreElements()) {
 		    String fileid = (String) files.nextElement();
 		    filename = multi.getFilesystemName(fileid);  // 원본 파일 이름 가져오기
