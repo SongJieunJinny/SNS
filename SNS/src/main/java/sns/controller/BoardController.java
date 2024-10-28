@@ -69,7 +69,10 @@ public class BoardController {
 			, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		/* String uploadPath = request.getServletContext().getRealPath("/upload"); */
-		String uploadPath = "C:\\DEV\\GIT\\first-SNS\\sns\\src\\main\\webapp\\upload";
+		/*
+		  String uploadPath = "C:\\DEV\\GIT\\first-SNS\\sns\\src\\main\\webapp\\upload";
+		 */
+		String uploadPath = "D:\\pij\\Team\\first-SNS\\SNS\\src\\main\\webapp\\upload";
 		System.out.println("서버의 업로드 폴더 경로 : " + uploadPath);
 		HttpSession session = request.getSession();
 		UserVO loginUser = (UserVO)session.getAttribute("loginUser");
@@ -633,13 +636,59 @@ public class BoardController {
 		}
 	}
 
+
 	public void deleteOk(HttpServletRequest request
 			, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		int bno = Integer.parseInt(request.getParameter("bno"));
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		String sql ="";
+		try {
+			conn = DBConn.conn();
+			sql =" UPDATE board SET state = 'D' "
+					+ " WHERE bno =? ";
+			psmt=conn.prepareStatement(sql);
+			psmt.setInt(1, bno);
+			int result = psmt.executeUpdate();
+			if(result > 0 ) {
+				/*
+				 // redirect는 새로고침 하기 때문에 ,ajax의 목적인 페이지를
+				    새로고침하지 않고 서버와 데이터를 주고 받는게 될 수 없음
+				response.sendRedirect(request.getContextPath()+"index.jsp");*/
+				
+				/*
+				 1) 아래의 방법을 통해 서버가 클라이언트에 직접 응답을 보냄
+				 2) 클라이언트가 요청에 대해 응답을 받고, JavaScript에서 처리함
+	  			    {자바스크립트에서 적절한 동작(예: 페이지 리디렉션, 메시지 표시 등)}을 수행
+				 3) 클라이언트 측 처리
+					AJAX 요청의 성공 콜백 함수(success) 내에서 
+					응답을 받아서 페이지를 업데이트하거나 다른 동작을 수행할 수 있고, 이때 새로 고침 없이 응답 결과에 따라 UI변경 가능 
+				 */
+				response.setContentType("text/html;charset=UTF-8");
+				PrintWriter out = response.getWriter();  
+				out.print("success");  
+				out.flush();
+				out.close();   
+			}
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			response.setContentType("text/html;charset=UTF-8");
+	        PrintWriter out = response.getWriter();   
+            out.print("error");  
+	        out.flush();
+	        out.close();	
+		}finally {
+			try {
+				DBConn.close(psmt, conn);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		
-		request.getRequestDispatcher("index.jsp").forward(request, response);
 	}
-
-
 
 
 }
