@@ -370,7 +370,7 @@ nav li div:hover{
     display: none;
     position: absolute;
     top: 110%; /* 아이콘 바로 아래에 위치하도록 설정 (아이콘의 100% 아래 + 약간의 간격) */
-    /* left: 40%; */
+    left: -85%;
     color:white;
     background-color: #767676;
     border: 1px solid #ddd;
