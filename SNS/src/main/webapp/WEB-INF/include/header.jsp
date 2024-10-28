@@ -714,6 +714,37 @@ function recoAdd(bno) {
 	    });
 	}
 }
+
+/* 신고 테이블 */
+function loadComplain(bno) {
+    $.ajax({
+        url: "<%= request.getContextPath() %>/board/loadComplain.do",
+        type: "get",
+        data: { bno: bno },
+        success: function(data) {
+        	console.log(data);
+            $("#complainDiv").html(data);
+        }
+    });
+}
+
+function complainAdd(bno) {
+	let loginUno = '<%= session.getAttribute("loginUser") %>';
+	console.log(loginUno);
+	
+	if(loginUno != 'null'){
+		$.ajax({
+	        url: "<%= request.getContextPath() %>/board/complainAdd.do",
+	        type: "post",
+	        data: { bno: bno },
+	        success: function() {
+	        	loadComplain(bno);  // 신고 상태를 다시 로드
+	        }
+	    });
+	}else{
+		alert("로그인 후 신고가능합니다.");
+	}
+}
 </script>
 </head> 
 

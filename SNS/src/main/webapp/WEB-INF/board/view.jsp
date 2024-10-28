@@ -38,11 +38,11 @@ if(session.getAttribute("loginUser") != null){
 				    <!-- 서브메뉴바 -->
 				    <div id="menutableA" style="display: none;">
 				        <!-- 게시글신고 -->
-				        <div class="menu-container">
-				            <img style="width:20px; cursor:pointer;" 
+				        <div class="menu-container" id="complainDiv" onclick="complainAdd(<%= vo.getBno() %>);">
+				            <%-- <img style="width:20px; cursor:pointer;" 
 				                 src="https://img.icons8.com/?size=100&id=8773&format=png&color=767676" 
 				                 onclick="complainAdd(<%= vo.getBno() %>)" />
-				            <button id="infoBtn">신고</button>
+				            <button id="infoBtn">신고</button> --%>
 				        </div>
 				        <%
 						if(session.getAttribute("loginUser") != null){

@@ -75,7 +75,7 @@ window.onload = function(){
 	
 	            // 다크모드 초기화 다시 실행
 	            DarkMode();
-	            
+	            loadComplain(bno);
 	            loadReco(bno);
 	        }
 	    });
