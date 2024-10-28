@@ -11,6 +11,34 @@ if(session.getAttribute("loginUser") != null){
 	uno = Integer.parseInt(viewUser.getUno());
 }
 %>
+<script>
+function deleteFn(){
+	const bno = $("#bno").val();
+	
+	$.ajax({
+		url : '<%=request.getContextPath()%>/board/delete.do',
+		type='post',
+		// AJAX의 data 객체에서는 키 값을 문자열로 명시할 필요가 없다.
+		data : {bno : bno}
+		success : function(response){
+			if(response.trim()==='success'){
+				
+			location.href = '<%= request.getContextPath()%>';
+			}else{
+				alert('글 등록에 실패했습니다.');
+			}
+			
+		},
+		// ajax에서 ""와 ''를 구별하지 않으나, 통일성을 위해 둘 중 하나를 선택해서 사용해야한다.
+		error : function(){
+			alert("서버 오류가 발생했습니다.")
+		}
+		
+	});
+	
+	
+}
+</script>
 <!--웹페이지 본문-->
 <div class="view_div">
     <div class="view_inner">
@@ -38,7 +66,7 @@ if(session.getAttribute("loginUser") != null){
 				    <!-- 서브메뉴바 -->
 				    <div id="menutableA" style="display: none;">
 				        <!-- 게시글신고 -->
-				        <div class="menu-container" id="complainDiv" onclick="complainAdd(<%= vo.getBno() %>);">
+				        <div class="menu-container">
 				            <%-- <img style="width:20px; cursor:pointer;" 
 				                 src="https://img.icons8.com/?size=100&id=8773&format=png&color=767676" 
 				                 onclick="complainAdd(<%= vo.getBno() %>)" />
@@ -51,13 +79,16 @@ if(session.getAttribute("loginUser") != null){
 					        <!-- 게시글수정 -->
 					        <div class="menu-container">
 					            <i class="fas fa-solid fa-pen-nib"></i>
-					            <button id="infoBtn">수정</button>
+					            <button id="infoBtn" onclick="location.href='<%=request.getContextPath()%>/board/modify.do?bno=<%= vo.getBno() %>'">수정</button>
 					        </div>
 					        <!-- 게시글삭제 -->
-					        <div class="menu-container">
-					            <i class="fas fa-solid fa-eraser"></i>
-					            <button id="infoBtn">삭제</button>
-					        </div>
+					        <form action="">
+						        <div class="menu-container">
+						            <i class="fas fa-solid fa-eraser"></i>
+						            <button id="infoBtn" onclick="deleteFn()">삭제</button>
+						            <input type="hidden" id= bno name="bno" value="<%=vo.getBno()%>">
+						        </div>
+					        </form>
 							<%
 							}else if(viewUser.getUauthor().equals("A")){
 								System.out.println("writer.getUauthor() : " + viewUser.getUauthor());
@@ -78,7 +109,7 @@ if(session.getAttribute("loginUser") != null){
 			</div>
        	<p style="font-size:26px; margin:10px 0;"><%= vo.getTitle() %></p>
 		<div style="font-size:16px; margin-top:5px;">
-			<div class="view_profil">
+		<div class="view_profil">
 				<%
 				if(vo.getUpname() != null && !vo.getUpname().equals("")){
 				%>
