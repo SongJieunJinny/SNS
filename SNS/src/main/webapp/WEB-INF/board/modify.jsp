@@ -11,7 +11,7 @@
 		<form name="modify" method="post"  action="modify.do"> 
 		<div class="leftDiv">
 			<label>
-				<span class="imgSpan"><img src="<%=request.getContextPath() %>upload/<%=vo.getPname()%>" alt="고양이" 
+				<span class="imgSpan"><img src="<%=request.getContextPath() %>/upload/<%=vo.getPname()%>" alt="고양이" 
 					style="width: 100%;height: 100%; border-radius: 40px;"></span>
 				<input type="file" style="display: none;">
 			</label>
