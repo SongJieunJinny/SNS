@@ -17,26 +17,22 @@ function deleteFn(){
 	
 	$.ajax({
 		url : '<%=request.getContextPath()%>/board/delete.do',
-		type='post',
+		type:'post',
 		// AJAX의 data 객체에서는 키 값을 문자열로 명시할 필요가 없다.
-		data : {bno : bno}
+		data : {bno : bno},
 		success : function(response){
 			if(response.trim()==='success'){
-				
-			location.href = '<%= request.getContextPath()%>';
+				location.href = '<%= request.getContextPath()%>';
 			}else{
 				alert('글 등록에 실패했습니다.');
 			}
 			
 		},
 		// ajax에서 ""와 ''를 구별하지 않으나, 통일성을 위해 둘 중 하나를 선택해서 사용해야한다.
-		error : function(){
-			alert("서버 오류가 발생했습니다.")
+		error : function(xhr, status, error){
+			alert("서버 오류가 발생했습니다.");
 		}
-		
 	});
-	
-	
 }
 </script>
 <!--웹페이지 본문-->
