@@ -51,7 +51,7 @@ if(session.getAttribute("loginUser") != null){
 					        <!-- 게시글수정 -->
 					        <div class="menu-container">
 					            <i class="fas fa-solid fa-pen-nib"></i>
-					            <button id="infoBtn" onclick="location.href='modify.do?bno=<%=vo.getBno() %>'">수정</button>
+					            <button id="infoBtn" onclick="location.href='modify.do?bno=<%=vo.getBno()%>'">수정</button>
 					        </div>
 					        <!-- 게시글삭제 -->
 					        <div class="menu-container">
