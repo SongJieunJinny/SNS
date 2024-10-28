@@ -12,12 +12,13 @@
 		</a>
     </div>
 	<div class="user_inner">
+		<form action="findPw.do" method="post">
 		<table>
 			<tr>
 				<td>
 					<div class="user-container">
                            <i class="fas fa-user" id="user_itag7"></i>
-                           <input type="text" name="uid" id="login_uid" placeholder="아이디">
+                           <input type="text" name="uid" id="find_uid" placeholder="아이디">
 	           		</div>
 				</td>
 			</tr>
@@ -46,9 +47,10 @@
             </tr>
 			<tr>
 				<td>
-					<input  class="userBtn"  type="button" value="비밀번호찾기" onclick="findPage('pwChange');">
+					<input  class="userBtn"  type="button" value="비밀번호찾기" onclick="findPage('findPwOk');">
 				</td>
 			</tr>
 		</table>
+		</form>
 	</div>
 </div>

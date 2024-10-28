@@ -1,8 +1,10 @@
 package sns.controller;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URLEncoder;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,6 +13,7 @@ import java.util.Enumeration;
 import java.util.UUID;
 
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -36,15 +39,20 @@ public class BoardController {
 			}
 		
 		}else if (comments[comments.length-1].equals("view.do")) {
-			if(request.getMethod().equals("GET")) {
-				view(request,response);
-			}
+			view(request,response);
 		}else if (comments[comments.length-1].equals("loadReco.do")) {
 			loadReco(request,response);
 		}else if (comments[comments.length-1].equals("recoAdd.do")) {
 			recoAdd(request,response);
+		}else if (comments[comments.length-1].equals("loadComplain.do")) {
+			loadComplain(request,response);
+		}else if (comments[comments.length-1].equals("complainAdd.do")) {
+			complainAdd(request,response);
+		}else if (comments[comments.length-1].equals("modify.do")) {
+			if(request.getMethod().equals("GET")) {
+				modify(request,response);
+			}
 		}
-		
 		
 	}
 	
@@ -58,7 +66,6 @@ public class BoardController {
 		request.setCharacterEncoding("UTF-8");
 		/* String uploadPath = request.getServletContext().getRealPath("/upload"); */
 		String uploadPath = "C:\\Users\\502\\git\\first-SNS\\SNS\\src\\main\\webapp\\upload";
-		
 		System.out.println("서버의 업로드 폴더 경로 : " + uploadPath);
 		HttpSession session = request.getSession();
 		UserVO loginUser = (UserVO)session.getAttribute("loginUser");
@@ -78,7 +85,7 @@ public class BoardController {
 		}
 
 		// input 타입에 파일이 여러개 존재하는 경우  
-		Enumeration files = multi.getFileNames();   
+		Enumeration files = multi.getFileNames();
 		/*
 			// 파일이 input 타입에 한 개만 존재하는 경우 
 			multi.getFilesystemName("attach");
@@ -189,72 +196,68 @@ public class BoardController {
 	public void view (HttpServletRequest request
 			, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
-		int bno = Integer.parseInt(request.getParameter("bno"));
+		String bno = request.getParameter("bno");
+		BoardVO vo = new BoardVO();
 		Connection conn = null;
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
-		BoardVO vo = new BoardVO();
+		
 		PreparedStatement psmtHit = null;
-		int hit = 0;
 		
 		try {
 			conn = DBConn.conn();
-			// 조회수 증가
-		String sqlHit = " UPDATE board"
-					  + "    SET hit = hit+1"
-					  + "  WHERE bno =? ";
-		psmtHit = conn.prepareStatement(sqlHit);
-		psmtHit.setInt(1,bno);
-		psmtHit.executeUpdate();
-		System.out.println("hit의 숫자 " + hit);
-		System.out.println("View method called for bno: " + bno);
-		
+			String sql = " SELECT b.*,u.unick,a.pname,a.fname, "
+					+"   (select count(*) from love where bno = b.bno) as cnt, "
+					+"   (select pname from user where uno = b.uno) as upname "
+					+"   FROM board b "
+					+ " inner join user u " 
+					+ " on b.uno = u.uno "
+					+ " inner join attach a " 
+					+ " on b.bno = a.bno "
+					+"  WHERE b.bno=? and state='E' ";
 			
-		String sql = " SELECT b.*,u.unick,a.pname,a.fname, "
-				+"   (select count(*) from love where bno = b.bno) as cnt, "
-				+"   (select pname from user where uno = b.uno) as upname "
-				+"   FROM board b "
-				+ " inner join user u " 
-				+ " on b.uno = u.uno "
-				+ " inner join attach a " 
-				+ " on b.bno = a.bno "
-				+"  WHERE b.bno=? and state='E' ";
-		
-		psmt = conn.prepareStatement(sql);
-		psmt.setInt(1, bno);
-		rs = psmt.executeQuery();
-		
-		if(rs.next()) {
-			 vo.setBno(rs.getInt("bno"));
-			 vo.setUno(rs.getInt("uno"));
-			 vo.setTitle(rs.getString("title"));
-			 vo.setContent(rs.getString("content"));
-			 vo.setRdate(rs.getString("rdate"));
-			 vo.setState(rs.getString("state"));
-			 vo.setUnick(rs.getString("unick"));
-			 vo.setPname(rs.getString("pname"));
-			 vo.setFname(rs.getString("fname"));
-			 vo.setUpname(rs.getString("upname"));
-			 vo.setRecommend(rs.getInt("cnt"));
-				// 메모리에 추가된 hit의 증가를 데이터베이스에 추가 
-			}			
-		    request.setAttribute("vo", vo);
-			//2. WEB-INF/notice/list.jsp 포워드
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(1, Integer.parseInt(bno));
+			rs = psmt.executeQuery();
+			
+			if(rs.next()) {
+				 vo.setBno(rs.getInt("bno"));
+				 vo.setUno(rs.getInt("uno"));
+				 vo.setTitle(rs.getString("title"));
+				 vo.setContent(rs.getString("content"));
+				 vo.setRdate(rs.getString("rdate"));
+				 vo.setState(rs.getString("state"));
+				 vo.setUnick(rs.getString("unick"));
+				 vo.setPname(rs.getString("pname"));
+				 vo.setFname(rs.getString("fname"));
+				 vo.setRecommend(rs.getInt("cnt"));
+				 vo.setUpname(rs.getString("upname"));
+				 
+				 //조회수 증가
+				 int hit = rs.getInt("hit");
+				 String sqlHit = "update board set hit = ? where bno = ?";
+				 hit++;
+				 psmtHit = conn.prepareStatement(sqlHit);
+				 psmtHit.setInt(1, hit);
+				 psmtHit.setString(2, bno);
+				 psmtHit.executeUpdate();
+				
+				 vo.setHit(hit);
+			}
+			
+			request.setAttribute("board", vo);
 			request.getRequestDispatcher("/WEB-INF/board/view.jsp").forward(request, response);
+			
 		}catch(Exception e) {
 			e.printStackTrace();
-			e.getMessage();
 		}finally {
 			try {
-				DBConn.close(psmtHit,null);
 				DBConn.close(rs, psmt, conn);
 			}catch(Exception e) {
 				e.printStackTrace();
 			}
 		}
-		
 	}
-	
 	
 	public void loadReco(HttpServletRequest request
 			, HttpServletResponse response) throws ServletException, IOException {
@@ -354,4 +357,148 @@ public class BoardController {
 			}
 		}
 	}
+	
+	public void loadComplain(HttpServletRequest request
+			, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		
+		String bno = request.getParameter("bno");
+		String uno = "0";
+		String state = "D";
+		
+		HttpSession session = request.getSession();
+		if(session.getAttribute("loginUser") != null){
+			UserVO user = (UserVO)session.getAttribute("loginUser");
+			uno = user.getUno();
+		}
+		System.out.println("loadComplain 받은 bno 값: " + bno + ", uno : " + uno);
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+		
+		try {
+		    conn = DBConn.conn();
+
+		    // 사용자가 이 게시물을 추천했는지 확인
+		    String sql = "select * from COMPLAINT_BOARD where uno = ? and bno = ?";
+		    System.out.println("sql checkComplain: "+sql);
+		    psmt = conn.prepareStatement(sql);
+		    psmt.setString(1, uno);
+		    psmt.setString(2, bno);
+		    
+		    rs = psmt.executeQuery();
+		    
+		    if(rs.next()) {
+		    	state = "E";
+		    }
+		    
+		    request.setAttribute("state", state);
+		    request.setAttribute("bno", bno);
+			request.getRequestDispatcher("/WEB-INF/board/loadComplain.jsp").forward(request, response);
+
+		} catch (Exception e) {
+		    e.printStackTrace();
+		} finally {
+		    try {
+				DBConn.close(rs, psmt, conn);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void complainAdd(HttpServletRequest request
+			, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		HttpSession session = request.getSession();
+		UserVO user = (UserVO)session.getAttribute("loginUser");
+		String uno = user.getUno();
+		String bno = request.getParameter("bno"); 
+
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+		String sql = "";
+
+
+		try {
+		    conn = DBConn.conn();
+
+		    sql = "select * from COMPLAINT_BOARD where uno = ? and bno = ?";
+		    psmt = conn.prepareStatement(sql);
+		    psmt.setString(1, uno);
+		    psmt.setString(2, bno);
+
+		    rs = psmt.executeQuery();
+
+		    if (rs.next()) {
+		        // 신고가 이미 존재하면 delete
+		    	sql = "delete from COMPLAINT_BOARD where uno = ? and bno = ?";
+		        psmt = conn.prepareStatement(sql);
+		        psmt.setString(1, uno);
+		        psmt.setString(2, bno);
+		    } else {
+		        // 신고가 없으면 insert
+		        sql = "insert into COMPLAINT_BOARD (uno, bno) values (?, ?)";
+		        psmt = conn.prepareStatement(sql);
+		        psmt.setString(1, uno);
+		        psmt.setString(2, bno);
+		    }
+		    psmt.executeUpdate();
+
+		} catch (Exception e) {
+		    e.printStackTrace();
+		} finally {
+		    try {
+				DBConn.close(rs, psmt, conn);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void modify(HttpServletRequest request
+			, HttpServletResponse response) throws ServletException, IOException {
+		
+		int bno =Integer.parseInt(request.getParameter("bno"));
+		
+		Connection conn =null;
+		PreparedStatement psmt= null;
+		ResultSet rs = null;
+		String sql = "";
+		
+		try {
+			conn =DBConn.conn();
+			sql = "select * "
+					+ " from board b"
+					+ " INNER JOIN attach a"
+					+ "ON b.bno = a.bno"
+					+ " where b.bno=?";
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(1, bno);
+			rs = psmt.executeQuery();
+			
+			BoardVO vo = new BoardVO();
+			if(rs.next()) {
+				vo.setBno(rs.getInt("bno"));
+				vo.setTitle(rs.getString("title"));
+				vo.setContent(rs.getString("content"));
+				vo.setPname(rs.getString("pname"));
+				vo.setFname(rs.getString("fname"));
+			}
+			request.setAttribute("vo", vo);
+			request.getRequestDispatcher("/WEB-INF/board/modify.jsp").forward(request, response);
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally {
+			try {
+				DBConn.close(rs, psmt, conn);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+	}
+	
 }

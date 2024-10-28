@@ -1,6 +1,6 @@
 package sns.vo;
 
-public class Message {
+public class MessageVO {
 	private int mno ;
 	private int uno ;
 	private int tuno ;
