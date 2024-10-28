@@ -481,6 +481,20 @@ body.dark-mode .view_inner img{
 	width: 55%;
 }
 
+.div_inner{
+	width: 70%;
+    display: flex; /* 가로로 배치 */
+    flex-direction: row; /* 기본 값으로 가로 배치 */
+    justify-content: space-between; /* 요소 사이 간격을 균등하게 */
+    align-items: flex-start; /* 컨텐츠를 상단에 맞춤 */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    border-radius: 20px;
+    padding: 20px; /* 내부 여백 추가 */
+    margin:auto;
+    margin-top:50px;
+}
+
 /* menuA 스타일 */
 #modal #menuA {
     cursor: pointer;
@@ -1206,11 +1220,11 @@ section > h2 {
 		border-radius: 40px;
 		cursor: pointer;
 		font-size: 20px;
-		margin-top: 22%;
+		margin-bottom: 10px;
 }
 .contentInput{
 		width: 500px;
-		height: 400px;
+		height: 500px;
 		border: none;
 		display: block;
 		text-align: center;
@@ -1220,6 +1234,7 @@ section > h2 {
 		cursor: pointer;
 		padding: 0%;
 		font-size: 18px;
+		margin-bottom: 10px;
 }
 .leftDiv{
 		width: 50%;

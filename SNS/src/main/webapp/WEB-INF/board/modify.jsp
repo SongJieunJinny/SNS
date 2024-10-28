@@ -8,29 +8,29 @@
 %>
 <!--웹페이지 본문-->
 <section>
-	<div class="writeDiv">
+	<div class="div_inner">
 		<form name="modify" method="post"  action=""> 
-		<div class="leftDiv">
-			<label>
-				<span class="imgSpan">
-					<img  id="wPreview" src="<%=request.getContextPath() %>/upload/<%=vo.getPname()%>" alt="고양이" 
-					  style="width: 100%;height: 100%; border-radius: 40px;">
-				</span>
-					<input type="file" style="display: none;" name="attach" id="attach" onchange="readURL(this);">
-			</label>
-		</div>
-		<div class="rightDiv">
-			<input type="text" class="titleInput" placeholder="글제목" id="title" value="<%=vo.getTitle()%>">
-			<br><br>
-			<input type="text" class="contentInput" placeholder="글내용" id="content" value="<%=vo.getContent()%>">
-			<br><br>
-			<div class="btnDiv">
-				<input class="btnR" type="button" value="수정" onclick="modifyFn()">
-				<input type="hidden" name ="bno" value="<%=vo.getBno()%>" id="bno">
-				&nbsp;&nbsp;
-				<input class="btnC" type="button" value="취소" onclick="location.href='view.do?=<%=vo.getBno()%>'">
+			<div class="view_div">
+		 	   <div class="view_inner">
+					<label>
+						<span class="imgSpan">
+							<img  id="wPreview" src="<%=request.getContextPath() %>/upload/<%=vo.getPname()%>" alt="고양이" 
+							  style="width: 100%;height: 100%; border-radius: 40px;">
+						</span>
+						<input type="file" style="display: none;" name="attach" id="attach" onchange="readURL(this);">
+					</label>
+					<div class="view_content" style="width: 50%; margin-left:40px;">
+						<input type="text" class="titleInput" placeholder="글제목" id="title" value="<%=vo.getTitle()%>">
+						<input type="text" class="contentInput" placeholder="글내용" id="content" value="<%=vo.getContent()%>">
+						<div class="btnDiv">
+							<input type="hidden" name ="bno" value="<%=vo.getBno()%>" id="bno">
+							<input class="userBtn" type="button" value="수정" onclick="modifyFn()">
+							<input class="userBtn" type="button" value="취소" 
+							onclick="location.href='view.do?=<%=vo.getBno()%>'">
+						</div>
+					</div>
+				</div>
 			</div>
-		</div>
 		</form>
 	</div>
 </section>
