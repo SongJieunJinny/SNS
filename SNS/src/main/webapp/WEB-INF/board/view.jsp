@@ -12,7 +12,6 @@ if(session.getAttribute("loginUser") != null){
 	uno = Integer.parseInt(viewUser.getUno());
 }
 %>
-<<<<<<< HEAD
 <%
 	List<CommentsVO> clist = (List<CommentsVO>)request.getAttribute("clist");
 %>
@@ -147,8 +146,6 @@ if(session.getAttribute("loginUser") != null){
 	    $(".commentDiv").prepend(str);  // 기존 내용 위에 추가
 	}
 	
-=======
-<script>
 function deleteFn(){
 	const bno = $("#bno").val();
 	
@@ -171,7 +168,6 @@ function deleteFn(){
 		} 
 	});
 }
->>>>>>> branch 'main' of https://github.com/SNS-Bteam/first-SNS.git
 </script>
 <!--웹페이지 본문-->
 <div class="view_div">
