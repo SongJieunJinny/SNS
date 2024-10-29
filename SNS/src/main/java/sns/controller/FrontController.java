@@ -40,12 +40,9 @@ public class FrontController extends HttpServlet {
 			UserController user = new UserController(request,response,comments);
 		}else if(comments[0].equals("admin")) {
 			AdminController admin = new AdminController(request,response,comments);
-<<<<<<< HEAD
 			//SampleController 에게 처리 전달
 		}else if(comments[0].equals("reply")) {
 			CommentController reply = new CommentController(request,response,comments);
-=======
->>>>>>> branch 'main' of https://github.com/SNS-Bteam/first-SNS.git
 		}
 	}
 
