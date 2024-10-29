@@ -6,6 +6,7 @@
 <%@ page import="java.sql.*" %>
 <%@ page import="sns.*" %>
 <%
+	String id = request.getParameter("id");
 
 		//사용변수 선언 영역
 		ArrayList<BoardVO> board = new ArrayList<>(); 
@@ -44,9 +45,7 @@
 					vo.setFname(rs.getString("fname"));
 					board.add(vo);
 				}
-				request.setAttribute("board", board);
    
-	ArrayList<BoardVO> indexBoard = (ArrayList<BoardVO>)request.getAttribute("board"); 
 %>
 <script>
 window.onload = function(){
@@ -86,6 +85,13 @@ window.onload = function(){
 	        $("#modal").fadeOut(); // 모달 창 숨기기
 	    }
 	});
+	// id가 null 일 경우를 생각해서 제약 조건을 걸어야함 
+	// null인 경우 클릭x , null이 아닌 경우 클릭 o , boardController 경로 수정
+	
+	// 로컬스토리지에서 꺼낸 값을 클릭  
+	$("#<%=id %>").click();
+	// 로컬스토리지 삭제 
+	
 }
 
 function DarkMode() {
@@ -113,7 +119,7 @@ function DarkMode() {
 	<div id="indexDiv">
           <!-- 1번째 줄 -->
           <%
-          for(BoardVO bo : indexBoard){ 
+          for(BoardVO bo : board){ 
        	  %>
         		<div class="listDiv" id="<%=bo.getBno() %>" >
 	           	 	 <!-- 이미지 -->

@@ -75,8 +75,12 @@ function readURL(input) {
             contentType : false,
 			data: form,
             success: function(response) {
-                if (response.trim() === 'success') {
-                    location.href = '<%=request.getContextPath()%>'; 
+            	console.log(JSON.parse(response))
+            	let data = JSON.parse(response);
+            	console.log(data.result);
+                if (data.result === 'success') {
+                	// 수정해야할 부분 >>> 로컬스토리지 사용 
+                    location.href = '<%=request.getContextPath()%>?id='+data.bno; 
                 } else {
                     alert('글 등록에 실패했습니다. 다시 시도해주세요.');
                 }
