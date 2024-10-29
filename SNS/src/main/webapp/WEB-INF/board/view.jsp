@@ -16,7 +16,7 @@ if(session.getAttribute("loginUser") != null){
 	List<CommentsVO> clist = (List<CommentsVO>)request.getAttribute("clist");
 %>
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
-<script src="../jquery-3.7.1.js"></script>
+<!-- <script src="../jquery-3.7.1.js"></script> -->
 <script>
     function btnComment() {
         var formData = $("#commentForm").serialize();  // 폼 데이터를 직렬화 (쿼리 문자열 형태로 변환)
@@ -24,7 +24,7 @@ if(session.getAttribute("loginUser") != null){
         $.ajax({
             // JSP 파일 경로 :: commentWrite.jsp / commentWrite.do
             // /WEB-INF 폴더 내부에 있는 jsp는 바로 접근이 안됩니다
-            url: "/teamProject1/reply/view.do",  
+            url: "<%= request.getContextPath() %>/reply/view.do",  
             type: "POST",        // POST 방식으로 서버에 요청
             data: formData,      // 폼 데이터를 전송
             dataType: "json",    // JSON 형식의 응답을 기대
