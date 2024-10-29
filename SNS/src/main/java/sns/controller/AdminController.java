@@ -19,14 +19,9 @@ public class AdminController {
 			, String[] comments) throws ServletException, IOException {
 		
 		if(comments[comments.length-1].equals("blackList.do")) {
-			if(request.getMethod().equals("GET")) {
-				blackList(request,response);
-			}
+			blackList(request,response);
 		}else if(comments[comments.length-1].equals("complainList.do")) {
-			
-			if(request.getMethod().equals("GET")) {
-				complainList(request,response);
-			}
+			complainList(request,response);
 		}else if (comments[comments.length-1].equals("loadComplain.do")) {
 			loadComplain(request,response);
 		}else if (comments[comments.length-1].equals("complainAdd.do")) {
@@ -81,7 +76,7 @@ public class AdminController {
 		    
 		    request.setAttribute("state", state);
 		    request.setAttribute("bno", bno);
-			request.getRequestDispatcher("/WEB-INF/board/loadComplain.jsp").forward(request, response);
+			request.getRequestDispatcher("/WEB-INF/admin/loadComplain.jsp").forward(request, response);
 
 		} catch (Exception e) {
 		    e.printStackTrace();

@@ -39,7 +39,7 @@ public class FrontController extends HttpServlet {
 		}else if(comments[0].equals("user")) {
 			UserController user = new UserController(request,response,comments);
 		}else if(comments[0].equals("admin")) {
-			ComplaintBoardController admin = new ComplaintBoardController(request,response,comments);
+			AdminController admin = new AdminController(request,response,comments);
 		}
 	}
 
