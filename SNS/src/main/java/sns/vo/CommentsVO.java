@@ -9,8 +9,9 @@ public class CommentsVO {
 	private String content;
 	private String rdate;
 	private String state;
+	private String unick;
 	 
-	public CommentsVO(int cno, int bno, int uno, int ano, String content, String rdate, String state) {
+	public CommentsVO(int cno, int bno, int uno, int ano, String content, String rdate, String state, String unick) {
 		this.cno = cno;
 		this.bno = bno;
 		this.uno = uno;
@@ -18,9 +19,15 @@ public class CommentsVO {
 		this.content = content;
 		this.rdate = rdate;
 		this.state = state;
+		this.unick = unick;
 	}
 	
 	
+	public CommentsVO() {
+		// TODO Auto-generated constructor stub
+	}
+
+
 	public int getCno() {return cno;}
 	public int getBno() {return bno;}
 	public int getUno() {return uno;}
@@ -28,6 +35,7 @@ public class CommentsVO {
 	public String getContent() {return content;}
 	public String getRdate() {return rdate;}
 	public String getState() {return state;}
+	public String getUnick() {return unick;}
 	
 	
 	public void setCno(int cno) {this.cno = cno;}
@@ -37,7 +45,7 @@ public class CommentsVO {
 	public void setContent(String content) {this.content = content;}
 	public void setRdate(String rdate) {this.rdate = rdate;}
 	public void setState(String state) {this.state = state;}
-	
+	public void setUnick(String unick) {this.unick = unick;}
 	
 	
 

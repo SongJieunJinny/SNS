@@ -38,6 +38,26 @@ let emailcode = false;
 $(document).ready(function() {
 	// 페이지 로드 시 다크모드 초기화
     DarkMode();	
+	
+    console.log($("#commentMenuA"));
+    
+	// #commentMenuA 클릭 시 #commentMenutableA 토글
+    $("#commentMenuA").click(function(event) {
+    	alert("call");
+        $("#commentMenutableA").toggle();  // 보이기/숨기기
+        event.stopPropagation();    // 이벤트 전파 방지
+    });
+
+    // 문서의 다른 부분 클릭 시 #commentMenutableA 숨기기
+    $(document).click(function() {
+        $("#commentMenutableA").hide();
+    });
+
+    // #commentMenutableA 내부 클릭 시 이벤트 전파 방지
+    $("#commentMenutableA").click(function(event) {
+        event.stopPropagation();    // 이벤트 전파 방지
+    });
+    
     
 	// #menuA 클릭 시 #menutableA 토글
     $("#menuA").click(function(event) {
@@ -335,8 +355,11 @@ function findPage(type) {
     
     $.ajax({
         url: url,
-        type: (type === "findPwOk") ? "post" : "get",
-      	data: (type === "findPwOk") ? {uid: $("#find_uid").val(), uemail: $("#uemail").val()} : {},
+        type: (type === "findPwOk" || type === "findIdResult") ? "post" : "get",
+      	data: (type === "findPwOk") 
+      		? {uid: $("#find_uid").val(), uemail: $("#uemail").val()} 
+    			: (type === "findIdResult") 
+    				? {uemail: $("#uemail").val()} : {},
         success: function(data) {
             $("#user_modalBody").html(data); // 모달 내부에 페이지 로드
             
@@ -720,7 +743,7 @@ function recoAdd(bno) {
 /* 신고 테이블 */
 function loadComplain(bno) {
     $.ajax({
-        url: "<%= request.getContextPath() %>/board/loadComplain.do",
+        url: "<%= request.getContextPath() %>/admin/loadComplain.do",
         type: "get",
         data: { bno: bno },
         success: function(data) {
@@ -736,7 +759,7 @@ function complainAdd(bno) {
 	
 	if(loginUno != 'null'){
 		$.ajax({
-	        url: "<%= request.getContextPath() %>/board/complainAdd.do",
+	        url: "<%= request.getContextPath() %>/admin/complainAdd.do",
 	        type: "post",
 	        data: { bno: bno },
 	        success: function() {
