@@ -38,6 +38,26 @@ let emailcode = false;
 $(document).ready(function() {
 	// 페이지 로드 시 다크모드 초기화
     DarkMode();	
+	
+    console.log($("#commentMenuA"));
+    
+	// #commentMenuA 클릭 시 #commentMenutableA 토글
+    $("#commentMenuA").click(function(event) {
+    	alert("call");
+        $("#commentMenutableA").toggle();  // 보이기/숨기기
+        event.stopPropagation();    // 이벤트 전파 방지
+    });
+
+    // 문서의 다른 부분 클릭 시 #commentMenutableA 숨기기
+    $(document).click(function() {
+        $("#commentMenutableA").hide();
+    });
+
+    // #commentMenutableA 내부 클릭 시 이벤트 전파 방지
+    $("#commentMenutableA").click(function(event) {
+        event.stopPropagation();    // 이벤트 전파 방지
+    });
+    
     
 	// #menuA 클릭 시 #menutableA 토글
     $("#menuA").click(function(event) {
