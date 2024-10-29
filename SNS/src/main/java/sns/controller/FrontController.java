@@ -36,15 +36,16 @@ public class FrontController extends HttpServlet {
 		//5. 만들어진 문자열 배열의 첫번째 문자열이 어떤 컨트롤러로 기능을 요청해야할지 결정한다.
 		if(comments[0].equals("board")) {
 			BoardController board = new BoardController(request,response,comments);
-			//SampleController 에게 처리 전달
 		}else if(comments[0].equals("user")) {
 			UserController user = new UserController(request,response,comments);
-			//SampleController 에게 처리 전달
 		}else if(comments[0].equals("admin")) {
 			AdminController admin = new AdminController(request,response,comments);
+<<<<<<< HEAD
 			//SampleController 에게 처리 전달
 		}else if(comments[0].equals("reply")) {
 			CommentController reply = new CommentController(request,response,comments);
+=======
+>>>>>>> branch 'main' of https://github.com/SNS-Bteam/first-SNS.git
 		}
 	}
 

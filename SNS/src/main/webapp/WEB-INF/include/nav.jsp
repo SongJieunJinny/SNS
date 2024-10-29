@@ -9,9 +9,9 @@ if(session.getAttribute("loginUser") != null) {
 %>
 <!-- nav 인덱스페이지로 이동, 글쓰기버튼, 다크모드&라이트모드 전환, 관리자의 경우 신고내역확인 -->
 <main>
-	<nav>
-		<ul>
-			<li>
+	<!-- <nav>
+		<ul> -->
+			<%-- <li>
                 <!-- 인덱스페이지 이동 -->
                 <div class="menu-item">
 	                <a href="<%= request.getContextPath() %>">
@@ -21,8 +21,8 @@ if(session.getAttribute("loginUser") != null) {
 	                    <p>홈이동</p>
 	                </div>
 	            </div>
-            </li>
-            <%
+            </li> --%>
+            <%-- <%
 			if(loginUserNav != null){
 			%>
 			<li>
@@ -38,8 +38,8 @@ if(session.getAttribute("loginUser") != null) {
             </li>
       		<%
 			}
-			%>
-			<li>
+			%> --%>
+			<%-- <li>
                 <!-- 다크모드&라이트모드 전환 -->
                 <div class="menu-item" id="modeToggle">
                     <a>
@@ -83,4 +83,4 @@ if(session.getAttribute("loginUser") != null) {
 			}
 			%>
 		</ul>
-	</nav>
+	</nav> --%>
