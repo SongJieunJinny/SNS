@@ -89,6 +89,6 @@ function readURL(input) {
                 alert('서버 오류가 발생했습니다.');
             }
 		});
-	}
+	} 
 </script>
 <%@ include file="../include/aside.jsp" %>
