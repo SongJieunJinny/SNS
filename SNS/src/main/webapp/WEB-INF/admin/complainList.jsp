@@ -16,11 +16,13 @@
          
            <table class="inner_table">
                <thead>
+               	<tr>
                    <th>신고 번호</th>
                    <th>닉네임</th>
                    <th>제목</th>
                    <th>작성일</th>
                    <th>신고 횟수</th>
+                 </tr>
                </thead>
                <tbody>
                    <tr>

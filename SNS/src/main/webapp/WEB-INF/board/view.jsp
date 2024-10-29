@@ -185,22 +185,17 @@ function deleteFn(){
 			         src="https://img.icons8.com/?size=100&id=87&format=png&color=000000" /> -->
 				</div>
 				<!-- 이미지 다운로드 -->
-<%-- 				<a href="down.jsp?bno=<%= vo.getBno() %>"> --%>
 				<a href="<%= request.getContextPath() %>/upload/<%= vo.getPname() %>" download="<%= request.getContextPath() %>/upload/<%= vo.getFname() %>">
 					<img id="downIcon" style="width:30px;" src="https://img.icons8.com/?size=100&id=gElSR9wTv6aF&format=png&color=000000">
 				</a>
 				<!-- 메뉴바 -->
 				<div id="menuA" style="width:30px; cursor:pointer; margin-bottom:5px;">
 				    <img style="width:30px; transform: rotate(90deg);" 
-				         src="https://img.icons8.com/?size=100&id=98963&format=png&color=000000">
+				         src="https://img.icons8.com/?size=100&id=98963&format=png&color=000000" >
 				    <!-- 서브메뉴바 -->
 				    <div id="menutableA" style="display: none;">
 				        <!-- 게시글신고 -->
-				        <div class="menu-container">
-				            <img style="width:20px; cursor:pointer;" 
-				                 src="https://img.icons8.com/?size=100&id=8773&format=png&color=767676" 
-				                 onclick="complainAdd(<%= vo.getBno() %>)" />
-				            <button id="infoBtn">신고</button>
+				        <div class="menu-container" id="complainDiv" onclick="complainAdd(<%= vo.getBno() %>);">
 				        </div>
 				        <%
 						if(session.getAttribute("loginUser") != null){
@@ -216,7 +211,7 @@ function deleteFn(){
 						        <div class="menu-container">
 						            <i class="fas fa-solid fa-eraser"></i>
 						            <button id="infoBtn" onclick="deleteFn()">삭제</button>
-						            <input type="hidden" id= bno name="bno" value="<%=vo.getBno()%>">
+						            <input type="hidden" id="bno" name="bno" value="<%=vo.getBno()%>">
 						        </div>
 					        </form>
 							<%
@@ -239,12 +234,29 @@ function deleteFn(){
 			</div>
        	<p style="font-size:26px; margin:10px 0;"><%= vo.getTitle() %></p>
 		<div style="font-size:16px; margin-top:5px;">
-			<div class="view_profil">
+		<div class="view_profil">
+				<%
+				if(vo.getUpname() != null && !vo.getUpname().equals("")){
+				%>
 		        <!-- 프로필 이미지가 있을 경우 -->
 		        <img id="previewProfil" class="circular-img" 
-		        	onclick="location.href='<%= request.getContextPath() %>/user/mypage.do?uno=<%= vo.getUno() %>'"
+		       		 onclick="location.href='<%= request.getContextPath() %>/user/mypage.do?uno=<%= vo.getUno() %>'"
 		             style="border:none; width:50px; height:50px; cursor:pointer; " 
-		             src="<%= request.getContextPath() %>/upload/<%= vo.getUpname() %>" alt="프로필 이미지" >
+		             src="<%= request.getContextPath() %>/upload/<%= vo.getUpname() %>" alt="프로필 이미지" />
+				<%
+				}else{
+					String firstNick = vo.getUnick().substring(0, 1);
+	        	%>
+		        <div class="icon profileicon" 
+			        onclick="location.href='<%= request.getContextPath() %>/user/mypage.do?uno=<%= vo.getUno() %>'"
+			        style="background-color:#EEEEEE; border-radius: 50%; cursor: pointer;
+			        display: flex; justify-content: center; align-items: center; 
+			        font-size: 24px; font-weight: bold; width: 50px; height: 50px;">
+			        <%= firstNick %>
+	        	</div>
+	        	<%
+				}
+				%>
 			    <span><%= vo.getUnick() %></span>
 			    <button class="ssBtn">팔로우</button>
 			</div>
