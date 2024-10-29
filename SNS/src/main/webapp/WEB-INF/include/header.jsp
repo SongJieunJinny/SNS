@@ -335,8 +335,11 @@ function findPage(type) {
     
     $.ajax({
         url: url,
-        type: (type === "findPwOk") ? "post" : "get",
-      	data: (type === "findPwOk") ? {uid: $("#find_uid").val(), uemail: $("#uemail").val()} : {},
+        type: (type === "findPwOk" || type === "findIdResult") ? "post" : "get",
+      	data: (type === "findPwOk") 
+      		? {uid: $("#find_uid").val(), uemail: $("#uemail").val()} 
+    			: (type === "findIdResult") 
+    				? {uemail: $("#uemail").val()} : {},
         success: function(data) {
             $("#user_modalBody").html(data); // 모달 내부에 페이지 로드
             
@@ -720,7 +723,7 @@ function recoAdd(bno) {
 /* 신고 테이블 */
 function loadComplain(bno) {
     $.ajax({
-        url: "<%= request.getContextPath() %>/board/loadComplain.do",
+        url: "<%= request.getContextPath() %>/admin/loadComplain.do",
         type: "get",
         data: { bno: bno },
         success: function(data) {
@@ -736,7 +739,7 @@ function complainAdd(bno) {
 	
 	if(loginUno != 'null'){
 		$.ajax({
-	        url: "<%= request.getContextPath() %>/board/complainAdd.do",
+	        url: "<%= request.getContextPath() %>/admin/complainAdd.do",
 	        type: "post",
 	        data: { bno: bno },
 	        success: function() {

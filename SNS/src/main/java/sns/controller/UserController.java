@@ -639,8 +639,8 @@ public class UserController {
 			while(rs.next()){
 				System.out.println("findIdOk rs : rs.next() ½ÇÇàµÊ");
 				idList.add(rs.getString("uid"));
+				request.setAttribute("idList",idList);
 			}
-			request.setAttribute("idList",idList);
 			
 			request.getRequestDispatcher("/WEB-INF/user/findIdResult.jsp").forward(request, response);
 		}catch(Exception e){
