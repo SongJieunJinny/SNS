@@ -135,8 +135,8 @@ if(session.getAttribute("loginUser") != null){
 					}
 					%>
 			    </div>
-			</div>
-				  	 </span>
+						</div>
+							</span>
 			  	 </div>
 		  	 </div>
 		  	 </div>
@@ -295,7 +295,7 @@ function deleteFn(){
             	</div>
             	<!-- 댓글등록 버튼 -->
             	<button type="button" id="commentSubmit" class="btnComment" onclick="btnComment()"
-            					style=" padding: 10px;
+            					style=" padding: 15px;
 															box-sizing: border-box;
 															border: 2px solid #BFBFBF;
 															outline: none;
@@ -307,7 +307,7 @@ function deleteFn(){
 															background-color: #BFBFBF;
 															border-radius: 40px;
 															width:20%;
-															display: flex;
+															display: block;
 															align-items: center;
 															gap: 10px;">등록</button>	
 							</div>
