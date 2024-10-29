@@ -828,7 +828,7 @@ function complainAdd(bno) {
 			        </div>
 		        </div>
 		        <!-- 메시지 표시 -->
-		        <div class="icon">
+		        <div class="icon" id="msgbox">
 		       		<img src="https://img.icons8.com/?size=100&id=37966&format=png&color=767676">
 		       		<div class="login-hover-menu">
 			            <p>메시지</p>
