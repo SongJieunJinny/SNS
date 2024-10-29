@@ -12,9 +12,7 @@ if(session.getAttribute("loginUser") != null){
 	uno = Integer.parseInt(viewUser.getUno());
 }
 %>
-<%
-	List<CommentsVO> clist = (List<CommentsVO>)request.getAttribute("clist");
-%>
+
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 <script src="../jquery-3.7.1.js"></script>
 <script>
@@ -74,6 +72,7 @@ if(session.getAttribute("loginUser") != null){
 			
 	    var str = `
 			<div style="display: flex; align-items: center; gap: 10px;">
+			
         <!-- 댓글작성자 프로필이미지 -->
         	<div class="view_profil">
 						<img id="previewProfil" class="circular-img" 

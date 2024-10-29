@@ -29,56 +29,8 @@ public class CommentController {
 		
 		if(comments[comments.length-1].equals("view.do")) {
 			commentWrite(request,response);
-			}else if(comments[comments.length-1].equals("view.do")) {
-				//comments의 마지막 인덱스 값이 main.do 이면 main 메소드 호출
-				commentsList(request,response);
 			}
 		}
-		
-	public void commentsList(HttpServletRequest request
-			  , HttpServletResponse response) throws ServletException, IOException {
-		
-		// 1. notice_board의 게시글 데이터 가공
-		
-		List<CommentsVO> clist = new ArrayList<CommentsVO>(); //전체 게시글을 담을 목록 
-		
-		Connection conn = null;
-		PreparedStatement psmt = null; 
-		ResultSet rs = null;
-		
-		try {
-			conn = DBConn.conn();
-			
-			String sql = " SELECT c.*,u.uid "
-					   + " FROM Comments c, user u "
-					   + " WHERE c.uno = u.uno ";
-			
-			psmt = conn.prepareStatement(sql);
-			rs = psmt.executeQuery();
-	 		
-			while(rs.next()){
-				CommentsVO cvo = new CommentsVO();
-				cvo.setCno(rs.getInt("cno"));
-				cvo.setUnick(rs.getString("unick"));
-				cvo.setRdate(rs.getString("rdate"));
-				
-				clist.add(cvo);
-	 		}
-			request.setAttribute("clist", clist);
-		
-		// /notice/main.do 처리 메소드
-		request.getRequestDispatcher("/WEB-INF/board/view.jsp").forward(request, response);
-		
-		}catch(Exception e) {
-			e.printStackTrace();
-		}finally {
-			try {
-				DBConn.close(rs, psmt, conn);
-			}catch(Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}
 		
 	public void commentWrite(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
