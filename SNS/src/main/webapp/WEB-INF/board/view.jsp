@@ -7,8 +7,9 @@ BoardVO vo = (BoardVO)request.getAttribute("board");
 //List<CommentsVO> clist  = (List<CommentsVO>)request.getAttribute("comments");
 UserVO viewUser = null;
 int uno = 0;
-if(session.getAttribute("loginUser") != null){
-    viewUser = (UserVO)session.getAttribute("loginUser");
+if(session.getAttribute("loginUser") != null)
+{
+	viewUser = (UserVO)session.getAttribute("loginUser");
 	uno = Integer.parseInt(viewUser.getUno());
 }
 List<CommentsVO> clist = (List<CommentsVO>)request.getAttribute("clist");
