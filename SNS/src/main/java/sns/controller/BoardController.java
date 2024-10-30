@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.ServletException;
@@ -23,10 +24,11 @@ import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 import sns.util.DBConn;
 import sns.vo.BoardVO;
+import sns.vo.CommentsVO;
 import sns.vo.UserVO;
 
 
-public class BoardController {
+public class BoardController<Comments> {
 	public BoardController(HttpServletRequest request
 			, HttpServletResponse response
 			, String[] comments) throws ServletException, IOException {
@@ -201,10 +203,16 @@ public class BoardController {
 		String bno = request.getParameter("bno");
 		BoardVO vo = new BoardVO();
 		Connection conn = null;
+		
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
 		
 		PreparedStatement psmtHit = null;
+		
+		PreparedStatement psmtComments = null;
+		ResultSet rsc = null;
+		
+		
 		
 		try {
 			conn = DBConn.conn();
@@ -247,6 +255,34 @@ public class BoardController {
 				 vo.setHit(hit);
 			}
 			
+			//댓글목록 가져오기
+			String sqlComments = " SELECT c.*,u.unick,u.pname "
+					  + " FROM comments c "
+					  + " INNER JOIN user u "
+					  + " ON c.uno = u.uno "
+					  + " WHERE bno = ? "
+					  + " AND c.state = 'E' "
+					  + " ORDER BY c.rdate desc ";
+	
+			psmtComments = conn.prepareStatement(sqlComments);
+			psmtComments.setInt(1,Integer.parseInt(bno));
+			rsc = psmtComments.executeQuery();
+			
+			List<CommentsVO> clist = new ArrayList<CommentsVO>();
+			
+			while(rsc.next()){
+				CommentsVO cvo = new CommentsVO();
+				cvo.setBno(rsc.getInt("bno"));
+				cvo.setUno(rsc.getInt("uno"));
+				cvo.setContent(rsc.getString("content"));
+				cvo.setRdate(rsc.getString("rdate"));
+				cvo.setState(rsc.getString("state"));
+				cvo.setPname(rsc.getString("pname"));
+				cvo.setUnick(rsc.getString("unick"));
+				clist.add(cvo);
+			}
+			//리퀘스트에 담기
+			request.setAttribute("comments", clist);
 			request.setAttribute("board", vo);
 			request.getRequestDispatcher("/WEB-INF/board/view.jsp").forward(request, response);
 			

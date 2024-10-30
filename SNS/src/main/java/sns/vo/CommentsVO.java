@@ -10,8 +10,9 @@ public class CommentsVO {
 	private String rdate;
 	private String state;
 	private String unick;
+	private String pname;
 	 
-	public CommentsVO(int cno, int bno, int uno, int ano, String content, String rdate, String state, String unick) {
+	public CommentsVO(int cno, int bno, int uno, int ano, String content, String rdate, String state, String unick, String pname) {
 		this.cno = cno;
 		this.bno = bno;
 		this.uno = uno;
@@ -20,6 +21,7 @@ public class CommentsVO {
 		this.rdate = rdate;
 		this.state = state;
 		this.unick = unick;
+		this.pname = pname;
 	}
 	
 	
@@ -36,7 +38,7 @@ public class CommentsVO {
 	public String getRdate() {return rdate;}
 	public String getState() {return state;}
 	public String getUnick() {return unick;}
-	
+	public String getPname() {return pname;}
 	
 	public void setCno(int cno) {this.cno = cno;}
 	public void setBno(int bno) {this.bno = bno;}
@@ -46,7 +48,7 @@ public class CommentsVO {
 	public void setRdate(String rdate) {this.rdate = rdate;}
 	public void setState(String state) {this.state = state;}
 	public void setUnick(String unick) {this.unick = unick;}
-	
+	public void setPname(String pname) {this.pname = pname;}
 	
 
 }
