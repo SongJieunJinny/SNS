@@ -760,6 +760,10 @@ public class UserController {
 			// SQL ¿€º∫ 
 			String sql = " select u.*, m.* from message m innerjoin user u on u.uno = m.uno ";
 			
+			
+			
+			
+			
 		}catch(Exception e ){
 			e.printStackTrace();
 		}
