@@ -5,6 +5,7 @@
 <%@ page import="sns.vo.* "%>
 <%
 UserVO vo = (UserVO)request.getAttribute("vo");
+
 %>
 <!--웹페이지 본문-->
 <section>
@@ -64,7 +65,10 @@ UserVO vo = (UserVO)request.getAttribute("vo");
 function stopFn(){
 	const uno = $('#uno').val();
 	const ustate = $('#ustate').val();
+	// 값을 가져왔나 확인 
+	// 만약 가져오지 않았다면, controller에서 vo에 담겨져 있는지 확인해야함
 	console.log(uno);
+	console.log(ustate);
 	$.ajax({
 		url : "admin/stopUser.do",
 		type : "post",

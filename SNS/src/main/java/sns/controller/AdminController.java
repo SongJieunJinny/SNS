@@ -48,8 +48,15 @@ public class AdminController {
 			//데이터 출력에 필요한 게시글 데이터 조회 쿼리 영역
 			
 			// complaint_board 신고 게시판   date_format(b.rdate,'%Y-%m-%d') as rdate" 
-			
-			// 서브쿼리 쓸 때 조심해야함 >> complaint_board c로 작성하면 sql문법 오류가 발생함
+			/*
+			 	서브쿼리 쓸 때 조심해야함 >> complaint_board c로 작성하면 sql문법 오류가 발생함
+			 	(메인쿼리의 별칭은 서브쿼리의 별칭으로 사용할 수 없음 )
+			 	서브쿼리 순서 >> 메인 쿼리가 먼저 실행 되고 뒤에 서브 쿼리의 순으로 진행이 됨
+			 	메인쿼리 > 여러 테이블을 조인하고 별칭을 정의 
+			 	서브 쿼리 > 현제 메인쿼리의 각 행에 대한 정보를 참조,
+			 	b.bno는 각 행에 대한 내용 >>> 따라서 서브쿼리에서 사용할 수 있음
+			 	그러나 별칭 c 는 각 행이 아닌 테이블 전체에 대한 내용이기 때문에 서브쿼리에 사용할 수 없음 
+			 */
 			String sql =" SELECT u.*, c.*,  "
 					// 신고 횟수를 정하기 위한 쿼리 
 					   + "( select count(*) from complaint_board c2 where c2.bno = b.bno ) as cnt"
@@ -60,6 +67,7 @@ public class AdminController {
 						+" 	ON b.uno = u.uno ";
 			psmt = conn.prepareStatement(sql);
 			rs = psmt.executeQuery();
+			ArrayList <UserVO> list = new ArrayList<>();
 			UserVO vo = new UserVO();
 			while(rs.next()){
 				vo.setUnick(rs.getString("unick"));
@@ -87,7 +95,44 @@ public class AdminController {
 	
 	public void complainList (HttpServletRequest request
 			, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("/WEB-INF/admin/complainList.jsp").forward(request, response);
+		request.setCharacterEncoding("UTF-8");
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = DBConn.conn();
+			String sql ="";
+			sql =" SELECT b.*, c.*,  "
+				// 신고 횟수를 정하기 위한 쿼리 
+				   + "( select count(*) from complaint_board c2 where c2.bno = b.bno ) as cnt"
+				   +" 	FROM complaint_board c "
+				   +"   INNER JOIN board b "
+				   +" 	ON c.bno = b.bno ";
+			psmt = conn.prepareStatement(sql);
+			rs = psmt.executeQuery();
+			BoardVO vo = new BoardVO();
+			while(rs.next()){
+				vo.setUnick(rs.getString("unick"));
+				vo.setTitle(rs.getString("title"));
+				vo.setRdate(rs.getString("rdate"));
+				vo.setDeclaration(rs.getInt("cnt"));
+				vo.setCpno(rs.getInt("cpno"));
+				vo.setUno(rs.getInt("uno"));
+				}
+			request.setAttribute("vo", vo);
+			// board 작성한 
+			request.getRequestDispatcher("/WEB-INF/admin/blackList.jsp").forward(request, response);
+		}catch(Exception e){
+			
+		}finally{
+			try {
+				DBConn.close(rs, psmt, conn);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 		
 		

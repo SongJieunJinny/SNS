@@ -2,6 +2,10 @@
     pageEncoding="UTF-8"%>
 <%@ include file="../include/header.jsp" %>
 <%@ include file="../include/nav.jsp" %>
+<%@ page import="sns.vo.* "%>
+<%
+	BoardVO vo = (BoardVO)request.getAttribute("vo");
+%>
 <!--웹페이지 본문-->
 <section>
        <div class="bcSpan">
@@ -26,32 +30,14 @@
                </thead>
                <tbody>
                    <tr>
-                       <td>10</td>
-                       <td>hong</td>
-                       <td>고수익 단기 알바!~</td>
-                       <td>10.14</td>
-                       <td>100번</td>
-                   </tr>
-                   <tr>
-                       <td>10</td>
-                       <td>hong</td>
-                       <td>고수익 단기 알바!~</td>
-                       <td>10.14</td>
-                       <td>100번</td>
-                   </tr>
-                   <tr>
-                       <td>10</td>
-                       <td>hong</td>
-                       <td>고수익 단기 알바!~</td>
-                       <td>10.14</td>
-                       <td>100번</td>
-                   </tr>
-                   <tr>
-                       <td>10</td>
-                       <td>hong</td>
-                       <td>고수익 단기 알바!~</td>
-                       <td>10.14</td>
-                       <td>100번</td>
+                   <%
+                   /* for */  
+                   %>
+                       <td><%=vo.getCpno() %></td>
+                       <td><%=vo.getUnick() %></td>
+                       <td><%=vo.getTitle() %></td>
+                       <td><%=vo.getRdate() %></td>
+                       <td><%=vo.getDeclaration() %></td>
                    </tr>
                    <tr>
                        <td>10</td>
