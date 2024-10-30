@@ -74,13 +74,17 @@ function readURL(input) {
 			processData : false,
             contentType : false,
 			data: form,
+			dataType: "json",
             success: function(response) {
-            	console.log(JSON.parse(response))
-            	let data = JSON.parse(response);
-            	console.log(data.result);
-                if (data.result === 'success') {
+              	console.log(response)
+            	console.log(response.result);
+              	console.log(response.bno);
+            	
+                if (response.result === 'success') {
                 	// 수정해야할 부분 >>> 로컬스토리지 사용 
-                    location.href = '<%=request.getContextPath()%>?id='+data.bno; 
+                	   localStorage.setItem('bno', response.bno);  //로컬스토리지의 키에 response.bno의 값을 담음
+                      location.href = '<%=request.getContextPath()%>';
+                      
                 } else {
                     alert('글 등록에 실패했습니다. 다시 시도해주세요.');
                 }

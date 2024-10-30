@@ -1,22 +1,20 @@
 package sns.controller;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.URLEncoder;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.UUID;
 
 import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import org.json.JSONObject;
 
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
@@ -153,8 +151,10 @@ public class BoardController {
 				long key = 0L;
 				if (rs.next()) {
 				    key = rs.getLong(1);
+				    
 				}
-				String sql1 = " SELECT LAST_INSERT_ID() as bno";
+				System.out.println("key의 값 : "+key); 
+				String sql1 = " SELECT LAST_INSERT_ID() as bno ";
 				sql1 = " INSERT INTO attach (bno, pname, fname) VALUES (?, ?, ?)";
 				// select last_insert_id()를 받아와서 , bno를 대입 
 				psmtAttach =conn.prepareStatement(sql1);
@@ -175,7 +175,9 @@ public class BoardController {
 				out.print("{\"result\" : \"success\", \"bno\" : "+key+"}");
 				//success
 				out.flush();
-				out.close();      
+				out.close();
+				
+				          
 			}
 			
 		}catch(Exception e) {
@@ -513,19 +515,33 @@ public class BoardController {
 				    새로고침하지 않고 서버와 데이터를 주고 받는게 될 수 없음
 				response.sendRedirect(request.getContextPath()+"index.jsp");*/
 				response.setContentType("text/html;charset=UTF-8");
-				PrintWriter out = response.getWriter();  
-				out.print("success");  
+				PrintWriter out = response.getWriter();
+				
+				JSONObject json = new JSONObject();
+				json.put("result", "success");
+				json.put("bno", bno);   //Json은 키와 값으로 이루어져 있음
+				
+				out.print(json.toString());
+				// out에 들어있는 값을 지움
 				out.flush();
-				out.close();      
+				// out을 닫음				
+				out.close();          
 			}
 			
 		}catch(Exception e) {
 			e.printStackTrace();
 			response.setContentType("text/html;charset=UTF-8");
 	        PrintWriter out = response.getWriter();   
-            out.print("error");  
-	        out.flush();
-	        out.close();	
+	        JSONObject json = new JSONObject();
+			json.put("result", "error");
+			json.put("bno", bno);   //Json은 키와 값으로 이루어져 있음
+			
+			out.print(json.toString());
+			// out에 들어있는 값을 지움
+			out.flush();
+			// out을 닫음				
+			out.close();    
+            
 		}finally {
 			try {
 				DBConn.close(psmt, conn);

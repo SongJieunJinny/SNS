@@ -88,8 +88,12 @@ window.onload = function(){
 	// id가 null 일 경우를 생각해서 제약 조건을 걸어야함 
 	// null인 경우 클릭x , null이 아닌 경우 클릭 o , boardController 경로 수정
 	
-	// 로컬스토리지에서 꺼낸 값을 클릭  
-	$("#<%=id %>").click();
+	// 로컬스토리지에서 꺼낸 값을 클릭
+	var bno = localStorage.getItem('bno'); 
+	if(bno != ""){
+		$("#"+bno).click(); 
+		localStorage.setItem('bno', "");
+	}
 	// 로컬스토리지 삭제 
 	
 }

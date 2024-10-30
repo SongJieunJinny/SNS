@@ -75,7 +75,11 @@ function modifyFn(){
 	form.append( "content",$("#content").val());
 	form.append("bno", $("#bno").val());
 	
-	
+	/* 
+	   	로컬 스토리지 함수
+	  	로컬스토리지의 'id' 키에 response.bno의 값을 담음, 또한, 로컬스토리지는 브라우저의 
+	  	로컬 저장소에 저장되기 때문에 동일한 도메인 안에서 페이지가 달라도 접근이 가능함.
+    */ 
 	$.ajax({
 		// 방법 
 		type : 'post',
@@ -84,18 +88,24 @@ function modifyFn(){
 		processData : false,
         contentType : false,
 		data: form,
-           success: function(response) {
-               if (response.trim() === 'success') {
-            	   //성공할 때 bno를 로컬스토리지에 담아야함 (작성, 수정 둘 ㄷ ㅏ) 
-            	   
-                   location.href = '<%=request.getContextPath()%>?id='+$("#bno").val(); 
-               } else {
-                   alert('글 등록에 실패했습니다. 다시 시도해주세요.');
-               }
-           },
-           error: function() {
-               alert('서버 오류가 발생했습니다.');
-           }
+		dataType: "json",
+        success: function(response) {
+          	console.log(response)
+        	console.log(response.result);
+          	console.log(response.bno);
+        	
+            if (response.result === 'success') {
+            	// 수정해야할 부분 >>> 로컬스토리지 사용 
+            	   localStorage.setItem('bno', response.bno);  //로컬스토리지의 키에 response.bno의 값을 담음
+                  location.href = '<%=request.getContextPath()%>';
+                  
+            } else {
+                alert('글 수정 실패했습니다. 다시 시도해주세요.');
+            }
+        },
+        error: function() {
+            alert('서버 오류가 발생했습니다.');
+        }
 	});
 } 
 </script>

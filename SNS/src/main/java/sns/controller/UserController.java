@@ -177,8 +177,8 @@ public class UserController {
 				user.setUrdate(rs.getString("urdate"));
 				user.setPname(rs.getString("pname"));
 				user.setFname(rs.getString("fname"));
-				
 				request.setAttribute("user",user);
+				
 				
 				request.getRequestDispatcher("/WEB-INF/user/mypage.jsp").forward(request, response);
 			}else {
