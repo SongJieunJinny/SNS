@@ -21,7 +21,9 @@ if(session.getAttribute("loginUser") != null) {
 }else {
     System.out.println("loginUser : 로그인되지 않음");
 }
+
 %>
+
 <!DOCTYPE html>
 <html lang="kr">
 <head>
@@ -800,7 +802,7 @@ function complainAdd(bno) {
 			      	   		<img id="searchIcon" 
 			      	   		onclick="location.href='<%= request.getContextPath() %>'"
 			      	   		src="<%= request.getContextPath() %>/image/logo.jpg">
-	                        <input type="text" name="searchValue" id="search" placeholder="검색">
+	                        <input type="text" name="searchValue" placeholder="검색">
 	                        <i class="fas fa-times" id="clearBtn"></i>
 	                    </div>
 	                </div>

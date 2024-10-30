@@ -274,11 +274,10 @@ function deleteFn(){
 							style="box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 						    background-color: white;
 						    border-radius: 40px;
-						    width:100%;
+						    width:70%;
 						    display: flex;
 						    align-items: center; 
-						    gap: 10px;
-						    ">
+						    gap: 10px;">
 								<i class="fas solid fa-comment-dots" style="margin-left:10px;"></i>
 									<!-- 댓글 작성자 -->
 								<input type="hidden" name="bno" value="1">
@@ -292,7 +291,7 @@ function deleteFn(){
             	</div>
             	<!-- 댓글등록 버튼 -->
             	<button type="button" id="commentSubmit" class="btnComment" onclick="btnComment()"
-            					style=" padding: 15px;
+            					style=" padding: 10px;
 															box-sizing: border-box;
 															border: 2px solid #BFBFBF;
 															outline: none;
@@ -304,9 +303,9 @@ function deleteFn(){
 															background-color: #BFBFBF;
 															border-radius: 40px;
 															width:20%;
-															display: block;
+															display: flex;
 															align-items: center;
-															gap: 10px;">등록</button>	
+															gap: 10px;">등록</button>
 							</div>
 						</form>
 					</td>
