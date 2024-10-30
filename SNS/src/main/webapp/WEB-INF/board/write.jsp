@@ -95,4 +95,4 @@ function readURL(input) {
 		});
 	} 
 </script>
-<%@ include file="../include/aside.jsp" %>
+<%@ include file="../include/aside.jsp" %> 
