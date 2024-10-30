@@ -11,9 +11,8 @@ if(session.getAttribute("loginUser") != null){
     viewUser = (UserVO)session.getAttribute("loginUser");
 	uno = Integer.parseInt(viewUser.getUno());
 }
-%>
-<%
-	List<CommentsVO> clist = (List<CommentsVO>)request.getAttribute("clist");
+
+List<CommentsVO> clist = (List<CommentsVO>)request.getAttribute("clist");
 %>
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 <!-- <script src="../jquery-3.7.1.js"></script> -->
@@ -181,8 +180,6 @@ function deleteFn(){
        		<div class="icon-container">
 				<!-- 추천표시되는곳 -->
 				<div id="reco" style="width:30px; cursor:pointer;">
-					<!-- <img style="width:30px; cursor:pointer;" 
-			         src="https://img.icons8.com/?size=100&id=87&format=png&color=000000" /> -->
 				</div>
 				<!-- 이미지 다운로드 -->
 				<a href="<%= request.getContextPath() %>/upload/<%= vo.getPname() %>" download="<%= request.getContextPath() %>/upload/<%= vo.getFname() %>">
