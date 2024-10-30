@@ -135,7 +135,7 @@
 			</connections>
 			<display>false</display>
 			<creation_date>2024-09-11 14:54:29</creation_date>
-			<updated_date>2024-10-30 15:53:36</updated_date>
+			<updated_date>2024-10-30 16:11:54</updated_date>
 			<model_property>
 				<name>프로젝트명</name>
 				<value></value>
@@ -1006,7 +1006,7 @@
 					</sequence>
 				</normal_column>
 				<normal_column>
-					<word_id>18</word_id>
+					<word_id>19</word_id>
 					<id>7</id>
 					<description></description>
 					<unique_key_name></unique_key_name>
@@ -1039,7 +1039,7 @@
 					</sequence>
 				</normal_column>
 				<normal_column>
-					<word_id>15</word_id>
+					<word_id>16</word_id>
 					<id>8</id>
 					<description></description>
 					<unique_key_name></unique_key_name>
@@ -1284,7 +1284,7 @@
 					</sequence>
 				</normal_column>
 				<normal_column>
-					<word_id>16</word_id>
+					<word_id>15</word_id>
 					<id>13</id>
 					<description></description>
 					<unique_key_name></unique_key_name>
@@ -1317,7 +1317,7 @@
 					</sequence>
 				</normal_column>
 				<normal_column>
-					<word_id>19</word_id>
+					<word_id>18</word_id>
 					<id>14</id>
 					<description></description>
 					<unique_key_name></unique_key_name>
