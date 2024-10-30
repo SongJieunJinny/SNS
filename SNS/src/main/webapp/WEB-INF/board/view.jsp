@@ -17,6 +17,7 @@ List<CommentsVO> clist = (List<CommentsVO>)request.getAttribute("clist");
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 <!-- <script src="../jquery-3.7.1.js"></script> -->
 <script>
+
     function btnComment() {
         var formData = $("#commentForm").serialize();  // 폼 데이터를 직렬화 (쿼리 문자열 형태로 변환)
 
@@ -39,7 +40,6 @@ List<CommentsVO> clist = (List<CommentsVO>)request.getAttribute("clist");
             } */
         });
     }
-    
     
     function toggleA (obj) {
     	//토글할 commentMenutableA를 찾는다
@@ -71,76 +71,78 @@ List<CommentsVO> clist = (List<CommentsVO>)request.getAttribute("clist");
 			console.log(data.rdate);
 			console.log(data.cno);
 			
-	    var str = `
-			<div style="display: flex; align-items: center; gap: 10px;">
-        <!-- 댓글작성자 프로필이미지 -->
-        	<div class="view_profil">
-						<img id="previewProfil" class="circular-img" 
-			           style="border:none; width:50px; height:50px;" 
-			           src="<%= request.getContextPath() %>/upload/96a49eb6-2c1b-4dab-b538-2defa1fa1043" alt="프로필 이미지" />
-				  </div>
-				 <!-- 댓글작성자 닉네임 -->
-		       <span style="font-size:18px;">\${data.name}</span>
-		     </div>
-		     <!-- 댓글작성 내용 -->
-			   <div style="margin-top: 5px; margin-left: 70px;" id="content">
-           <span>\${data.content}</span>
-         </div>
-         <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 5px; margin-left: 70px; font-size: 12px; color: #999;">
-		     <!-- 댓글작성일 -->
-		       <span>\${data.rdate}</span>
+	var str = `
+		<div style="display: flex; align-items: center; gap: 10px;">
+		<!-- 댓글작성자 프로필이미지 -->
+			<div class="view_profil">
+				<img id="previewProfil" class="circular-img" 
+			       style="border:none; width:50px; height:50px;" 
+			       src="<%= request.getContextPath() %>/upload/\${data.pname}" alt="프로필 이미지" />
+		  </div>
+		<!-- 댓글작성자 닉네임 -->
+			<span style="font-size:18px;">\${data.name}</span>
+		</div>
+			<!-- 댓글작성 내용 -->
+			<div style="margin-top: 5px; margin-left: 70px;" id="content">
+      	<span>\${data.content}</span>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 5px; margin-left: 70px; font-size: 12px; color: #999;">
+		  <!-- 댓글작성일 -->
+		  	<span>\${data.rdate}</span>
 	    	<!-- 메뉴바 -->
-			<div class="commentMenuA" style"width:30px; cursor:pointer; margin-bottom:5px;" onclick="toggleA(this);">
-			<div style="display: flex; align-items: center; gap: 10px;"> 
-		       <span id="menuB" class="menuB" style="display: flex; align-items: center; gap: 10px;">
-		         <i class="fas fa-solid fa-bars"></i>
-			  	 </span>
-		  	 </div>
+					<div class="commentMenuA" style"width:30px; cursor:pointer; margin-bottom:5px;" onclick="toggleA(this);">
+					<div style="display: flex; align-items: center; gap: 10px;"> 
+		      	<span id="menuB" class="menuB" style="display: flex; align-items: center; gap: 10px;">
+		        	<i class="fas fa-solid fa-bars"></i>
+			  		</span>
+		  	 	</div>
 			    <!-- 서브메뉴바 -->
 			    <div class="commentMenutableA" style="display:none;">
-			        <!-- 댓글신고 -->
-			        <div class="menu-container" id="complainDiv" onclick="complainAdd(<%= vo.getBno() %>);">
-			            <%-- <img style="width:20px; cursor:pointer;" 
-			                 src="https://img.icons8.com/?size=100&id=8773&format=png&color=767676" 
-			                 onclick="complainAdd(<%= vo.getBno() %>)" />
-			            <button id="infoBtn">신고</button> --%>
-			        </div>
+			    <!-- 댓글신고 -->
+		        <div class="menu-container" id="complainDiv" onclick="complainAdd(<%= vo.getBno() %>);">
+		        </div>
+			      <!-- 댓글신고 -->
+			      <div class="menu-container" id="complainDiv" onclick="complainAdd(<%= vo.getBno() %>);">
+			      	<img style="width:20px; cursor:pointer;" 
+			             src="https://img.icons8.com/?size=100&id=8773&format=png&color=767676">
+			        <button id="infoBtn" onclick="complainAdd(<%= vo.getBno() %>);">신고</button> 
+						</div>
 			        <%
 					if(session.getAttribute("loginUser") != null){
 						if(uno == vo.getUno()){
 						%>
-				        <!-- 댓글수정 -->
-				        <div class="commentMenu-container">
-				            <i class="fas fa-solid fa-pen-nib"></i>
-				            <button id="infoBtn" onclick="location.href='<%=request.getContextPath()%>/board/modify.do?bno=<%= vo.getBno() %>'">수정</button>
-				        </div>
-				        <!-- 댓글삭제 -->
-				        <div class="commentMenu-container">
-				            <i class="fas fa-solid fa-eraser"></i>
-				            <button id="infoBtn">삭제</button>
-				        </div>
+					<!-- 댓글수정 -->
+						<div class="commentMenu-container">
+							<i class="fas fa-solid fa-pen-nib"></i>
+							<button id="infoBtn">수정</button>
+						</div>
+						<!-- 댓글삭제 -->
+						<div class="commentMenu-container">
+							<i class="fas fa-solid fa-eraser"></i>
+							<button id="infoBtn">삭제</button>
+						</div>
 						<%
 						}else if(viewUser.getUauthor().equals("A")){
 							System.out.println("writer.getUauthor() : " + viewUser.getUauthor());
 						%>
 						<!-- 댓글삭제 -->
-				        <div class="commentMenu-container">
-				            <i class="fas fa-solid fa-eraser"></i>
-				            <button id="infoBtn">삭제</button>
-				        </div>
+						<div class="commentMenu-container">
+							<i class="fas fa-solid fa-eraser"></i>
+							<button id="infoBtn">삭제</button>
+						</div>
 						<%	
 						}
 					%>
-			        <%
+					<%
 					}
 					%>
-			    </div>
-						</div>
-							</span>
-			  	 </div>
-		  	 </div>
-		  	 </div>
-		  	 </div>
+					</div>
+				</div>
+				</span>
+		</div>
+	</div>
+</div>
+</div>
 	    `
 	    $(".commentDiv").prepend(str);  // 기존 내용 위에 추가
 	}
@@ -280,7 +282,7 @@ function deleteFn(){
 						    gap: 10px;">
 								<i class="fas solid fa-comment-dots" style="margin-left:10px;"></i>
 									<!-- 댓글 작성자 -->
-								<input type="hidden" name="bno" value="1">
+								<input type="hidden" name="bno" value="<%= vo.getBno()%>">
 								<%-- <input type="hidden" name="uno" value="<%= vo.getUno()%>"> --%>
 								<input type="hidden" name="uno" value="<%= vo.getUno()%>">
 							<!-- 댓글 입력창 -->
@@ -313,6 +315,7 @@ function deleteFn(){
 			</table>
 			<!-- 댓글목록 출력 -->
 			<div class="commentDiv">
+			<div class="commentListDiv">
 			<!-- 리퀘스트에서 담아온 댓글 출력하기 -->
 			<% 
 			System.out.println("comments:::::"+clist.size());
@@ -325,10 +328,10 @@ function deleteFn(){
         	<div class="view_profil">
 						<img id="previewProfil" class="circular-img" 
 			           style="border:none; width:50px; height:50px;" 
-			           src="<%= request.getContextPath() %>/upload/96a49eb6-2c1b-4dab-b538-2defa1fa1043" alt="프로필 이미지" />
+			           src="<%= request.getContextPath() %>/upload/<%=cvo.getPname() %>" alt="프로필 이미지" />
 				  </div>
 				 <!-- 댓글작성자 닉네임 -->
-		       <span style="font-size:18px;"><%=cvo.getUnick() %>ttttt</span>
+		       <span style="font-size:18px;"><%=cvo.getUnick() %></span>
 		     </div>
 		     <!-- 댓글작성 내용 -->
 			   <div style="margin-top: 5px; margin-left: 70px;" id="content">
@@ -348,10 +351,9 @@ function deleteFn(){
 			    <div class="commentMenutableA" style="display:none;">
 			        <!-- 댓글신고 -->
 			        <div class="menu-container" id="complainDiv" onclick="complainAdd(<%= cvo.getBno() %>);">
-			            <%-- <img style="width:20px; cursor:pointer;" 
-			                 src="https://img.icons8.com/?size=100&id=8773&format=png&color=767676" 
-			                 onclick="complainAdd(<%= vo.getBno() %>)" />
-			            <button id="infoBtn">신고</button> --%>
+			            <img style="width:20px; cursor:pointer;" 
+			                 src="https://img.icons8.com/?size=100&id=8773&format=png&color=767676">
+			            <button id="infoBtn" onclick="complainAdd(<%= vo.getBno() %>);">신고</button>
 			        </div>
 			        <%
 					if(session.getAttribute("loginUser") != null){
@@ -360,13 +362,12 @@ function deleteFn(){
 				        <!-- 댓글수정 -->
 				        <div class="commentMenu-container">
 				            <i class="fas fa-solid fa-pen-nib"></i>
-				            <button id="infoBtn" type="button"
-				            				 onclick="updateFn('<%=cvo.getContent()%>',<%=cvo.getCno()%>)">수정</button>
+				            <button id="infoBtn" type="button" name="commentsModify" onclick="commentsModify()">수정</button>
 				        </div>
 				        <!-- 댓글삭제 -->
 				        <div class="commentMenu-container">
 				            <i class="fas fa-solid fa-eraser"></i>
-				            <button id="infoBtn" type="button" onclick="deleteFn('<%= cvo.getCno() %>')">삭제</button>
+				            <button id="infoBtn" type="button"">삭제</button>
 				        </div>
 						<%
 						}else if(viewUser.getUauthor().equals("A")){
@@ -375,7 +376,7 @@ function deleteFn(){
 						<!-- 댓글삭제 -->
 				        <div class="commentMenu-container">
 				            <i class="fas fa-solid fa-eraser"></i>
-				            <button id="infoBtn" type="button" onclick="deleteFn('<%= cvo.getCno() %>')">삭제</button>
+				            <button id="infoBtn" type="button" >삭제</button>
 				        </div>
 						<%	
 						}
@@ -386,6 +387,7 @@ function deleteFn(){
 			    </div>
 						</div>  
 			  	 </div>
+		  	 </div>
 		  	 </div>
 		  	 </div>
 		  	 </div>
