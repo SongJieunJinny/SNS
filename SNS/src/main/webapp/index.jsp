@@ -60,6 +60,7 @@ window.onload = function(){
 	        data : {bno:bno},
 	        type: "get",
 	        success: function(data) {
+	        	console.log(data);
 	            $("#modalBody").html(data);
 				
 	            // 동적으로 로드된 스크립트 실행
