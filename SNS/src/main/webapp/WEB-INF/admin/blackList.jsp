@@ -52,13 +52,6 @@ UserVO vo = (UserVO)request.getAttribute("vo");
                        }
                        %>
                    </tr>
-                   <tr>
-                       <td>1</td>
-                       <td>kim</td>
-                       <td>kim@kim.com</td>
-                       <td>10.10</td>
-                       <td>20번</td>
-                      
                </tbody>
            </table>
        </div>
