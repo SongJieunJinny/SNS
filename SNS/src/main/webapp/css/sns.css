@@ -188,6 +188,7 @@ body.dark-mode .profileicon {
     gap: 20px; 
     margin-right: 8%; 
     width:280px;
+    margin-top:1.5%;
 }
 
 .userHeader_login {
@@ -195,6 +196,7 @@ body.dark-mode .profileicon {
     gap: 5px; /* 버튼 간의 간격 */
     margin-right: 8%;
     align-items: center; /* 수직 중앙 정렬 */
+    margin-top:1.5%;
 }
 
 .userHeader_login .icon {
