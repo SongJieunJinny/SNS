@@ -95,7 +95,7 @@ window.onload = function(){
 		localStorage.setItem('bno', "");
 	}
 	// 로컬스토리지 삭제 
-	
+	 
 }
 
 function DarkMode() {
