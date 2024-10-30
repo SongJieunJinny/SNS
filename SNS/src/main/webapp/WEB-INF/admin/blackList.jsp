@@ -17,6 +17,8 @@ UserVO vo = (UserVO)request.getAttribute("vo");
            </a>
        </div>
        <div class="complainTable">
+       	   <input type="hidden" name="uno" id ="uno" value="<%=vo.getUno()%>">
+       	   <input type="hidden" name="ustate" id ="ustate" value="<%=vo.getUstate()%>">
            <table class="inner_table">
                <thead>
                	<tr>
@@ -31,10 +33,10 @@ UserVO vo = (UserVO)request.getAttribute("vo");
                <tbody>
                    <tr>
                     	<td><%=vo.getCpno() %></td>
-                       <td><%=vo.getUnick() %></td>
-                       <td><%=vo.getUemail() %></td>
-                       <td><%=vo.getUrdate() %></td>
-                       <td><%=vo.getDeclaration() %></td>
+                       	<td><%=vo.getUnick() %></td>
+                       	<td><%=vo.getUemail() %></td>
+                       	<td><%=vo.getUrdate() %></td>
+                       	<td><%=vo.getDeclaration() %></td>
                        <%
                        if(vo.getUstate().equals("E")){
                     	%>	   
@@ -46,7 +48,7 @@ UserVO vo = (UserVO)request.getAttribute("vo");
                     	%> 
                    	    <td>
                        		<button type="button" class="ssBtn" 
-                       		style="background-color:#767676; color:white;">정지해제</button>
+                       		style="background-color:#767676; color:white;" onclick="stopFn()">정지해제</button>
                        </td>
                        <%
                        }
@@ -58,8 +60,29 @@ UserVO vo = (UserVO)request.getAttribute("vo");
 </section>
 <%@ include file="../include/aside.jsp" %>
 <script>
+// post 방식으로 보내야하기 때문에 onclick 할 때 함수 안에 ajax를 사용해야함
 function stopFn(){
-	
+	const uno = $('#uno').val();
+	const ustate = $('#ustate').val();
+	console.log(uno);
+	$.ajax({
+		url : "admin/stopUser.do",
+		type : "post",
+		data : {
+			// 보내야 할 데이터를 담음 
+			"uno" : uno,
+			"ustate" : ustate
+		},
+		success: function(response){
+			alert("상태가 변경되었습니다.");
+            location.reload(); // 페이지 새로 고침으로 상태 갱신
+		},
+		error: function(xhr, status, error) {
+            // 에러 처리
+            console.error("오류 발생:", error);
+            alert("상태 변경에 실패했습니다.");
+        } 
+	});
 }
 
 </script>

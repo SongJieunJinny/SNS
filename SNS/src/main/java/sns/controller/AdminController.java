@@ -1,6 +1,7 @@
 package sns.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -28,6 +29,10 @@ public class AdminController {
 			loadComplain(request,response);
 		}else if (comments[comments.length-1].equals("complainAdd.do")) {
 			complainAdd(request,response);
+		}else if (comments[comments.length-1].equals("stopUser.do")) {
+			if(request.getMethod().equals("POST")) {
+				stopUser(request,response);
+			}
 		}
 	}
 		
@@ -63,6 +68,7 @@ public class AdminController {
 				vo.setDeclaration(rs.getInt("cnt"));
 				vo.setUstate(rs.getString("ustate"));
 				vo.setCpno(rs.getInt("cpno"));
+				vo.setUno(rs.getString("uno"));
 				}
 			request.setAttribute("vo", vo);
 			// board 작성한 
@@ -183,4 +189,64 @@ public class AdminController {
 			}
 		}
 	}
+
+	public void stopUser (HttpServletRequest request
+			, HttpServletResponse response) throws ServletException, IOException {
+		// 인코딩 
+		request.setCharacterEncoding("UTF-8");
+		
+		//uno가 vo 객체에서 String으로 설정 되어있기 때문에 
+		String uno = request.getParameter("uno");
+		String ustate = request.getParameter("ustate");
+		PrintWriter out = response.getWriter();
+		// 필요한 값인 uno와 ustate 둘 중 하나라도 null인경우 error을 알려주고 return으로 강제 종료 시킴
+		if(uno == null || ustate == null) {
+			out.print("error");
+			return;
+		}
+		int unoInt = Integer.parseInt(uno);
+		System.out.println(uno);
+		
+		Connection conn =null;
+		PreparedStatement psmt = null;
+		
+		try {
+			conn = DBConn.conn();
+			String sql = "";
+			// ajax에서 새로고침 기능이 있으니, 그에 따른 if문을 넣어, 조건에 맞게 회원의 상태를 변경할 수 있음
+			if(ustate.equals("E")) {
+				sql += "UPDATE user set ustate = 'D' WHERE uno = ?";
+			}else {
+				sql += "UPDATE user set ustate = 'E' WHERE uno = ?";
+			}
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(1,unoInt);
+			psmt.executeUpdate();
+		
+			response.setContentType("text/html;charset=UTF-8");
+			out.print("success");  
+			out.flush();
+			out.close();   
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			response.setContentType("text/html;charset=UTF-8");
+			out.print("error");  
+			out.flush();
+			out.close();
+		}finally {
+			try {
+				DBConn.close(psmt, conn);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+		
+		
+	}
+
+
+
 }
