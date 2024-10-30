@@ -75,6 +75,10 @@ public class UserController {
 			if (request.getMethod().equals("POST")) {
 				pwChangeOk(request,response);
 			}
+		}else if(comments[comments.length-1].equals("checkMSG.do")) {
+			if(request.getMethod().equals("GET")) {
+				checkMSG(request,response);
+			}
 		}
 	}
 	
@@ -740,4 +744,36 @@ public class UserController {
 		}
 		
 	}
+
+	public void checkMSG(HttpServletRequest request
+			, HttpServletResponse response) throws ServletException, IOException {
+		request.getRequestDispatcher("/WEB-INF/user/checkMSG.jsp").forward(request, response);
+	// DB 연결 조건
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+
+		// SB연결과 작성 사이 
+		try {
+			// DB연결
+			conn = DBConn.conn();
+			// SQL 작성 
+			String sql = " select u.*, m.* from message m innerjoin user u on u.uno = m.uno ";
+			
+		}catch(Exception e ){
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				DBConn.close(rs, psmt, conn);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+	
+	}
+
+
 }

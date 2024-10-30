@@ -4,14 +4,14 @@
 <%@ page import="java.util.*" %>
 <%
 BoardVO vo = (BoardVO)request.getAttribute("board");
-
+//List<CommentsVO> clist  = (List<CommentsVO>)request.getAttribute("comments");
 UserVO viewUser = null;
 int uno = 0;
-if(session.getAttribute("loginUser") != null){
-    viewUser = (UserVO)session.getAttribute("loginUser");
+if(session.getAttribute("loginUser") != null)
+{
+	viewUser = (UserVO)session.getAttribute("loginUser");
 	uno = Integer.parseInt(viewUser.getUno());
 }
-
 List<CommentsVO> clist = (List<CommentsVO>)request.getAttribute("clist");
 %>
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
@@ -135,8 +135,8 @@ List<CommentsVO> clist = (List<CommentsVO>)request.getAttribute("clist");
 					}
 					%>
 			    </div>
-			</div>
-				  	 </span>
+						</div>
+							</span>
 			  	 </div>
 		  	 </div>
 		  	 </div>
@@ -292,7 +292,7 @@ function deleteFn(){
             	</div>
             	<!-- 댓글등록 버튼 -->
             	<button type="button" id="commentSubmit" class="btnComment" onclick="btnComment()"
-            					style=" padding: 10px;
+            					style=" padding: 15px;
 															box-sizing: border-box;
 															border: 2px solid #BFBFBF;
 															outline: none;
@@ -304,7 +304,7 @@ function deleteFn(){
 															background-color: #BFBFBF;
 															border-radius: 40px;
 															width:20%;
-															display: flex;
+															display: block;
 															align-items: center;
 															gap: 10px;">등록</button>	
 							</div>
@@ -314,8 +314,82 @@ function deleteFn(){
 			</table>
 			<!-- 댓글목록 출력 -->
 			<div class="commentDiv">
-			</div>	
-			</div>
-		</div>
-	</div>
-</div>
+			<!-- 리퀘스트에서 담아온 댓글 출력하기 -->
+			<% 
+			System.out.println("comments:::::"+clist.size());
+			for(int i =0; i< clist.size();i++){
+				System.out.println("index:::::::"+i);
+				CommentsVO cvo = clist.get(i);
+				%>
+			<div style="display: flex; align-items: center; gap: 10px;">
+        <!-- 댓글작성자 프로필이미지 -->
+        	<div class="view_profil">
+						<img id="previewProfil" class="circular-img" 
+			           style="border:none; width:50px; height:50px;" 
+			           src="<%= request.getContextPath() %>/upload/96a49eb6-2c1b-4dab-b538-2defa1fa1043" alt="프로필 이미지" />
+				  </div>
+				 <!-- 댓글작성자 닉네임 -->
+		       <span style="font-size:18px;"><%=cvo.getUnick() %>ttttt</span>
+		     </div>
+		     <!-- 댓글작성 내용 -->
+			   <div style="margin-top: 5px; margin-left: 70px;" id="content">
+           <span><%= cvo.getContent() %></span>
+         </div>
+         <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 5px; margin-left: 70px; font-size: 12px; color: #999;">
+		     <!-- 댓글작성일 -->
+		       <span><%= cvo.getRdate() %></span>
+	    	<!-- 메뉴바 -->
+			<div class="commentMenuA" style"width:30px; cursor:pointer; margin-bottom:5px;" onclick="toggleA(this);">
+			<div style="display: flex; align-items: center; gap: 10px;"> 
+		       <span id="menuB" class="menuB" style="display: flex; align-items: center; gap: 10px;">
+		         <i class="fas fa-solid fa-bars"></i>
+			  	 </span>
+		  	 </div>
+			    <!-- 서브메뉴바 -->
+			    <div class="commentMenutableA" style="display:none;">
+			        <!-- 댓글신고 -->
+			        <div class="menu-container" id="complainDiv" onclick="complainAdd(<%= cvo.getBno() %>);">
+			            <%-- <img style="width:20px; cursor:pointer;" 
+			                 src="https://img.icons8.com/?size=100&id=8773&format=png&color=767676" 
+			                 onclick="complainAdd(<%= vo.getBno() %>)" />
+			            <button id="infoBtn">신고</button> --%>
+			        </div>
+			        <%
+					if(session.getAttribute("loginUser") != null){
+						if(uno == vo.getUno()){
+						%>
+				        <!-- 댓글수정 -->
+				        <div class="commentMenu-container">
+				            <i class="fas fa-solid fa-pen-nib"></i>
+				            <button id="infoBtn" type="button"
+				            				 onclick="updateFn('<%=cvo.getContent()%>',<%=cvo.getCno()%>)">수정</button>
+				        </div>
+				        <!-- 댓글삭제 -->
+				        <div class="commentMenu-container">
+				            <i class="fas fa-solid fa-eraser"></i>
+				            <button id="infoBtn" type="button" onclick="deleteFn('<%= cvo.getCno() %>')">삭제</button>
+				        </div>
+						<%
+						}else if(viewUser.getUauthor().equals("A")){
+							System.out.println("writer.getUauthor() : " + viewUser.getUauthor());
+						%>
+						<!-- 댓글삭제 -->
+				        <div class="commentMenu-container">
+				            <i class="fas fa-solid fa-eraser"></i>
+				            <button id="infoBtn" type="button" onclick="deleteFn('<%= cvo.getCno() %>')">삭제</button>
+				        </div>
+						<%	
+						}
+					%>
+			        <%
+					}
+					%>
+			    </div>
+						</div>  
+			  	 </div>
+		  	 </div>
+		  	 </div>
+		  	 </div>
+						<%
+					}
+				%>

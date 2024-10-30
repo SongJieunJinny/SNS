@@ -19,9 +19,9 @@
 		console.log(msgbox);
 		
 		$.ajax({
-			url:"./checkMSG.do",
+			url:"<%= request.getContextPath() %>/WEB-INF/user/checkMSG.do",
 			type:"get",
-			data: {"uno" : "<%= uno %>"},
+			data: {"uno" : "<%= vo.getUno() %>"},
 			dataType: "text",
 			success: function(response){
 				console.log(response.trim());
