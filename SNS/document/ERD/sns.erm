@@ -135,7 +135,7 @@
 			</connections>
 			<display>false</display>
 			<creation_date>2024-09-11 14:54:29</creation_date>
-			<updated_date>2024-10-30 15:34:41</updated_date>
+			<updated_date>2024-10-30 15:46:47</updated_date>
 			<model_property>
 				<name>프로젝트명</name>
 				<value></value>
@@ -535,7 +535,7 @@
 			<binary>false</binary>
 			<args></args>
 			<char_semantics>false</char_semantics>
-			<description>M - 메시지&#x0D;&#x0A;A - 알림</description>
+			<description>M - 메시지&#x0D;&#x0A;F - 알람 -&gt; 팔로우&#x0D;&#x0A;L - 알람 -&gt; 좋아요&#x0D;&#x0A;C - 알람 -&gt; 댓글&#x0D;&#x0A;</description>
 			<logical_name>타입</logical_name>
 			<physical_name>type</physical_name>
 			<type>varchar(n)</type>
@@ -2630,7 +2630,7 @@
 					<physical_name></physical_name>
 					<type>varchar(n)</type>
 					<constraint></constraint>
-					<default_value>A</default_value>
+					<default_value>M</default_value>
 					<auto_increment>false</auto_increment>
 					<foreign_key>false</foreign_key>
 					<not_null>true</not_null>
