@@ -493,6 +493,7 @@ public class BoardController {
 			psmt.setInt(3, bno);
 			int result = psmt.executeUpdate();
 			if(result>0) {
+				// 수정 화면에서 사용자가 이미지를 수정하지않고, 내용과 제목만 수정했을 때 >file == null;
 				if (filename != null ) {
 				String sql1 = " UPDATE attach SET pname = ? , fname = ? "
 						+ " WHERE bno = ?";
