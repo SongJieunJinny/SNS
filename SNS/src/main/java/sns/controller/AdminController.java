@@ -2,8 +2,9 @@ package sns.controller;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.PreparedStatement; 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import sns.util.DBConn;
+import sns.vo.BoardVO;
 import sns.vo.UserVO;
 
 public class AdminController {
@@ -31,7 +33,50 @@ public class AdminController {
 		
 	public void blackList (HttpServletRequest request
 			, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("/WEB-INF/admin/blackList.jsp").forward(request, response);
+		request.setCharacterEncoding("UTF-8");
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+
+		try{
+			conn =DBConn.conn();
+			//데이터 출력에 필요한 게시글 데이터 조회 쿼리 영역
+			
+			// complaint_board 신고 게시판   date_format(b.rdate,'%Y-%m-%d') as rdate" 
+			
+			// 서브쿼리 쓸 때 조심해야함 >> complaint_board c로 작성하면 sql문법 오류가 발생함
+			String sql =" SELECT u.*, c.*,  "
+					// 신고 횟수를 정하기 위한 쿼리 
+					   + "( select count(*) from complaint_board c2 where c2.bno = b.bno ) as cnt"
+					   +" 	FROM complaint_board c "
+					   +"   INNER JOIN board b "
+					   +" 	ON c.bno = b.bno "
+						+"   INNER JOIN user u "
+						+" 	ON b.uno = u.uno ";
+			psmt = conn.prepareStatement(sql);
+			rs = psmt.executeQuery();
+			UserVO vo = new UserVO();
+			while(rs.next()){
+				vo.setUnick(rs.getString("unick"));
+				vo.setUemail(rs.getString("uemail"));
+				vo.setUrdate(rs.getString("urdate"));
+				vo.setDeclaration(rs.getInt("cnt"));
+				vo.setUstate(rs.getString("ustate"));
+				vo.setCpno(rs.getInt("cpno"));
+				}
+			request.setAttribute("vo", vo);
+			// board 작성한 
+			request.getRequestDispatcher("/WEB-INF/admin/blackList.jsp").forward(request, response);
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally {
+			try {
+				DBConn.close(rs,psmt, conn);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	public void complainList (HttpServletRequest request
