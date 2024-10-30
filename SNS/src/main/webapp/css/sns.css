@@ -35,7 +35,7 @@ header {
     top: 0;
     left: 0;
     width: 100%;
-    height: 20%;
+    height: 15%;
     z-index: 1000; /* 다른 요소보다 위에 표시되게 설정 */
     /* background-color: white; */ 
     /* box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); */ /* 그림자 추가 */
@@ -286,8 +286,8 @@ nav {
     display: flex;
     justify-content: center;
     /* padding: 10px 0; */
-    /* margin-top: 10px; */ /* top-bar와 nav 사이 간격 */
-    margin-bottom:5px;
+    margin-top: 10px;  /* top-bar와 nav 사이 간격 */
+    /* margin-bottom:3px; */
     margin-right:20px;
 }
 
@@ -896,6 +896,7 @@ body.dark-mode .login-hover-menu{
 .modal-content {
     background-color: #fff;
     margin: 5% auto;
+    margin-top:5%;
     padding: 20px;
     border: none;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
