@@ -285,8 +285,8 @@ nav {
     /* background-color: white; */
     display: flex;
     justify-content: center;
-    /* padding: 10px 0; */
-    margin-top: 10px;  /* top-bar와 nav 사이 간격 */
+    padding: 20px 0; 
+    /* margin-top: 15px; */  /* top-bar와 nav 사이 간격 */
     /* margin-bottom:3px; */
     margin-right:20px;
 }
@@ -494,6 +494,7 @@ body.dark-mode .view_inner img{
     margin:auto;
     margin-top:50px;
 }
+
 
 /* menuA 스타일 */
 #modal #menuA {
@@ -883,7 +884,7 @@ body.dark-mode .login-hover-menu{
 #modal {
     display: none; /* 기본적으로 숨김 */
     position: fixed;
-    z-index: 1;
+    z-index: 1001;
     left: 0;
     top: 0;
     width: 100%;
