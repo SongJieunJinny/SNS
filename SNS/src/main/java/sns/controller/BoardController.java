@@ -70,7 +70,8 @@ public class BoardController<Comments> {
 		/*
 		  String uploadPath = "C:\\DEV\\GIT\\first-SNS\\sns\\src\\main\\webapp\\upload";
 		 */
-		String uploadPath = "D:\\pij\\Team\\first-SNS\\SNS\\src\\main\\webapp\\upload";
+		//String uploadPath = "D:\\pij\\Team\\first-SNS\\SNS\\src\\main\\webapp\\upload";
+		String uploadPath = request.getServletContext().getRealPath("/upload");
 		System.out.println("서버의 업로드 폴더 경로 : " + uploadPath);
 		HttpSession session = request.getSession();
 		UserVO loginUser = (UserVO)session.getAttribute("loginUser");
@@ -173,7 +174,8 @@ public class BoardController<Comments> {
 				response.sendRedirect(request.getContextPath()+"index.jsp");*/
 				response.setContentType("text/html;charset=UTF-8");
 				PrintWriter out = response.getWriter();  
-				out.print("success");  
+				out.print("{\"result\" : \"success\", \"bno\" : "+key+"}");
+				//success
 				out.flush();
 				out.close();      
 			}
@@ -448,7 +450,7 @@ public class BoardController<Comments> {
 		 */
 		request.setCharacterEncoding("UTF-8");
 		/* String uploadPath = request.getServletContext().getRealPath("/upload"); */
-		String uploadPath = "D:\\pij\\workspace\\SNSTEST\\src\\main\\webapp\\upload";
+		String uploadPath = request.getServletContext().getRealPath("/upload");
 		
 		System.out.println("서버의 업로드 폴더 경로 : " + uploadPath);
 	
@@ -527,8 +529,9 @@ public class BoardController<Comments> {
 			psmt.setInt(3, bno);
 			int result = psmt.executeUpdate();
 			if(result>0) {
-				String sql1 = " SELECT LAST_INSERT_ID() as bno";
-				sql1 = " UPDATE attach SET pname = ? , fname = ? "
+				// 수정 화면에서 사용자가 이미지를 수정하지않고, 내용과 제목만 수정했을 때 >file == null;
+				if (filename != null ) {
+				String sql1 = " UPDATE attach SET pname = ? , fname = ? "
 						+ " WHERE bno = ?";
 				// select last_insert_id()를 받아와서 , bno를 대입 
 				psmtAttach =conn.prepareStatement(sql1);
@@ -536,6 +539,7 @@ public class BoardController<Comments> {
 				psmtAttach.setString(2, filename); // 원본 파일 이름 (사용자가 업로드한 파일 이름)
 				psmtAttach.setLong(3, bno);  // 통해 받아온 키를 bno에 저장함,
 				resultAttach = psmtAttach.executeUpdate();
+				}
 				//  board 테이블 수정 여부 확인
 				System.out.println("result::"+result);
 				// attach 테이블 수정 여부 확인
@@ -566,7 +570,7 @@ public class BoardController<Comments> {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
+		} 
 	}
 
 

@@ -55,13 +55,15 @@ function modifyFn(){
 	const title = $('#title').val();
 	const content = $('#content').val();
 	const bno = $('#bno').val();
+	
 	// 첨부파일 넣지 않았을 때 
-	if(!attach){
+	/* if(!attach){
 		alert('첨부파일을 선택해주세요');
 		return flase;
-	}
+	} */
+	
 	// 제목 입력하지 않았을 때
-	if(!attach) {
+	if(!title) {
 		alert('제목을 입력하지 않았습니다.');
 		return flase;
 	}
@@ -84,7 +86,9 @@ function modifyFn(){
 		data: form,
            success: function(response) {
                if (response.trim() === 'success') {
-                   location.href = '<%=request.getContextPath()%>'; 
+            	   //성공할 때 bno를 로컬스토리지에 담아야함 (작성, 수정 둘 ㄷ ㅏ) 
+            	   
+                   location.href = '<%=request.getContextPath()%>?id='+$("#bno").val(); 
                } else {
                    alert('글 등록에 실패했습니다. 다시 시도해주세요.');
                }
@@ -93,5 +97,5 @@ function modifyFn(){
                alert('서버 오류가 발생했습니다.');
            }
 	});
-}
+} 
 </script>

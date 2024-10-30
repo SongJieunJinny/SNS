@@ -4,17 +4,17 @@
 <%@ page import="java.util.*" %>
 <%
 BoardVO vo = (BoardVO)request.getAttribute("board");
-List<CommentsVO> clist  = (List<CommentsVO>)request.getAttribute("comments");
+//List<CommentsVO> clist  = (List<CommentsVO>)request.getAttribute("comments");
 UserVO viewUser = null;
 int uno = 0;
 if(session.getAttribute("loginUser") != null){
     viewUser = (UserVO)session.getAttribute("loginUser");
 	uno = Integer.parseInt(viewUser.getUno());
 }
+List<CommentsVO> clist = (List<CommentsVO>)request.getAttribute("clist");
 %>
-
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
-<script src="../jquery-3.7.1.js"></script>
+<!-- <script src="../jquery-3.7.1.js"></script> -->
 <script>
     function btnComment() {
         var formData = $("#commentForm").serialize();  // 폼 데이터를 직렬화 (쿼리 문자열 형태로 변환)
@@ -22,7 +22,7 @@ if(session.getAttribute("loginUser") != null){
         $.ajax({
             // JSP 파일 경로 :: commentWrite.jsp / commentWrite.do
             // /WEB-INF 폴더 내부에 있는 jsp는 바로 접근이 안됩니다
-            url: "/teamProject1/reply/view.do",  
+            url: "<%= request.getContextPath() %>/reply/view.do",  
             type: "POST",        // POST 방식으로 서버에 요청
             data: formData,      // 폼 데이터를 전송
             dataType: "json",    // JSON 형식의 응답을 기대
@@ -177,11 +177,8 @@ function deleteFn(){
 		</label>
        	<div class="view_content" style="width: 50%;">
        		<div class="icon-container">
-       		
 				<!-- 추천표시되는곳 -->
 				<div id="reco" style="width:30px; cursor:pointer;">
-					<!-- <img style="width:30px; cursor:pointer;" 
-			         src="https://img.icons8.com/?size=100&id=87&format=png&color=000000" /> -->
 				</div>
 				<!-- 이미지 다운로드 -->
 				<a href="<%= request.getContextPath() %>/upload/<%= vo.getPname() %>" download="<%= request.getContextPath() %>/upload/<%= vo.getFname() %>">
@@ -190,7 +187,7 @@ function deleteFn(){
 				<!-- 메뉴바 -->
 				<div id="menuA" style="width:30px; cursor:pointer; margin-bottom:5px;">
 				    <img style="width:30px; transform: rotate(90deg);" 
-				         src="https://img.icons8.com/?size=100&id=98963&format=png&color=000000">
+				         src="https://img.icons8.com/?size=100&id=98963&format=png&color=000000" >
 				    <!-- 서브메뉴바 -->
 				    <div id="menutableA" style="display: none;">
 				        <!-- 게시글신고 -->
