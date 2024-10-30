@@ -611,7 +611,7 @@ public class UserController {
 					 * request.getRequestDispatcher("/WEB-INF/user/mypage.jsp").forward(request,
 					 * response);
 					 */
-	                response.sendRedirect(request.getContextPath()+"/user/mypage.do");
+	                response.sendRedirect(request.getContextPath()+"/user/mypage.do?uno="+uno);
 	            }
 	        }
 	    } catch (Exception e) {
