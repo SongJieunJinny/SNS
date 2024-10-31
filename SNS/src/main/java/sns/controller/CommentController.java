@@ -24,20 +24,68 @@ public class CommentController {
 
 		if (comments[comments.length - 1].equals("view.do")) {
 			commentWrite(request, response);
-		}else if (comments[comments.length - 1].equals("view.do")) {
+		}else if (comments[comments.length - 1].equals("cmodi.do")) {
 			commentModify(request, response);
+		}else if (comments[comments.length - 1].equals("cdele.do")) {
+			commentDelete(request, response);
 		}
 	}
 
+	public void commentDelete(HttpServletRequest request, HttpServletResponse response) 
+		throws ServletException, IOException {
+		
+		request.setCharacterEncoding("UTF-8");
+		
+		int cno = Integer.parseInt(request.getParameter("cno"));
+		
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		
+		String sql ="";
+		
+		try {
+			conn = DBConn.conn();
+			sql =" UPDATE comments SET state = 'D' "
+					+ " WHERE cno =? ";
+			psmt=conn.prepareStatement(sql);
+			psmt.setInt(1, cno);
+			int result = psmt.executeUpdate();
+			if(result > 0 ) {
+				
+				response.setContentType("text/html;charset=UTF-8");
+				PrintWriter out = response.getWriter();  
+				out.print("success");  
+				out.flush();
+				out.close();   
+			}
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			response.setContentType("text/html;charset=UTF-8");
+	        PrintWriter out = response.getWriter();   
+            out.print("error");  
+	        out.flush();
+	        out.close();	
+		}finally {
+			try {
+				DBConn.close(psmt, conn);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+	}
 
 	public void commentModify(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+		throws ServletException, IOException {
+		
+		System.out.println("commentsModify 호출");
 		
 		request.setCharacterEncoding("UTF-8");
 		
 		// 폼 데이터 가져오기
 		int cno = Integer.parseInt(request.getParameter("cno"));
-		int bno = Integer.parseInt(request.getParameter("bno"));
 		String content = request.getParameter("content");
 		
 		// DB연결
@@ -52,22 +100,39 @@ public class CommentController {
 					psmt = conn.prepareStatement(sql);
 					psmt.setString(1,content);
 			 		psmt.setInt(2,cno);
-			 		rs = psmt.executeQuery();
-					
-					CommentsVO vo = new CommentsVO();
-					if(rs.next()) {
-						vo.setBno(rs.getInt("bno"));
-						vo.setCno(rs.getInt("cno"));
-						vo.setContent(rs.getString("content"));
+			 		psmt.executeUpdate();
+			 		
+			 		JSONObject json = new JSONObject();
+
+					try {
+						sql = " select c.cno, c.rdate, u.unick, u.fname, u.pname from comments as c join user as u on c.uno = u.uno where cno = ?; ";
+
+						psmt = conn.prepareStatement(sql);
+						psmt.setInt(1, cno);
+
+						rs = psmt.executeQuery();
+
+						if (rs.next()) {
+							// JSON 객체 생성
+							json.put("cno", cno);
+							json.put("name", rs.getString("unick"));
+							json.put("content", content);
+							json.put("rdate", rs.getString("rdate"));
+							json.put("fname", rs.getString("fname"));
+							json.put("pname", rs.getString("pname"));
+						}
+
+					} catch (Exception e) {
+						e.printStackTrace();
 					}
-					
-					request.setAttribute("vo", vo);
-					request.getRequestDispatcher("/WEB-INF/board/view.jsp").forward(request, response);
-					
-				}catch(Exception e){
+
+					// JSON 응답 전송
+					PrintWriter out = response.getWriter();
+					out.print(json.toString());
+					out.flush();
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
-		
 	}
 	
 	public void commentWrite(HttpServletRequest request, HttpServletResponse response)
