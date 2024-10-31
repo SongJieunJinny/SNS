@@ -46,7 +46,7 @@ public class Sendmail {
             clsProp.put("mail.smtp.auth", "true");
             clsProp.put("mail.smtp.ssl.enable", "true"); 
             clsProp.put("mail.smtp.ssl.trust", "smtp.naver.com");
-
+            
             Session clsSession = Session.getInstance(clsProp, new Authenticator() {
                 protected PasswordAuthentication getPasswordAuthentication() {
                     return new PasswordAuthentication(id, pw);
