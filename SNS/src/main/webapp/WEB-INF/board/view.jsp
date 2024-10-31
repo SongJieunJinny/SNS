@@ -274,7 +274,7 @@ function deleteFn(){
 							style="box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 						    background-color: white;
 						    border-radius: 40px;
-						    width:70%;
+						    width:100%;
 						    display: flex;
 						    align-items: center; 
 						    gap: 10px;">
