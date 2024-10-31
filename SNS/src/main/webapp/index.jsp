@@ -1,54 +1,50 @@
-<%@page import="sns.util.DBConn"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/include/header.jsp" %>
 <%@ include file="/WEB-INF/include/nav.jsp" %>
-<%@ page import="java.sql.*" %>
-<%@ page import="sns.*" %>
+<%@ page import="sns.util.*" %>
 <%
-	String id = request.getParameter("id");
+Connection conn = null;			//DB 연결
+PreparedStatement psmt = null;	//SQL 등록 및 실행. 보안이 더 좋음!
+ResultSet rs = null;			//조회 결과를 담음
 
-		//사용변수 선언 영역
-		ArrayList<BoardVO> board = new ArrayList<>(); 
-			Connection conn = null;
-			PreparedStatement psmt = null;
-			ResultSet rs = null;
+List<BoardVO> bList = new ArrayList<>();
 
-			try{
-				conn =DBConn.conn();
-				//데이터 출력에 필요한 게시글 데이터 조회 쿼리 영역
-				String sql =" SELECT b.bno"
-						   +" 	    ,title"
-						   +" 	    ,hit"
-						   +" 	    ,date_format(b.rdate,'%Y-%m-%d') as rdate"
-						   +" 	    ,content"
-						   +" 	    ,uno"
-						   +" 	    ,a.pname"
-						   +" 	    ,a.fname"
-						   +" 	FROM board b"
-						   +"   INNER JOIN attach a"
-						   +" 	ON b.bno = a.bno " 
-						   +" where state='E' ";
-				sql += " ORDER BY b.rdate desc";
+//try 영역
+try{
+	conn = DBConn.conn();
+	
+	int indexpage = request.getParameter("indexpage") != null ? Integer.parseInt(request.getParameter("indexpage")) : 1;
+	int pageSize = 24;
+	int startRow = (indexpage - 1) * pageSize;
 
-				psmt= conn.prepareStatement(sql);
-				rs = psmt.executeQuery();
-				while(rs.next()){
-					BoardVO vo = new BoardVO();
-					vo.setBno(rs.getInt("bno"));
-					vo.setHit(rs.getInt("hit"));
-					vo.setTitle(rs.getString("title"));
-					vo.setRdate(rs.getString("rdate"));
-					vo.setContent(rs.getString("content"));
-					vo.setUno(rs.getInt("uno"));
-					vo.setPname(rs.getString("pname"));
-					vo.setFname(rs.getString("fname"));
-					board.add(vo);
-				}
-   
+	String sql = "select b.bno, pname "
+	           + "from board b "
+	           + "inner join attach a on b.bno = a.bno "
+	           + "where b.state='E' "
+	           + "order by bno desc "
+	           + "limit ? offset ?";
+	psmt = conn.prepareStatement(sql);
+	psmt.setInt(1, pageSize);
+	psmt.setInt(2, startRow);
+	
+	rs = psmt.executeQuery();
 %>
 <script>
+let indexpage = 1; // 현재 페이지 초기화
+let isLoading = false; // 추가 로드 상태 확인 변수
+
 window.onload = function(){
+	window.addEventListener('scroll', () => {
+        const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+
+        // 스크롤이 바닥에 도달했을 때
+        if (scrollTop + clientHeight >= scrollHeight - 5 && !isLoading) {
+            isLoading = true; // 로딩 중 상태로 변경
+            loadMore();
+        }
+    });
+	
 	$(".listDiv").click(function() {
 	    $("#modal").fadeIn(); // 모달 창 보이게 하기
 	    
@@ -60,7 +56,6 @@ window.onload = function(){
 	        data : {bno:bno},
 	        type: "get",
 	        success: function(data) {
-	        	console.log(data);
 	            $("#modalBody").html(data);
 				
 	            // 동적으로 로드된 스크립트 실행
@@ -68,15 +63,12 @@ window.onload = function(){
 	                if (this.src) {
 	                    $.getScript(this.src);
 	                } else {
-	                	// eval 대체 할 수 있는 함수 > new function 
 	                    eval($(this).text());
 	                }
 	            });
-	
-	            // 다크모드 초기화 다시 실행
-	            DarkMode();
-	            loadComplain(bno);
 	            loadReco(bno);
+	            loadComplain(bno);
+	            DarkMode();
 	        }
 	    });
 	});
@@ -86,14 +78,34 @@ window.onload = function(){
 	        $("#modal").fadeOut(); // 모달 창 숨기기
 	    }
 	});
-	// id가 null 일 경우를 생각해서 제약 조건을 걸어야함 
-	// null인 경우 클릭x , null이 아닌 경우 클릭 o , boardController 경로 수정
-	
-	// 로컬스토리지에서 꺼낸 값을 클릭  
-	$("#<%=id %>").click();
-	// 로컬스토리지 삭제 
-	
 }
+
+//추가 데이터를 불러오는 함수
+function loadMore() {
+    indexpage++; // 페이지 번호 증가
+    $.ajax({
+        url: `<%= request.getContextPath() %>/board/loadMore.do`,
+        method: 'GET',
+        data: { indexpage: indexpage },
+        success: function(data) {
+            let html = '';
+            data.forEach(item => {
+                html += `<div class='listDiv' id='\${item.bno}'>
+                            <img style='width: 250px; height: 250px; border-radius: 20px;' 
+                            src='<%= request.getContextPath() %>/upload/\${item.pname}' alt='Image ${item.bno}'>
+                         </div>`;
+            });
+            
+            $('#indexDiv').append(html);
+            isLoading = false;
+        },
+        error: function() {
+            console.error("더 많은 게시물을 로드하는 중 오류가 발생했습니다.");
+            isLoading = false;
+        }
+    });
+}
+
 
 function DarkMode() {
     const currentMode = localStorage.getItem('mode') || 'light';
@@ -118,31 +130,27 @@ function DarkMode() {
 <!--웹페이지 본문-->
 <section class="scrollable">
 	<div id="indexDiv">
-          <!-- 1번째 줄 -->
-          <%
-          for(BoardVO bo : board){ 
-       	  %>
-        		<div class="listDiv" id="<%=bo.getBno() %>" >
-	           	 	 <!-- 이미지 -->
-	            	  <img style="width: 250px; height: 250px; border-radius: 20px;" 
-	            	  src="<%=request.getContextPath()%>/upload/<%=bo.getPname() %>">
-	            	  
-	          		</div>  
-          <%
-          String imagePath = request.getContextPath() + "/upload/" + bo.getPname();
-          System.out.println("Image Path: " + imagePath);
-          }
-          %>
-      </div> 
-</section>
-<%@ include file="/WEB-INF/include/aside.jsp" %>
-
-<% 
-}catch(Exception e){
-				e.printStackTrace();
-			}finally{
-				DBConn.close(rs, psmt, conn);
-			}
-			
- 
+<%	
+	while(rs.next()){
+	%>
+		<div class="listDiv" id="<%= rs.getString("bno") %>">
+            <img style="width: 250px; height: 250px; border-radius: 20px;" 
+            src="<%= request.getContextPath() %>/upload/<%= rs.getString("pname") %>">
+        </div>
+	<%
+	}
 %>
+	</div> 
+</section>
+<%
+}catch(Exception e){
+	e.printStackTrace();
+}finally{
+	try {
+		DBConn.close(rs, psmt, conn);
+	}catch(Exception e) {
+		e.printStackTrace();
+	}
+}
+%>
+<%@ include file="/WEB-INF/include/aside.jsp" %>

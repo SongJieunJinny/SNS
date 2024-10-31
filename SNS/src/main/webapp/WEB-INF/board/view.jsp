@@ -290,7 +290,7 @@ function deleteFn(){
 								<input id="commentBno" type="hidden">
             	</div>
             	<!-- 댓글등록 버튼 -->
-            	<button type="button" id="commentSubmit" class="btnComment" onclick="btnComment()"
+            	<!-- <button type="button" id="commentSubmit" class="btnComment" onclick="btnComment()"
             					style=" padding: 10px;
 															box-sizing: border-box;
 															border: 2px solid #BFBFBF;
@@ -305,7 +305,7 @@ function deleteFn(){
 															width:20%;
 															display: flex;
 															align-items: center;
-															gap: 10px;">등록</button>
+															gap: 10px;">등록</button> -->
 							</div>
 						</form>
 					</td>
@@ -383,14 +383,14 @@ function deleteFn(){
 			        <%
 					}
 					%>
-			    </div>
-						</div>  
+			   		 </div>
+					</div>  
 			  	 </div>
-		  	 </div>
-		  	 </div>
-		  	 </div>
-		  	 </div>
 		  	 </div>
 						<%
 					}
 				%>
+		  	 </div>
+	  	 </div>
+ 	 </div>
+</div>

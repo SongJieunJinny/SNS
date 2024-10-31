@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.oreilly.servlet.MultipartRequest;
@@ -53,6 +54,8 @@ public class BoardController {
 				}
 		}else if (comments[comments.length-1].equals("delete.do")) {
 			deleteOk(request, response);
+		}else if (comments[comments.length-1].equals("loadMore.do")) {
+			loadMore(request, response);
 		}
 		
 	}
@@ -641,10 +644,48 @@ public class BoardController {
 		
 	}
 
+	public void loadMore(HttpServletRequest request
+			, HttpServletResponse response) throws ServletException, IOException {
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
 
+		int indexpage = request.getParameter("indexpage") != null ? Integer.parseInt(request.getParameter("indexpage")) : 1;
+	    int pageSize = 24;
+	    int startRow = (indexpage - 1) * pageSize;
+		
+		JSONArray jsonArray = new JSONArray();
+		
+		try {
+		    conn = DBConn.conn();
+		    String sql = "select b.bno, pname "
+		               + "from board b "
+		               + "inner join attach a on b.bno = a.bno "
+		               + "where b.state='E' "
+		               + "order by bno desc "
+		               + "limit ? offset ?";
+		    psmt = conn.prepareStatement(sql);
+		    psmt.setInt(1, pageSize);
+		    psmt.setInt(2, startRow);
+
+		    rs = psmt.executeQuery();
+		    while (rs.next()) {
+				JSONObject jsonObj = new JSONObject(); 
+				jsonObj.put("bno", rs.getString("bno")); 
+				jsonObj.put("pname", rs.getString("pname"));
+				jsonArray.put(jsonObj);
+		    }
+		    response.setContentType("application/json; charset=UTF-8");
+	        response.getWriter().write(jsonArray.toString());
+		    
+		} catch (Exception e) {
+		    e.printStackTrace();
+		} finally {
+		    try {
+		        DBConn.close(rs, psmt, conn);
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		    }
+		}
+	}
 }
-
-
-
-
-
