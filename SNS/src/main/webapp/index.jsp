@@ -45,7 +45,8 @@ window.onload = function(){
         }
     });
 	
-	$(".listDiv").click(function() {
+	/* $(".listDiv").click(function() { */
+	$(document).on('click', '.listDiv', function() {
 	    $("#modal").fadeIn(); // 모달 창 보이게 하기
 	    
 	    let bno = $(this).attr('id');
