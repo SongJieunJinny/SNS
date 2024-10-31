@@ -47,7 +47,6 @@ public class AdminController {
 			conn =DBConn.conn();
 			//데이터 출력에 필요한 게시글 데이터 조회 쿼리 영역
 			
-			// complaint_board 신고 게시판   date_format(b.rdate,'%Y-%m-%d') as rdate" 
 			/*
 			 	서브쿼리 쓸 때 조심해야함 >> complaint_board c로 작성하면 sql문법 오류가 발생함
 			 	(메인쿼리의 별칭은 서브쿼리의 별칭으로 사용할 수 없음 )
@@ -57,28 +56,31 @@ public class AdminController {
 			 	b.bno는 각 행에 대한 내용 >>> 따라서 서브쿼리에서 사용할 수 있음
 			 	그러나 별칭 c 는 각 행이 아닌 테이블 전체에 대한 내용이기 때문에 서브쿼리에 사용할 수 없음 
 			 */
-			String sql =" SELECT u.*, c.*,  "
-					// 신고 횟수를 정하기 위한 쿼리 
-					   + "( select count(*) from complaint_board c2 where c2.bno = b.bno ) as cnt"
-					   +" 	FROM complaint_board c "
-					   +"   INNER JOIN board b "
-					   +" 	ON c.bno = b.bno "
-						+"   INNER JOIN user u "
-						+" 	ON b.uno = u.uno ";
+			String sql = "";
+			sql = " select "
+			+ "    b.uno, "
+			+ "    (select unick from user where uno = b.uno) as nick,  "
+			+ "    (select uemail from user where uno = b.uno) as email, "
+			+ "    (select urdate from user where uno = b.uno) as rdate, "
+			+ "    count(b.uno) as report_count,  "
+			+ "    (select ustate from user where uno = b.uno) as state "
+			+ " from complaint_board c left join board b on c.bno = b.bno group by b.uno having count(b.uno) > 0 ";
+			System.out.println("sql : "+ sql);
 			psmt = conn.prepareStatement(sql);
 			rs = psmt.executeQuery();
 			ArrayList <UserVO> list = new ArrayList<>();
-			UserVO vo = new UserVO();
+			
 			while(rs.next()){
-				vo.setUnick(rs.getString("unick"));
-				vo.setUemail(rs.getString("uemail"));
-				vo.setUrdate(rs.getString("urdate"));
-				vo.setDeclaration(rs.getInt("cnt"));
-				vo.setUstate(rs.getString("ustate"));
-				vo.setCpno(rs.getInt("cpno"));
+				UserVO vo = new UserVO();
+				vo.setUnick(rs.getString("nick"));
+				vo.setUemail(rs.getString("email"));
+				vo.setUrdate(rs.getString("rdate"));
+				vo.setDeclaration(rs.getInt("report_count"));
+				vo.setUstate(rs.getString("state"));
 				vo.setUno(rs.getString("uno"));
+				list.add(vo);
 				}
-			request.setAttribute("vo", vo);
+			request.setAttribute("list", list);
 			// board 작성한 
 			request.getRequestDispatcher("/WEB-INF/admin/blackList.jsp").forward(request, response);
 		}catch(Exception e){
@@ -103,28 +105,40 @@ public class AdminController {
 		try {
 			conn = DBConn.conn();
 			String sql ="";
-			sql =" SELECT b.*, c.*,  "
-				// 신고 횟수를 정하기 위한 쿼리 
-				   + "( select count(*) from complaint_board c2 where c2.bno = b.bno ) as cnt"
-				   +" 	FROM complaint_board c "
-				   +"   INNER JOIN board b "
-				   +" 	ON c.bno = b.bno ";
+			
+			// sql 수정 
+			sql = " select "
+			+" c.bno, b.uno as uno, "
+			+" count(c.bno) as cnt, "
+			+" b.state, "
+			+" (select title from board where bno = c.bno) as title, "
+			+" (select rdate from board b where b.bno = c.bno) as rdate, "
+			+" (select unick from user where uno = b.uno) as unick "
+			+" from complaint_board c "
+			+" left join board b on c.bno = b.bno "
+			+" group by c.bno ";
+			
+			System.out.println("sql" + sql);
+			
+			
 			psmt = conn.prepareStatement(sql);
 			rs = psmt.executeQuery();
-			BoardVO vo = new BoardVO();
+			ArrayList<BoardVO> board = new ArrayList<>();
 			while(rs.next()){
+				BoardVO vo = new BoardVO();
+				vo.setDeclaration(rs.getInt("cnt"));
 				vo.setUnick(rs.getString("unick"));
 				vo.setTitle(rs.getString("title"));
 				vo.setRdate(rs.getString("rdate"));
-				vo.setDeclaration(rs.getInt("cnt"));
-				vo.setCpno(rs.getInt("cpno"));
-				vo.setUno(rs.getInt("uno"));
+				vo.setState(rs.getString("state"));
+				vo.setBno(rs.getInt("Bno"));
+				board.add(vo);
 				}
-			request.setAttribute("vo", vo);
+			request.setAttribute("board", board);
 			// board 작성한 
-			request.getRequestDispatcher("/WEB-INF/admin/blackList.jsp").forward(request, response);
+			request.getRequestDispatcher("/WEB-INF/admin/complainList.jsp").forward(request, response);
 		}catch(Exception e){
-			
+			e.printStackTrace();
 		}finally{
 			try {
 				DBConn.close(rs, psmt, conn);
