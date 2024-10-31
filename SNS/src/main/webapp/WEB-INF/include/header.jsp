@@ -21,9 +21,7 @@ if(session.getAttribute("loginUser") != null) {
 }else {
     System.out.println("loginUser : 로그인되지 않음");
 }
-
 %>
-
 <!DOCTYPE html>
 <html lang="kr">
 <head>
@@ -40,26 +38,6 @@ let emailcode = false;
 $(document).ready(function() {
 	// 페이지 로드 시 다크모드 초기화
     DarkMode();	
-	
-    console.log($("#commentMenuA"));
-    
-	// #commentMenuA 클릭 시 #commentMenutableA 토글
-    $("#commentMenuA").click(function(event) {
-    	alert("call");
-        $("#commentMenutableA").toggle();  // 보이기/숨기기
-        event.stopPropagation();    // 이벤트 전파 방지
-    });
-
-    // 문서의 다른 부분 클릭 시 #commentMenutableA 숨기기
-    $(document).click(function() {
-        $("#commentMenutableA").hide();
-    });
-
-    // #commentMenutableA 내부 클릭 시 이벤트 전파 방지
-    $("#commentMenutableA").click(function(event) {
-        event.stopPropagation();    // 이벤트 전파 방지
-    });
-    
     
 	// #menuA 클릭 시 #menutableA 토글
     $("#menuA").click(function(event) {
@@ -126,6 +104,14 @@ $(document).ready(function() {
             $("nav").css("z-index", "1001");
         }
     });
+    
+    $("#commentContent").on("keydown",function(event){
+		if(event.key === "Enter"){
+			btnComment();
+			$("#commentContent").val("");
+			return false;
+		}
+	});
     
     
     $("#search").keyup(function(event){
@@ -802,7 +788,7 @@ function complainAdd(bno) {
 			      	   		<img id="searchIcon" 
 			      	   		onclick="location.href='<%= request.getContextPath() %>'"
 			      	   		src="<%= request.getContextPath() %>/image/logo.jpg">
-	                        <input type="text" name="searchValue" placeholder="검색">
+	                        <input type="text" name="searchValue" id="search" placeholder="검색">
 	                        <i class="fas fa-times" id="clearBtn"></i>
 	                    </div>
 	                </div>
@@ -830,7 +816,7 @@ function complainAdd(bno) {
 			        </div>
 		        </div>
 		        <!-- 메시지 표시 -->
-		        <div class="icon" id="msgbox">
+		        <div class="icon">
 		       		<img src="https://img.icons8.com/?size=100&id=37966&format=png&color=767676">
 		       		<div class="login-hover-menu">
 			            <p>메시지</p>

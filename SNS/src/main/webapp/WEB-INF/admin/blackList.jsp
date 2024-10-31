@@ -2,6 +2,11 @@
     pageEncoding="UTF-8"%>
 <%@ include file="../include/header.jsp" %>
 <%@ include file="../include/nav.jsp" %>
+<%@ page import="sns.vo.* "%>
+<%
+UserVO vo = (UserVO)request.getAttribute("vo");
+
+%>
 <!--웹페이지 본문-->
 <section>
        <div class="bcSpan">
@@ -13,6 +18,8 @@
            </a>
        </div>
        <div class="complainTable">
+       	   <input type="hidden" name="uno" id ="uno" value="<%=vo.getUno()%>">
+       	   <input type="hidden" name="ustate" id ="ustate" value="<%=vo.getUstate()%>">
            <table class="inner_table">
                <thead>
                	<tr>
@@ -26,58 +33,60 @@
                </thead>
                <tbody>
                    <tr>
-                       <td>5</td>
-                       <td>hong</td>
-                       <td>hong@hong.com</td>
-                       <td>10.14</td>
-                       <td>5번</td>
-                       <td>
-                       		<button type="button" class="ssBtn">정지</button>
+                    	<td><%=vo.getCpno() %></td>
+                       	<td><%=vo.getUnick() %></td>
+                       	<td><%=vo.getUemail() %></td>
+                       	<td><%=vo.getUrdate() %></td>
+                       	<td><%=vo.getDeclaration() %></td>
+                       <%
+                       if(vo.getUstate().equals("E")){
+                    	%>	   
+                   	   <td>
+                       		<button type="button" class="ssBtn" onclick="stopFn()">정지</button>
                        </td>
-                   </tr>
-                   <tr>
-                       <td>4</td>
-                       <td>go</td>
-                       <td>go@go.com</td>
-                       <td>10.13</td>
-                       <td>15번</td>
-                       <td>
-                       		<button type="button" class="ssBtn">정지</button>
-                       </td>
-                   </tr>
-                   <tr>
-                       <td>3</td>
-                       <td>lee</td>
-                       <td>lee@lee.com</td>
-                       <td>10.12</td>
-                       <td>12번</td>
-                       <td>
-                       		<button type="button" class="ssBtn">정지</button>
-                       </td>
-                   </tr>
-                   <tr>
-                       <td>2</td>
-                       <td>back</td>
-                       <td>back@back.com</td>
-                       <td>10.11</td>
-                       <td>10번</td>
-                       <td>
-                       		<button type="button" class="ssBtn">정지</button>
-                       </td>
-                   </tr>
-                   <tr>
-                       <td>1</td>
-                       <td>kim</td>
-                       <td>kim@kim.com</td>
-                       <td>10.10</td>
-                       <td>20번</td>
-                       <td>
+                     	<%
+                     	}else{
+                    	%> 
+                   	    <td>
                        		<button type="button" class="ssBtn" 
-                       		style="background-color:#767676; color:white;">정지해제</button>
+                       		style="background-color:#767676; color:white;" onclick="stopFn()">정지해제</button>
                        </td>
+                       <%
+                       }
+                       %>
                    </tr>
                </tbody>
            </table>
        </div>
 </section>
 <%@ include file="../include/aside.jsp" %>
+<script>
+// post 방식으로 보내야하기 때문에 onclick 할 때 함수 안에 ajax를 사용해야함
+function stopFn(){
+	const uno = $('#uno').val();
+	const ustate = $('#ustate').val();
+	// 값을 가져왔나 확인 
+	// 만약 가져오지 않았다면, controller에서 vo에 담겨져 있는지 확인해야함
+	console.log(uno);
+	console.log(ustate);
+	$.ajax({
+		url : "admin/stopUser.do",
+		type : "post",
+		data : {
+			// 보내야 할 데이터를 담음 
+			"uno" : uno,
+			"ustate" : ustate
+		},
+		success: function(response){
+			alert("상태가 변경되었습니다.");
+            location.reload(); // 페이지 새로 고침으로 상태 갱신
+		},
+		error: function(xhr, status, error) {
+            // 에러 처리
+            console.error("오류 발생:", error);
+            alert("상태 변경에 실패했습니다.");
+        } 
+	});
+}
+
+</script>

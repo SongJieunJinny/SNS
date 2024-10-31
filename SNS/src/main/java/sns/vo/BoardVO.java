@@ -13,6 +13,14 @@ public class BoardVO {
 	private String fname;
 	private int recommend;
 	private String upname;
+	private String uemail;
+	private int declaration; // ½Å°í
+	private String urdate;
+	private int cpno;
+	
+	
+	
+	
 	
 	public BoardVO() {}
 
@@ -28,6 +36,10 @@ public class BoardVO {
 		this.unick = unick;
 	}
 
+	
+	
+	
+	public String getUemail() {return uemail;}
 	public String getUnick() {return unick;}
 	public int getBno() {return bno;}
 	public String getTitle() {return title;}
@@ -40,7 +52,13 @@ public class BoardVO {
 	public String getFname() {return fname;}
 	public int getRecommend() {return recommend;}
 	public String getUpname() {return upname;}
+	public int getDeclaration() {return declaration;}
+	public String getUrdate() {return urdate;}
+	public int getCpno() {return cpno;}
 	
+	
+	
+	public void setUemail(String uemail) {this.uemail = uemail;}
 	public void setUnick(String unick) {this.unick = unick;}
 	public void setBno(int bno) {this.bno = bno;}
 	public void setTitle(String title) {this.title = title;}
@@ -53,6 +71,8 @@ public class BoardVO {
 	public void setFname(String fname) {this.fname = fname;}
 	public void setRecommend(int recommend) {this.recommend = recommend;}
 	public void setUpname(String upname) {this.upname = upname;}
-
+	public void setDeclaration(int declaration) {this.declaration = declaration;}
+	public void setUrdate(String urdate) {this.urdate = urdate;}
+	public void setCpno(int cpno) {this.cpno = cpno;}
 		
 }
