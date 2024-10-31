@@ -491,7 +491,8 @@ public class UserController {
 		 * String uploadPath =
 		 * "C:\\Users\\DEV\\Desktop\\JangAWS\\01.java\\workspace\\sns\\src\\main\\webapp\\upload";
 		 */
-	    String uploadPath = "C:\\DEV\\GIT\\first-SNS\\sns\\src\\main\\webapp\\upload";
+		/* String uploadPath = "C:\\DEV\\GIT\\ -SNS\\sns\\src\\main\\webapp\\upload"; */
+	    String uploadPath = request.getServletContext().getRealPath("/upload");
 	    System.out.println("서버의 업로드 폴더 경로 : " + uploadPath);
 	    
 	    int size = 10 * 1024 * 1024; // 최대 10MB 파일 허용
