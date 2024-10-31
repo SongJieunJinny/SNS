@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
 
 import sns.util.DBConn;
+import sns.vo.BoardVO;
 import sns.vo.CommentsVO;
 
 public class CommentController {
@@ -23,41 +24,52 @@ public class CommentController {
 
 		if (comments[comments.length - 1].equals("view.do")) {
 			commentWrite(request, response);
-		} /*
-			 * else if (comments[comments.length - 1].equals("commentsList.do")) {
-			 * commentList(request, response); }
-			 */
+		}else if (comments[comments.length - 1].equals("view.do")) {
+			commentModify(request, response);
+		}
 	}
 
-	/*
-	 * public void commentList(HttpServletRequest request, HttpServletResponse
-	 * response) throws ServletException, IOException {
-	 * 
-	 * String bno = request.getParameter("bno"); Connection conn = null;
-	 * PreparedStatement psmt = null; ResultSet rs = null;
-	 * 
-	 * try { String sqlComments = " SELECT c.*,u.unick,u.pname " +
-	 * " FROM comments c " + " INNER JOIN user u " + " ON c.uno = u.uno " +
-	 * " WHERE bno = ? " + " AND c.state = 'E' " + " ORDER BY c.rdate desc ";
-	 * 
-	 * psmt = conn.prepareStatement(sqlComments); psmt.setInt(1,
-	 * Integer.parseInt(bno)); rs = psmt.executeQuery();
-	 * 
-	 * List<CommentsVO> clist = new ArrayList<CommentsVO>();
-	 * 
-	 * while (rs.next()) { CommentsVO cvo = new CommentsVO();
-	 * cvo.setBno(rs.getInt("bno")); cvo.setUno(rs.getInt("uno"));
-	 * cvo.setContent(rs.getString("content")); cvo.setRdate(rs.getString("rdate"));
-	 * cvo.setState(rs.getString("state")); cvo.setPname(rs.getString("pname"));
-	 * cvo.setUnick(rs.getString("unick")); clist.add(cvo); } // 리퀘스트에 담기
-	 * request.setAttribute("comments", clist); } catch (Exception e) {
-	 * e.printStackTrace(); } finally { try { DBConn.close(null, null, null); }
-	 * catch (Exception e) { // TODO Auto-generated catch block e.printStackTrace();
-	 * } }
-	 * 
-	 * }
-	 */
 
+	public void commentModify(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		
+		request.setCharacterEncoding("UTF-8");
+		
+		// 폼 데이터 가져오기
+		int cno = Integer.parseInt(request.getParameter("cno"));
+		int bno = Integer.parseInt(request.getParameter("bno"));
+		String content = request.getParameter("content");
+		
+		// DB연결
+				Connection conn = null;
+				PreparedStatement psmt = null;
+				ResultSet rs = null;
+				
+				try{
+					conn = DBConn.conn();
+					String sql = " UPDATE comments SET content = ? WHERE cno= ? ";
+					
+					psmt = conn.prepareStatement(sql);
+					psmt.setString(1,content);
+			 		psmt.setInt(2,cno);
+			 		rs = psmt.executeQuery();
+					
+					CommentsVO vo = new CommentsVO();
+					if(rs.next()) {
+						vo.setBno(rs.getInt("bno"));
+						vo.setCno(rs.getInt("cno"));
+						vo.setContent(rs.getString("content"));
+					}
+					
+					request.setAttribute("vo", vo);
+					request.getRequestDispatcher("/WEB-INF/board/view.jsp").forward(request, response);
+					
+				}catch(Exception e){
+					e.printStackTrace();
+				}
+		
+	}
+	
 	public void commentWrite(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
