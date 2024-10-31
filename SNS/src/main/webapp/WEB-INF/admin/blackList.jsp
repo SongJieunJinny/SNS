@@ -4,8 +4,7 @@
 <%@ include file="../include/nav.jsp" %>
 <%@ page import="sns.vo.* "%>
 <%
-UserVO vo = (UserVO)request.getAttribute("vo");
-
+	ArrayList<UserVO> list = (ArrayList<UserVO>)request.getAttribute("list");
 %>
 <!--웹페이지 본문-->
 <section>
@@ -18,12 +17,14 @@ UserVO vo = (UserVO)request.getAttribute("vo");
            </a>
        </div>
        <div class="complainTable">
-       	   <input type="hidden" name="uno" id ="uno" value="<%=vo.getUno()%>">
-       	   <input type="hidden" name="ustate" id ="ustate" value="<%=vo.getUstate()%>">
+          <% for(UserVO vo : list){ %> 
+           <input type="hidden" name="uno" id ="uno" value="<%=vo.getUno()%>">
+       	   <input type="hidden" name="ustate" id ="ustate" value="<%=vo.getUstate()%>">  
+          <%}%>
            <table class="inner_table">
                <thead>
                	<tr>
-                    <th>신고 번호</th>
+                    <th>번호</th>
                     <th>닉네임</th>
                     <th>이메일</th>
                     <th>가입일</th>
@@ -32,8 +33,9 @@ UserVO vo = (UserVO)request.getAttribute("vo");
                    </tr>
                </thead>
                <tbody>
+               <% for(UserVO vo : list){ %>
                    <tr>
-                    	<td><%=vo.getCpno() %></td>
+                       	<td>페이징 번호</td>
                        	<td><%=vo.getUnick() %></td>
                        	<td><%=vo.getUemail() %></td>
                        	<td><%=vo.getUrdate() %></td>
@@ -54,6 +56,7 @@ UserVO vo = (UserVO)request.getAttribute("vo");
                        <%
                        }
                        %>
+                <% } %>
                    </tr>
                </tbody>
            </table>
