@@ -45,14 +45,14 @@
                        if(vo.getState().equals("E")){
                     	%>	   
                    	   <td>
-                       		<button type="button" class="ssBtn" onclick="stateFn()">비활성화</button>
+                       		<button type="button" class="ssBtn" onclick="stateFn(<%=vo.getBno()%>,'E')">비활성화</button>
                        </td>
                      	<%
                      	}else{
                     	%> 
                    	    <td>
                        		<button type="button" class="ssBtn" 
-                       		style="background-color:#767676; color:white;" onclick="stateFn()">활성화</button>
+                       		style="background-color:#767676; color:white;" onclick="stateFn(<%=vo.getBno()%>,'D')">활성화</button>
                        </td>
                        <%
                        }
@@ -66,15 +66,13 @@
 <%@ include file="../include/aside.jsp" %>
 <script>
 // post 방식으로 보내야하기 때문에 onclick 할 때 함수 안에 ajax를 사용해야함
-function stopFn(){
-	const bno = $('#bno').val();
-	const state = $('#state').val();
+function stateFn(bno,state){
 	// 값을 가져왔나 확인 
 	// 만약 가져오지 않았다면, controller에서 vo에 담겨져 있는지 확인해야함
 	console.log(bno);
 	console.log(state);
 	$.ajax({
-		url : "admin/stopUser.do",
+		url : "admin/stopBoard.do",
 		type : "post",
 		data : {
 			// 보내야 할 데이터를 담음 
@@ -83,7 +81,8 @@ function stopFn(){
 		},
 		success: function(response){
 			alert("상태가 변경되었습니다.");
-            location.reload(); // 페이지 새로 고침으로 상태 갱신
+			// 페이지 새로 고침으로 상태 갱신
+            location.reload(); 
 		},
 		error: function(xhr, status, error) {
             // 에러 처리
