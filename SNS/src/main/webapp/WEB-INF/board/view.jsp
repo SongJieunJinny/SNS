@@ -341,23 +341,6 @@ function deleteFn(){
 								<!-- 댓글 게시글번호 -->
 								<input id="commentBno" type="hidden">
             	</div>
-            	<!-- 댓글등록 버튼 -->
-            	<!-- <button type="button" id="commentSubmit" class="btnComment" onclick="btnComment()"
-            					style="padding: 10px;
-													   box-sizing: border-box;
-													   border: 2px solid #BFBFBF;
-													   outline: none;
-													   font-weight:bold;
-													   font-size:18px;
-													   text-align: center;
-													   margin-bottom:20px;
-													   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-													   background-color: #BFBFBF;
-													   border-radius: 40px;
-													   width:20%;
-													   /* display: flex; */
-													   align-items: center;
-													   gap: 10px;">등록</button> -->
 							</div>
 						</form>
 					</td>
@@ -427,12 +410,6 @@ function deleteFn(){
 		  	 			</div>
 			    			<!-- 서브메뉴바 -->
 			    			<div class="commentMenutableA" style="display:none;">
-			        	<!-- 댓글신고 -->
-								<div class="menu-container" id="complainDiv" onclick="complainAdd(<%= cvo.getBno() %>);">
-			            <img style="width:20px; cursor:pointer;" 
-			                 src="https://img.icons8.com/?size=100&id=8773&format=png&color=767676">
-			            <button id="infoBtn" onclick="complainAdd(<%= vo.getBno() %>);">신고</button>
-			        	</div>
 			        <%
 					if(session.getAttribute("loginUser") != null){
 						if(uno == vo.getUno()){
@@ -461,13 +438,6 @@ function deleteFn(){
 			        <%
 					}
 					%>
-
-								</div>
-							</div>  
-						</div>
-					</div>
-				</div>
-			</div>
 
 							 </div>
 					</div>  
