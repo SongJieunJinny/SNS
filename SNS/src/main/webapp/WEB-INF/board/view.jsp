@@ -219,7 +219,7 @@ function deleteFn(){
 		} 
 	});
 }
-</script>
+</script>    
 <!--웹페이지 본문-->
 <div class="view_div">
     <div class="view_inner">
