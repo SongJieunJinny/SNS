@@ -224,7 +224,7 @@ function deleteFn(){
 <div class="view_div">
     <div class="view_inner">
     	<div class="view_img">
-			<span style="cursor: default;">
+			<span id="view_img_span" style="cursor: default;">
 				<img src="<%= request.getContextPath() %>/upload/<%= vo.getPname() %>">
 			</span>
 		</div>
