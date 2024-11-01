@@ -14,8 +14,6 @@ if(session.getAttribute("loginUser") != null)
 }
 List<CommentsVO> clist = (List<CommentsVO>)request.getAttribute("clist");
 %>
-<script src="https://code.jquery.com/jquery-latest.min.js"></script>
-<!-- <script src="../jquery-3.7.1.js"></script> -->
 <script>
 
 function setCommentDelete(cno,obj){
@@ -225,13 +223,12 @@ function deleteFn(){
 <!--웹페이지 본문-->
 <div class="view_div">
     <div class="view_inner">
-    	<label>
-			<span class="imgSpan" style="width: 550px; height: 550px; cursor: default;">
-				<img style="width: 550px; height: 550px; border-radius: 40px;" src="<%= request.getContextPath() %>/upload/<%= vo.getPname() %>">
+    	<div class="view_img" style="width:50%;">
+			<span id="view_img_span" style="cursor: default;">
+				<img src="<%= request.getContextPath() %>/upload/<%= vo.getPname() %>">
 			</span>
-		</label>
-		<div class="viewContent" style="width: 50%;">
-       	<div class="view_content" >
+		</div>
+       	<div class="view_content">
        		<div class="icon-container">
 				<!-- 추천표시되는곳 -->
 				<div id="reco" style="width:30px; cursor:pointer;">
@@ -329,7 +326,7 @@ function deleteFn(){
 							style="box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 						    background-color: white;
 						    border-radius: 40px;
-						    width:80%;
+						    width:100%;
 						    display: flex;
 						    align-items: center; 
 						    gap: 10px;">
@@ -345,7 +342,7 @@ function deleteFn(){
 								<input id="commentBno" type="hidden">
             	</div>
             	<!-- 댓글등록 버튼 -->
-            	<button type="button" id="commentSubmit" class="btnComment" onclick="btnComment()"
+            	<!-- <button type="button" id="commentSubmit" class="btnComment" onclick="btnComment()"
             					style="padding: 10px;
 													   box-sizing: border-box;
 													   border: 2px solid #BFBFBF;
@@ -360,7 +357,7 @@ function deleteFn(){
 													   width:20%;
 													   /* display: flex; */
 													   align-items: center;
-													   gap: 10px;">등록</button>
+													   gap: 10px;">등록</button> -->
 							</div>
 						</form>
 					</td>
@@ -464,17 +461,25 @@ function deleteFn(){
 			        <%
 					}
 					%>
+<<<<<<< HEAD
 								</div>
 							</div>  
 						</div>
 					</div>
 				</div>
 			</div>
+=======
+							 </div>
+					</div>  
+			  	 </div>
+		  	 </div>
+>>>>>>> branch 'main' of https://github.com/SNS-Bteam/first-SNS.git
 						<%
 					}
 				%>
 				</div>
-		</div>
+			</div>
 		</div>
 	</div>
+</div>
 </div>
