@@ -14,8 +14,6 @@ if(session.getAttribute("loginUser") != null)
 }
 List<CommentsVO> clist = (List<CommentsVO>)request.getAttribute("clist");
 %>
-<script src="https://code.jquery.com/jquery-latest.min.js"></script>
-<!-- <script src="../jquery-3.7.1.js"></script> -->
 <script>
 
 function setCommentDelete(cno,obj){
@@ -227,10 +225,10 @@ function deleteFn(){
     <div class="view_inner">
     	<div class="view_img">
 			<span style="cursor: default;">
-				<img style="width: 100%; height: 100%; border-radius: 40px;" src="<%= request.getContextPath() %>/upload/<%= vo.getPname() %>">
+				<img src="<%= request.getContextPath() %>/upload/<%= vo.getPname() %>">
 			</span>
 		</div>
-       	<div class="view_content" style="width: 50%;">
+       	<div class="view_content">
        		<div class="icon-container">
 				<!-- 추천표시되는곳 -->
 				<div id="reco" style="width:30px; cursor:pointer;">

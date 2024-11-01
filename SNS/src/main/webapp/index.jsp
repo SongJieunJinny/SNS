@@ -92,13 +92,48 @@ function loadMore() {
             let html = '';
             data.forEach(item => {
                 html += `<div class='listDiv' id='\${item.bno}'>
-                            <img style='width: 250px; height: 250px; border-radius: 20px;' 
-                            src='<%= request.getContextPath() %>/upload/\${item.pname}' alt='Image ${item.bno}'>
+                            <img src='<%= request.getContextPath() %>/upload/\${item.pname}' alt='Image \${item.bno}'>
                          </div>`;
             });
             
             $('#indexDiv').append(html);
             isLoading = false;
+            
+            // 추가된 게시글에 CSS 스타일 적용
+            /* $('#modalBody .view_div').css({
+                'width': '100%',
+                'height': '100%',
+                'padding': '0',
+                'margin': '0',
+                'box-sizing': 'border-box',
+                'display': 'flex',
+                'overflow': 'hidden'
+            });
+            
+            $('#modalBody .view_inner').css({
+                'width': '100%',
+                'height': '100%',
+                'display': 'flex',
+                'justify-content': 'space-between'
+            });
+
+            $('#modalBody .view_img').css({
+                'width': '50%',
+                'position': 'relative'
+            });
+
+            $('#postContainer .view_img span img').css({
+                'width': '100%',
+                'height': '100%',
+                'border-radius': '40px'
+            });
+
+            $('#modalBody .view_content').css({
+                'width': '50%',
+                'padding': '20px',
+                'max-height': '600px',
+                'overflow-y': 'auto'
+            }); */
         },
         error: function() {
             console.error("더 많은 게시물을 로드하는 중 오류가 발생했습니다.");
@@ -135,8 +170,7 @@ function DarkMode() {
 	while(rs.next()){
 	%>
 		<div class="listDiv" id="<%= rs.getString("bno") %>">
-            <img style="width: 250px; height: 250px; border-radius: 20px;" 
-            src="<%= request.getContextPath() %>/upload/<%= rs.getString("pname") %>">
+            <img src="<%= request.getContextPath() %>/upload/<%= rs.getString("pname") %>">
         </div>
 	<%
 	}

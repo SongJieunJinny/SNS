@@ -441,7 +441,7 @@ aside {
     /* overflow-y: auto; */ /* 스크롤 가능하게 설정 */
 }
 
-.listDiv {
+#indexDiv .listDiv {
     width: 250px;
     height: 250px;
     display: flex;
@@ -456,6 +456,11 @@ aside {
     transition: visibility 0.2s ease-out, opacity 0.2s ease-out;
 }
 
+#indexDiv .listDiv img{
+	border-radius: 20px;
+	width: 250px;
+    height: 250px;
+}
 body.dark-mode .listDiv img{
 	filter: none; 
 }
@@ -486,10 +491,10 @@ body.dark-mode .view_inner img{
     position: relative;
 }
 
-.view_img img {
+.view_img span img {
     width: 100%; /* 이미지가 div에 맞게 크기 조정 */
-    height: auto;
-    border-radius: 20px;
+    height: 100%;
+    border-radius: 40px;
 }
 
 .view_content{
