@@ -277,6 +277,7 @@ public class BoardController {
 			
 			while(rsc.next()){
 				CommentsVO cvo = new CommentsVO();
+				cvo.setCno(rsc.getInt("cno"));
 				cvo.setBno(rsc.getInt("bno"));
 				cvo.setUno(rsc.getInt("uno"));
 				cvo.setContent(rsc.getString("content"));

@@ -33,6 +33,10 @@ public class AdminController {
 			if(request.getMethod().equals("POST")) {
 				stopUser(request,response);
 			}
+		}else if (comments[comments.length-1].equals("stopBoard.do")) {
+			if(request.getMethod().equals("POST")) {
+				stopBoard(request,response);
+			}
 		}
 	}
 		
@@ -306,6 +310,64 @@ public class AdminController {
 		
 	}
 
-
+	public void stopBoard (HttpServletRequest request
+			, HttpServletResponse response) throws ServletException, IOException {
+		// 인코딩 
+		request.setCharacterEncoding("UTF-8");
+		
+		//uno가 vo 객체에서 String으로 설정 되어있기 때문에 
+		String Strbno   = request.getParameter("bno");
+		String state = request.getParameter("state");
+		PrintWriter out = response.getWriter();
+		// 필요한 값인 bno와 state 둘 중 하나라도 null인경우 error을 알려주고 return으로 강제 종료 시킴
+		if(Strbno == null || state == null) {
+			out.print("error");
+			return;
+		}
+		int bno = Integer.parseInt(Strbno);
+		System.out.println("bno ===================================="+ bno);
+		
+		Connection conn =null;
+		PreparedStatement psmt = null;
+		
+		try {
+			conn = DBConn.conn();
+			String sql = "";
+			// ajax에서 새로고침 기능이 있으니, 그에 따른 if문을 넣어, 조건에 맞게 회원의 상태를 변경할 수 있음
+			if(state.equals("E")) {
+				sql += "UPDATE board set state = 'D' WHERE bno = ?";
+			}else {
+				sql += "UPDATE board set state = 'E' WHERE bno = ?";
+			}
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(1,bno);
+			psmt.executeUpdate();
+		
+			response.setContentType("text/html;charset=UTF-8");
+			out.print("success");  
+			out.flush();
+			out.close();   
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			response.setContentType("text/html;charset=UTF-8");
+			out.print("error");  
+			out.flush();
+			out.close();
+		}finally {
+			try {
+				DBConn.close(psmt, conn);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+		
+		
+	}
+	
+	
+	
 
 }

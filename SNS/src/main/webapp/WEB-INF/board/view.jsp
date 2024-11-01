@@ -18,6 +18,58 @@ List<CommentsVO> clist = (List<CommentsVO>)request.getAttribute("clist");
 <!-- <script src="../jquery-3.7.1.js"></script> -->
 <script>
 
+function setCommentDelete(cno,obj){
+	$.ajax({
+		url : '<%=request.getContextPath()%>/reply/cdele.do',
+		type:'post',
+		data : {cno : cno},
+		success : function(response){
+			if(response.trim()==='success'){
+				alert('댓글을 삭제했습니다.');
+				$(obj).parent().parent().parent().parent().parent().remove();
+				
+			}	
+		},
+		error : function(xhr, status, error){
+			alert("댓글삭제에 실패했습니다.");
+		} 
+	});
+}
+
+function setModify(obj){
+	console.log($(obj).parent().parent().parent().parent().prev().find(".commentContent"));
+	$(obj).parent().parent().parent().parent().prev().find(".commentContent").toggle();
+	$(obj).parent().parent().parent().parent().prev().find(".modifyForm").toggle();
+}
+
+function commentsModify(obj) {
+	console.log($(obj));
+	console.log($(obj).parent().parent().children(".commentContent"));
+	
+    var formData = $(obj).parent().parent().serialize();  // 폼 데이터를 직렬화 (쿼리 문자열 형태로 변환)
+    console.log(formData);
+    
+    const beforeText = $(obj).parent().children(".commentContentInput").val();
+    console.log(beforeText)
+
+ $.ajax({
+        // JSP 파일 경로 :: commentWrite.jsp / commentWrite.do
+        // /WEB-INF 폴더 내부에 있는 jsp는 바로 접근이 안됩니다
+        url: "<%= request.getContextPath() %>/reply/cmodi.do",  
+        type: "POST",        // POST 방식으로 서버에 요청
+        data: formData,      // 폼 데이터를 전송
+        dataType: "json",    // JSON 형식의 응답을 기대
+        success: function (response) {
+            $(obj).parent().parent().children(".commentContent").text(beforeText)
+            $(obj).parent().parent().children(".commentContent").toggle();
+            $(obj).parent().parent().children(".modifyForm").toggle();
+        },
+        error: function (xhr, status, error) {
+            console.error("JSP 요청 오류: ", error);  // 오류 발생 시 콘솔에 출력
+        } 
+    });
+}
+
     function btnComment() {
         var formData = $("#commentForm").serialize();  // 폼 데이터를 직렬화 (쿼리 문자열 형태로 변환)
 
@@ -178,7 +230,8 @@ function deleteFn(){
 				<img style="width: 550px; height: 550px; border-radius: 40px;" src="<%= request.getContextPath() %>/upload/<%= vo.getPname() %>">
 			</span>
 		</label>
-       	<div class="view_content" style="width: 50%;">
+		<div class="viewContent" style="width: 50%;">
+       	<div class="view_content" >
        		<div class="icon-container">
 				<!-- 추천표시되는곳 -->
 				<div id="reco" style="width:30px; cursor:pointer;">
@@ -270,13 +323,13 @@ function deleteFn(){
 			<table>
 				<tr>
 					<td colspan="3">
-					<form action="" method="post" id="commentForm">
+					<form method="post" id="commentForm">
 						<div class="search-wrapper">
 							<div class="input-container" id="seach-container"
 							style="box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 						    background-color: white;
 						    border-radius: 40px;
-						    width:100%;
+						    width:80%;
 						    display: flex;
 						    align-items: center; 
 						    gap: 10px;">
@@ -292,22 +345,22 @@ function deleteFn(){
 								<input id="commentBno" type="hidden">
             	</div>
             	<!-- 댓글등록 버튼 -->
-            	<!-- <button type="button" id="commentSubmit" class="btnComment" onclick="btnComment()"
-            					style=" padding: 10px;
-															box-sizing: border-box;
-															border: 2px solid #BFBFBF;
-															outline: none;
-															font-weight:bold;
-															font-size:18px;
-															text-align: center;
-															margin-bottom:20px;
-															box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-															background-color: #BFBFBF;
-															border-radius: 40px;
-															width:20%;
-															display: flex;
-															align-items: center;
-															gap: 10px;">등록</button> -->
+            	<button type="button" id="commentSubmit" class="btnComment" onclick="btnComment()"
+            					style="padding: 10px;
+													   box-sizing: border-box;
+													   border: 2px solid #BFBFBF;
+													   outline: none;
+													   font-weight:bold;
+													   font-size:18px;
+													   text-align: center;
+													   margin-bottom:20px;
+													   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+													   background-color: #BFBFBF;
+													   border-radius: 40px;
+													   width:20%;
+													   /* display: flex; */
+													   align-items: center;
+													   gap: 10px;">등록</button>
 							</div>
 						</form>
 					</td>
@@ -315,7 +368,6 @@ function deleteFn(){
 			</table>
 			<!-- 댓글목록 출력 -->
 			<div class="commentDiv">
-			<div class="commentListDiv">
 			<!-- 리퀘스트에서 담아온 댓글 출력하기 -->
 			<% 
 			System.out.println("comments:::::"+clist.size());
@@ -323,75 +375,113 @@ function deleteFn(){
 				System.out.println("index:::::::"+i);
 				CommentsVO cvo = clist.get(i);
 				%>
-			<div style="display: flex; align-items: center; gap: 10px;">
+				<div>
+				<div style="display: flex; align-items: center; gap: 10px;">
         <!-- 댓글작성자 프로필이미지 -->
         	<div class="view_profil">
 						<img id="previewProfil" class="circular-img" 
-			           style="border:none; width:50px; height:50px;" 
-			           src="<%= request.getContextPath() %>/upload/<%=cvo.getPname() %>" alt="프로필 이미지" />
+				        style="border:none; width:50px; height:50px;" 
+				        src="<%= request.getContextPath() %>/upload/<%=cvo.getPname() %>" alt="프로필 이미지" />
 				  </div>
 				 <!-- 댓글작성자 닉네임 -->
-		       <span style="font-size:18px;"><%=cvo.getUnick() %></span>
-		     </div>
-		     <!-- 댓글작성 내용 -->
-			   <div style="margin-top: 5px; margin-left: 70px;" id="content">
-           <span><%= cvo.getContent() %></span>
-         </div>
-         <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 5px; margin-left: 70px; font-size: 12px; color: #999;">
-		     <!-- 댓글작성일 -->
-		       <span><%= cvo.getRdate() %></span>
-	    	<!-- 메뉴바 -->
-			<div class="commentMenuA" style"width:30px; cursor:pointer; margin-bottom:5px;" onclick="toggleA(this);">
-			<div style="display: flex; align-items: center; gap: 10px;"> 
-		       <span id="menuB" class="menuB" style="display: flex; align-items: center; gap: 10px;">
-		         <i class="fas fa-solid fa-bars"></i>
-			  	 </span>
-		  	 </div>
-			    <!-- 서브메뉴바 -->
-			    <div class="commentMenutableA" style="display:none;">
-			        <!-- 댓글신고 -->
-			        <div class="menu-container" id="complainDiv" onclick="complainAdd(<%= cvo.getBno() %>);">
+		      <span style="font-size:18px;"><%=cvo.getUnick() %></span>
+		    </div>
+		    	<!-- 댓글작성 내용 -->
+			  	<div style="margin-top: 5px; margin-left: 70px;" id="content">
+					<form class="modiForm">
+           	<span class="commentContent"><%= cvo.getContent() %></span>
+           	<span style="display:none;" class="modifyForm" >
+           		<input type="hidden" value="<%= cvo.getCno() %>" name="cno">
+	           	<input class="commentContentInput" type="text" value="<%= cvo.getContent() %>" name="content"
+					          style="box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+												   background-color: white;
+												   border-radius: 40px;
+												   width:70%;
+												   padding: 2%;
+												   display: flex;
+												   align-items: center; 
+												   gap: 10px;">
+	           <button type="button" onclick="commentsModify(this);" 
+	           					style="box-sizing: border-box;
+													   border: 2px solid #BFBFBF;
+													   outline: none;
+													   font-weight:bold;
+													   font-size:15px;
+													   text-align: center;
+													   margin-bottom:20px;
+													   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+													   background-color: #BFBFBF;
+													   border-radius: 40px;
+													   width:12%;
+													   align-items: center;
+													   gap: 10px;">수정</button>
+           </span>
+					</form>
+					</div>
+         	<div style="display: flex; justify-content: space-between; align-items: center; margin-top: 5px; margin-left: 70px; font-size: 12px; color: #999;">
+		     		<!-- 댓글작성일 -->
+		      	<span><%= cvo.getRdate() %></span>
+	    			<!-- 메뉴바 -->
+						<div class="commentMenuA" style="width:30px; cursor:pointer; margin-bottom:5px;" onclick="toggleA(this);">
+							<div style="display: flex; align-items: center; gap: 10px;"> 
+		       			<span id="menuB" class="menuB" style="display: flex; align-items: center; gap: 10px;">
+		         			<i class="fas fa-solid fa-bars"></i>
+			  	 			</span>
+		  	 			</div>
+			    			<!-- 서브메뉴바 -->
+			    			<div class="commentMenutableA" style="display:none;">
+			        	<!-- 댓글신고 -->
+								<div class="menu-container" id="complainDiv" onclick="complainAdd(<%= cvo.getBno() %>);">
 			            <img style="width:20px; cursor:pointer;" 
 			                 src="https://img.icons8.com/?size=100&id=8773&format=png&color=767676">
 			            <button id="infoBtn" onclick="complainAdd(<%= vo.getBno() %>);">신고</button>
-			        </div>
+			        	</div>
 			        <%
 					if(session.getAttribute("loginUser") != null){
 						if(uno == vo.getUno()){
 						%>
 				        <!-- 댓글수정 -->
-				        <div class="commentMenu-container">
-				            <i class="fas fa-solid fa-pen-nib"></i>
-				            <button id="infoBtn" type="button" name="commentsModify" onclick="commentsModify()">수정</button>
+								<div class="commentMenu-container">
+				        	<i class="fas fa-solid fa-pen-nib"></i>
+				         	<button id="infoBtn" type="button" name="commentsModify" onclick="setModify(this)">수정</button>
 				        </div>
 				        <!-- 댓글삭제 -->
 				        <div class="commentMenu-container">
-				            <i class="fas fa-solid fa-eraser"></i>
-				            <button id="infoBtn" type="button"">삭제</button>
+				        	<i class="fas fa-solid fa-eraser"></i>
+				        	<button id="infoBtn" type="button" onclick="setCommentDelete(<%=cvo.getCno() %>,this)">삭제</button>
 				        </div>
 						<%
 						}else if(viewUser.getUauthor().equals("A")){
 							System.out.println("writer.getUauthor() : " + viewUser.getUauthor());
 						%>
 						<!-- 댓글삭제 -->
-				        <div class="commentMenu-container">
-				            <i class="fas fa-solid fa-eraser"></i>
-				            <button id="infoBtn" type="button" >삭제</button>
-				        </div>
-						<%	
+								<div class="commentMenu-container">
+				        	<i class="fas fa-solid fa-eraser"></i>
+				        	<button id="infoBtn" type="button" >삭제</button>						
+				            <%	
 						}
 					%>
 			        <%
 					}
 					%>
+<<<<<<< HEAD
+								</div>
+							</div>  
+						</div>
+					</div>
+				</div>
+			</div>
+=======
 			   		 </div>
 					</div>  
 			  	 </div>
 		  	 </div>
+>>>>>>> branch 'main' of https://github.com/SNS-Bteam/first-SNS.git
 						<%
 					}
 				%>
-		  	 </div>
-	  	 </div>
- 	 </div>
+				</div>
+		</div>
+		</div>
+	</div>
 </div>

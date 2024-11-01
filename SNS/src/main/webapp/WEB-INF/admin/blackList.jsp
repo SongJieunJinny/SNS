@@ -44,14 +44,14 @@
                        if(vo.getUstate().equals("E")){
                     	%>	   
                    	   <td>
-                       		<button type="button" class="ssBtn" onclick="stopFn()">정지</button>
+                       		<button type="button" class="ssBtn" onclick="stopFn(<%=vo.getUno()%>,'E')">정지</button>
                        </td>
                      	<%
                      	}else{
                     	%> 
                    	    <td>
                        		<button type="button" class="ssBtn" 
-                       		style="background-color:#767676; color:white;" onclick="stopFn()">정지해제</button>
+                       		style="background-color:#767676; color:white;" onclick="stopFn(<%=vo.getUno()%>,'D')">정지해제</button>
                        </td>
                        <%
                        }
@@ -65,9 +65,7 @@
 <%@ include file="../include/aside.jsp" %>
 <script>
 // post 방식으로 보내야하기 때문에 onclick 할 때 함수 안에 ajax를 사용해야함
-function stopFn(){
-	const uno = $('#uno').val();
-	const ustate = $('#ustate').val();
+function stopFn(uno,ustate){
 	// 값을 가져왔나 확인 
 	// 만약 가져오지 않았다면, controller에서 vo에 담겨져 있는지 확인해야함
 	console.log(uno);
