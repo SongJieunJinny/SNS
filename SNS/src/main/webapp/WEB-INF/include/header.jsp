@@ -758,6 +758,26 @@ function complainAdd(bno) {
 		alert("로그인 후 신고가능합니다.");
 	}
 }
+
+// ------------알림 모달창------------------
+    const alarmModal = document.querySelector(".alarm_modal");
+    const openIcon = document.querySelector(".icon");
+    const closeIcon = document.querySelector(".icon");
+    
+    openIcon.onclick = function() {
+        alarmModal.style.display = "flex";
+    }
+    
+    closeIcon.onclick = function() {
+    	alarmModal.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        if (event.target == alarmModal) {
+        	alarmModal.style.display = "none";
+        }
+    }
+    
 </script>
 </head> 
 
@@ -946,4 +966,13 @@ function complainAdd(bno) {
 	            <!-- 게시글 내용이 여기에 표시됨 -->
 	        </div>
 	    </div>
+	</div>
+	
+	<!-- 알림 모달창 -->
+	<div id="alarm_modal" style="display:none;">
+		<div class="alarm_modal-content">
+			<div id="alarm_modalBody">
+				<!-- 알람 내용 여기에 표시됨 -->
+			</div>
+		</div>
 	</div>
