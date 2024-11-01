@@ -8,31 +8,33 @@
 %>
 <!--웹페이지 본문-->
 <section>
+<form name="modify" method="post"  action=""> 
 	<div class="div_inner">
-		<form name="modify" method="post"  action=""> 
 			<div class="view_div">
 		 	   <div class="view_inner">
-					<label>
-						<span class="imgSpan">
-							<img  id="wPreview" src="<%=request.getContextPath() %>/upload/<%=vo.getPname()%>" alt="고양이" 
-							  style="width: 100%;height: 100%; border-radius: 40px;">
-						</span>
-						<input type="file" style="display: none;" name="attach" id="attach" onchange="readURL(this);">
-					</label>
-					<div class="view_content" style="width: 50%; margin-left:40px;">
+		 	   		<div class="view_img">
+						<label>
+							<span class="imgSpan">
+								<img  id="wPreview" src="<%=request.getContextPath() %>/upload/<%=vo.getPname()%>" alt="고양이" 
+								  style="width: 100%;height: 100%; border-radius: 40px;">
+							</span>
+							<input type="file" style="display: none;" name="attach" id="attach" onchange="readURL(this);">
+						</label>
+					</div>
+					<div class="view_content" style="width: 50%; margin-left:40px; overflow: hidden;">
 						<input type="text" class="titleInput" placeholder="글제목" id="title" value="<%=vo.getTitle()%>">
-						<input type="text" class="contentInput" placeholder="글내용" id="content" value="<%=vo.getContent()%>">
+						<textarea class="contentInput" placeholder="글내용" id="content"name="content"><%=vo.getContent()%></textarea>
 						<div class="btnDiv">
 							<input type="hidden" name ="bno" value="<%=vo.getBno()%>" id="bno">
-							<input class="userBtn" type="button" value="수정" onclick="modifyFn()">
-							<input class="userBtn" type="button" value="취소" 
+							<input class="userBtn" type="button" style="width: 95%;" value="수정" onclick="modifyFn()">
+							<input class="userBtn" type="button" style="width: 95%;" value="취소" 
 							onclick="location.href='<%= request.getContextPath() %>'">
 						</div>
 					</div>
 				</div>
 			</div>
-		</form>
-	</div>
+		</div>
+	</form>
 </section>
 <%@ include file="../include/aside.jsp" %>
 <script>
