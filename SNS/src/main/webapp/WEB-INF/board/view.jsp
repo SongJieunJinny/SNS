@@ -223,7 +223,7 @@ function deleteFn(){
 <!--웹페이지 본문-->
 <div class="view_div">
     <div class="view_inner">
-    	<div class="view_img">
+    	<div class="view_img" style="width:50%;">
 			<span id="view_img_span" style="cursor: default;">
 				<img src="<%= request.getContextPath() %>/upload/<%= vo.getPname() %>">
 			</span>

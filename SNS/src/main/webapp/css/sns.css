@@ -4,7 +4,7 @@ html, body {
     padding: 0;
     /* height: 100%; */
     height: auto; 
-    background-color: white;
+    /* background-color: white; */
     font-size: 18px;
     color:#333333;
     font-weight:bold;
@@ -487,18 +487,20 @@ body.dark-mode .view_inner img{
 }
 
 .view_img {
-    width: 50%; 
+    width: 50% !important;
     position: relative;
 }
 
 .view_img #view_img_span img {
-    width:640px;
-    height:680px;
+    /* width:640px;
+    height:680px; */
+    width: 100%;
+    height: 100%;
     border-radius: 40px;
 }
 
 .view_content{
-	width: 50%; /* 전체의 50% 차지 */
+	width: 45%; /* 전체의 50% 차지 */
     padding: 20px; /* 내부 여백 추가 */
     max-height: 600px; /* 고정된 높이 설정 (필요에 따라 조정 가능) */
     overflow-y: auto; /* 내용이 많으면 스크롤 발생 */
@@ -1420,12 +1422,13 @@ section > h2 {
 	background-color: white;
 	border-radius: 50%;
 	cursor: pointer;
-	margin-left: 35%;
+	margin-left: 20%;
 	/* margin-top: 25%;
 	margin-bottom: 20%; */ 
 }
 .profileRight{
 	width: 50%;
+	margin-left:20px;
 	/* height: 100%; */
 	/* justify-content: center;
 	align-items: center; */
