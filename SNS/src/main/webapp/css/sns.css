@@ -481,8 +481,22 @@ body.dark-mode .view_inner img{
     justify-content: space-between; /* 좌우로 채움 */
 }
 
+.view_img {
+    width: 50%; 
+    position: relative;
+}
+
+.view_img img {
+    width: 100%; /* 이미지가 div에 맞게 크기 조정 */
+    height: auto;
+    border-radius: 20px;
+}
+
 .view_content{
-	overflow-y: auto;
+	width: 50%; /* 전체의 50% 차지 */
+    padding: 20px; /* 내부 여백 추가 */
+    max-height: 600px; /* 고정된 높이 설정 (필요에 따라 조정 가능) */
+    overflow-y: auto; /* 내용이 많으면 스크롤 발생 */
 }
 
 .view_left{
@@ -1305,19 +1319,21 @@ section > h2 {
 } */
 
 .imgSpan {
-    width: 550px; /* 이미지 크기와 동일하게 맞춤 */
-    height: 550px;
-    margin-left: 10px;
+    width: 540px; 
+    height: 540px;
+    /* margin-left: 10px;
+    margin-top:5px; */
+    margin:10px;
     display: block;
     text-align: center;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     background-color: white;
     border-radius: 40px;
-    cursor: default;
-    flex-shrink: 0; /* 이미지 크기를 고정하여 콘텐츠 영역만 스크롤 가능하게 설정 */
-}
+    cursor: pointer;
+    flex-shrink: 0; 
+} 
 .titleInput{
-		width: 500px;
+		width: 95%;
 		height: 50px;
 		text-align: center;
 		border: none;
@@ -1330,8 +1346,8 @@ section > h2 {
 		margin-bottom: 10px;
 }
 .contentInput{
-		width: 500px;
-		height: 500px;
+		width: 95%;
+		height: 65%;
 		border: none;
 		display: block;
 		text-align: center;
