@@ -209,7 +209,11 @@ public class UserController {
 			, HttpServletResponse response) throws IOException {
 		request.setCharacterEncoding("UTF-8");
 		/* String uploadPath = request.getServletContext().getRealPath("/upload"); */
-		String uploadPath = "C:\\DEV\\GIT\\first-SNS\\sns\\src\\main\\webapp\\upload";
+		/*
+		 * String uploadPath =
+		 * "C:\\DEV\\GIT\\first-SNS\\sns\\src\\main\\webapp\\upload";
+		 */
+		String uploadPath = request.getServletContext().getRealPath("/upload");
 		System.out.println("서버의 업로드 폴더 경로 : " + uploadPath);
 
 		int size = 10 * 1024 * 1024;
