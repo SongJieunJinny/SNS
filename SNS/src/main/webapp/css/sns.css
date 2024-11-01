@@ -486,16 +486,37 @@ body.dark-mode .view_inner img{
     justify-content: space-between; /* 좌우로 채움 */
 }
 
-.view_img {
+/* .view_img {
     width: 50% !important;
     position: relative;
 }
 
 .view_img #view_img_span img {
-    /* width:640px;
-    height:680px; */
+    width:640px;
+    height:680px;
     width: 100%;
     height: 100%;
+    border-radius: 40px;
+    object-fit: cover;
+} */
+
+.view_img {
+    width: 50%; /* 원하는 크기로 조정 */
+    overflow: hidden; /* 영역을 넘어가는 내용 숨기기 */
+}
+
+#view_img_span {
+    display: flex; /* Flexbox로 설정 */
+    justify-content: center; /* 수평 중앙 정렬 */
+    align-items: center; /* 수직 중앙 정렬 */
+    width: 100%; /* span이 100% 너비를 가지도록 설정 */
+    border-radius: 40px;
+}
+
+.view_img span img {
+    width: 100%; /* span의 너비에 맞게 이미지 크기 조정 */
+    height: auto; /* 비율을 유지하도록 설정 */
+    max-height: 100%; /* 필요에 따라 최대 높이 조정 */
     border-radius: 40px;
 }
 
@@ -606,7 +627,7 @@ body.dark-mode .view_inner img{
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     width: 100px;
     top: 100%; /* #menuA의 바로 아래 위치 */
-    left: 0; /* #menuA의 왼쪽과 맞춤 */
+    left: -180%; /* #menuA의 왼쪽과 맞춤 */
     z-index: 1000;
 }
 
@@ -1326,8 +1347,8 @@ section > h2 {
 } */
 
 .imgSpan {
-    width: 540px; 
-    height: 540px;
+    width: 470px; 
+    height: 470px;
     /* margin-left: 10px;
     margin-top:5px; */
     margin:10px;
@@ -1354,7 +1375,7 @@ section > h2 {
 }
 .contentInput{
 		width: 95%;
-		height: 65%;
+		height: 60%;
 		border: none;
 		display: block;
 		text-align: center;
