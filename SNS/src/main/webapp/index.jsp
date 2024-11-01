@@ -17,13 +17,21 @@ try{
 	int indexpage = request.getParameter("indexpage") != null ? Integer.parseInt(request.getParameter("indexpage")) : 1;
 	int pageSize = 24;
 	int startRow = (indexpage - 1) * pageSize;
+	
+	String keyword = request.getParameter("searchValue");
+	if(keyword == null){
+		keyword = "";
+	}
 
 	String sql = "select b.bno, pname "
 	           + "from board b "
 	           + "inner join attach a on b.bno = a.bno "
-	           + "where b.state='E' "
-	           + "order by bno desc "
-	           + "limit ? offset ?";
+	           + "where b.state='E' " ;
+if(!keyword.equals("")){
+							sql += " and title like ('%"+ keyword + "%')";
+}
+	   		sql +=  "order by bno desc ";
+	   		sql +=  "limit ? offset ?";
 	psmt = conn.prepareStatement(sql);
 	psmt.setInt(1, pageSize);
 	psmt.setInt(2, startRow);
