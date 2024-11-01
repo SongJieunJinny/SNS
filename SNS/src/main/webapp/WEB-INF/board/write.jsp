@@ -17,7 +17,7 @@
 				</div>
 				<div class="view_content" style="width: 50%; margin-left:40px; overflow: hidden; ">
 					<input type="text" class="titleInput" placeholder="글제목" id="title" name="title">
-					<input type="text" class="contentInput" placeholder="글내용" id="content"name="content">
+					<textarea class="contentInput" placeholder="글내용" id="content"name="content"></textarea>
 					<div class="btnDiv">
 						<form name="write" method="post" action="">
 						<!-- type을 버튼으로 설정해야함 : 버튼으로 설정하지 않은경우 받아올 수 없음-->
