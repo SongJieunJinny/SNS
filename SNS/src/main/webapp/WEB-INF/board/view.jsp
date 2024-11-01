@@ -133,7 +133,7 @@ function commentsModify(obj) {
 			<span style="font-size:18px;">\${data.name}</span>
 		</div>
 			<!-- 댓글작성 내용 -->
-			<div style="margin-top: 5px; margin-left: 70px;" id="content">
+			<div style=" margin-left: 70px;" id="content">
       	<span>\${data.content}</span>
       </div>
       <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 5px; margin-left: 70px; font-size: 12px; color: #999;">
@@ -367,17 +367,19 @@ function deleteFn(){
 		      <span style="font-size:18px;"><%=cvo.getUnick() %></span>
 		    </div>
 		    	<!-- 댓글작성 내용 -->
-			  	<div style="margin-top: 5px; margin-left: 70px;" id="content">
-					<form class="modiForm">
+			  	<div style="margin-top: 5px; margin-left: 70px; margin-bottom: -5%;"id="content">
+					<form class="modiForm" style= "display: ruby-text;">
            	<span class="commentContent"><%= cvo.getContent() %></span>
            	<span style="display:none;" class="modifyForm" >
            		<input type="hidden" value="<%= cvo.getCno() %>" name="cno">
 	           	<input class="commentContentInput" type="text" value="<%= cvo.getContent() %>" name="content"
 					          style="box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 												   background-color: white;
+												   border: 2px solid #BFBFBF;
+												   outline: none;
 												   border-radius: 40px;
-												   width:70%;
-												   padding: 2%;
+												   width:55%;
+												   padding: 3%;
 												   display: flex;
 												   align-items: center; 
 												   gap: 10px;">
@@ -388,17 +390,31 @@ function deleteFn(){
 													   font-weight:bold;
 													   font-size:15px;
 													   text-align: center;
-													   margin-bottom:20px;
 													   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 													   background-color: #BFBFBF;
 													   border-radius: 40px;
-													   width:12%;
+													   width:13%;
+													   padding: 1%;
 													   align-items: center;
 													   gap: 10px;">수정</button>
+							<input type="reset" value="취소"
+	           					style="box-sizing: border-box;
+													   border: 2px solid #BFBFBF;
+													   outline: none;
+													   font-weight:bold;
+													   font-size:15px;
+													   text-align: center;
+													   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+													   background-color: #BFBFBF;
+													   border-radius: 40px;
+													   width:13%;
+													   padding: 1%;
+													   align-items: center;
+													   gap: 10px;">
            </span>
 					</form>
 					</div>
-         	<div style="display: flex; justify-content: space-between; align-items: center; margin-top: 5px; margin-left: 70px; font-size: 12px; color: #999;">
+         	<div style="display: flex; justify-content: space-between; align-items: center; /* margin-top: 5px; */ margin-left: 70px; font-size: 12px; color: #999;">
 		     		<!-- 댓글작성일 -->
 		      	<span><%= cvo.getRdate() %></span>
 	    			<!-- 메뉴바 -->
