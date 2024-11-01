@@ -38,7 +38,7 @@
                    <tr>
                        	<td>페이징 번호</td>
                        	<td><%=vo.getUnick() %></td>
-                       	<td><%=vo.getTitle() %></td>
+                       	<td onclick ="titleViewFn(<%=vo.getBno()%>)" ><%=vo.getTitle() %></td>
                        	<td><%=vo.getRdate() %></td>
                        	<td><%=vo.getDeclaration() %></td>
                        <%
@@ -91,7 +91,23 @@ function stateFn(bno,state){
         } 
 	});
 }
-
+// 수정해야함
+function titleViewFn(bno){
+	console.log(bno);
+	$.ajax({
+		url : "admin/stopBoard.do",
+		type : "post",
+		data : {
+			// 보내야 할 데이터를 담음 
+			"bno" : bno,
+		},
+		success: function(response){
+		},
+		error: function(xhr, status, error) {
+            // 에러 처리
+        } 
+	});
+}
 </script>
  
  
