@@ -461,25 +461,19 @@ function deleteFn(){
 			        <%
 					}
 					%>
-<<<<<<< HEAD
+
 								</div>
 							</div>  
 						</div>
 					</div>
 				</div>
 			</div>
-=======
+
 							 </div>
 					</div>  
 			  	 </div>
 		  	 </div>
->>>>>>> branch 'main' of https://github.com/SNS-Bteam/first-SNS.git
+
 						<%
 					}
 				%>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-</div>
