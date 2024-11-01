@@ -455,6 +455,8 @@ function resetEvents() {
 function openLoginModal() {
     $("#user_modal").fadeIn();
     
+    $(".msg").html(""); 
+    
     $.ajax({
         url: "<%= request.getContextPath() %>/user/login.do",
         type: "get",
