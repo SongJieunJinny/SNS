@@ -438,16 +438,12 @@ function deleteFn(){
 			        <%
 					}
 					%>
+
 							 </div>
 					</div>  
 			  	 </div>
 		  	 </div>
+
 						<%
 					}
 				%>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-</div>
