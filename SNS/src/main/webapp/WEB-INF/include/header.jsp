@@ -364,6 +364,10 @@ function findPage(type) {
             DarkMode();
         }
     });
+    
+    $(document).on('click', '#emailBtn', function() {
+    	$("#emailBtn").text("메일발송중");
+    });
 }
 
 function DoChange(){
@@ -661,6 +665,7 @@ function SendMail() {
 		dataType: "html",
 		success : function(result) {
 			result = result.trim();
+			$("#emailBtn").text("인증하기");
 			alert(result);
 		}			
 	});		
