@@ -710,7 +710,21 @@ function loadReco(bno) {
         data: { bno: bno},
         success: function(data) {
         	console.log("loadReco data:"+data);
-            $("#reco").html(data);
+        	let html = "";
+        	if(data.lState === "E"){
+				html += `
+				<img style="width:30px; cursor:pointer;" 
+			         src="https://img.icons8.com/?size=100&id=12306&format=png&color=5D4037" 
+		         onclick="recoAdd(\${data.bno})" />
+				`;        		
+        	}else{
+        		html += `
+   				<img style="width:30px; cursor:pointer;" 
+   			         src="https://img.icons8.com/?size=100&id=7697&format=png&color=767676" 
+   		         onclick="recoAdd(\${data.bno})" />
+   				`;        		
+        	}
+        	$('#reco').html(html);
         },
         error: function(xhr, status, error) {
             console.error("AJAX 요청 실패: ", status, error);  // 오류 확인

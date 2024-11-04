@@ -338,9 +338,12 @@ public class BoardController {
 		    	lState = "E";
 		    }
 		    
-		    request.setAttribute("lState", lState);
-		    request.setAttribute("bno", bno);
-			request.getRequestDispatcher("/WEB-INF/board/loadReco.jsp").forward(request, response);
+		    JSONObject jsonObj = new JSONObject(); 
+		    jsonObj.put("bno", bno); 
+		    jsonObj.put("lState", lState);
+
+		    response.setContentType("application/json; charset=UTF-8");
+		    response.getWriter().write(jsonObj.toString());
 
 		} catch (Exception e) {
 		    e.printStackTrace();
