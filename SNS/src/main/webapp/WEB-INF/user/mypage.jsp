@@ -2,10 +2,15 @@
     pageEncoding="UTF-8"%>
 <%@ include file="../include/header.jsp" %>
 <%@ include file="../include/nav.jsp" %>
+<%@ page import="sns.vo.* "%>
 <%
 UserVO pageUser = (UserVO)request.getAttribute("user");
+System.out.println("pageUser=================================" +pageUser );
 String pUno = pageUser.getUno();
 String pPname = pageUser.getPname();
+// 현재 보고있는 섹션을 페이지가 알 수 있도록 표시하기 위해 type 변수 선언 
+String type = request.getParameter("type");
+ArrayList<BoardVO> board = (ArrayList<BoardVO>)request.getAttribute("board");
 %>
 <!--웹페이지 본문-->
 <section>
@@ -54,9 +59,13 @@ String pPname = pageUser.getPname();
 				<%
 	    		if(loginUser != null && pUno.equals(loginUser.getUno())){
     			%>
-				<!-- 로그인한 회원의 마이페이지인 경우 -->
-				<a href="mypage.do?uno=<%= loginUser.getUno() %>" style="text-decoration: underline; text-underline-offset: 6px;">북마크</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<a href="mypage_write.do" style="color:gray;">내가쓴글</a>
+					<!-- 로그인한 회원의 마이페이지인 경우 -->
+					<!-- 북마크를 클릭했을 때 해당 링크로 uno와 type 파라미터를 전송  -->
+					<!-- 응답받은 타입이 문자열과 일치할 때 스타일을 적용  -->
+					<a href="mypage.do?uno=<%= loginUser.getUno() %>&type=bookmark"
+	   				style="<%= "bookmark".equals(type) ? "text-decoration: underline; text-underline-offset: 6px;" : "color:gray;" %>">북마크</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<a href="mypage_write.do?uno=<%= loginUser.getUno() %>&type=written" 
+					style="<%= "written".equals(type) ? "text-decoration: underline; text-underline-offset: 6px;" : "color:gray;" %>">내가쓴글</a>
 				<%
 	    		}else{
     			%>
@@ -70,9 +79,17 @@ String pPname = pageUser.getPname();
 		<!-- 게시글출력되는곳 -->
 		<div id="indexDiv" class="scrollable">
             <!-- 1번째 줄 -->
-            <div class="listDiv">
+            <%
+            for (BoardVO bvo : board){ %>
+            <!-- 게시글을 클릭할 때 해당하는 bno를 가진 게시글을 모달창에 띄우기 위해 id를 줌  -->
+            <div class="listDiv" id="<%= bvo.getBno()%>">
                 <!-- 이미지 -->
-            </div>
+                <img src="<%= request.getContextPath() %>/upload/<%= bvo.getPname() %>" onclick="mypageViewFn()">
+            </div>	
+            <% 
+            }
+            %>
+            
             <div class="listDiv">
                 <!-- 이미지 -->
             </div>
@@ -92,3 +109,8 @@ String pPname = pageUser.getPname();
     </div>
 </section>
 <%@ include file="../include/aside.jsp" %>
+<script>
+function mypageViewFn(){
+	
+}
+</script>

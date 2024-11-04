@@ -27,9 +27,9 @@ try{
 	           + "from board b "
 	           + "inner join attach a on b.bno = a.bno "
 	           + "where b.state='E' " ;
-if(!keyword.equals("")){
-							sql += " and title like ('%"+ keyword + "%')";
-}
+	if(!keyword.equals("")){
+			sql += " and title like ('%"+ keyword + "%')";
+	}
 	   		sql +=  "order by bno desc ";
 	   		sql +=  "limit ? offset ?";
 	psmt = conn.prepareStatement(sql);

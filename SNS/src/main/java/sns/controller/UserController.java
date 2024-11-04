@@ -22,6 +22,7 @@ import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 import sns.util.DBConn;
 import sns.util.Sendmail;
+import sns.vo.BoardVO;
 import sns.vo.UserVO;
 
 public class UserController {
@@ -78,6 +79,10 @@ public class UserController {
 		}else if(comments[comments.length-1].equals("checkMSG.do")) {
 			if(request.getMethod().equals("GET")) {
 				checkMSG(request,response);
+			}
+		}else if(comments[comments.length-1].equals("mypage_write.do")) {
+			if (request.getMethod().equals("GET")) {
+				myPageWrite(request,response);
 			}
 		}
 	}
@@ -782,6 +787,73 @@ public class UserController {
 		}
 		
 	
+	}
+
+	
+	public void myPageWrite(HttpServletRequest request
+			, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		String Struno   = request.getParameter("uno");
+		if(Struno == null) {
+			return;
+		}
+		int uno = Integer.parseInt(Struno);
+		System.out.println("uno ===================================="+ uno);
+		
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+		String sql = "";
+		
+		try {
+			conn = DBConn.conn();
+			sql = " SELECT * FROM board b "
+					+ " INNER JOIN user u "
+					+ " ON b.uno = u.uno"
+					+ " INNER JOIN attach a "
+					+ " ON b.bno = a.bno"
+					+ " where u.uno =? ";
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(1, uno);
+			rs =psmt.executeQuery(); 
+			ArrayList<BoardVO> board = new ArrayList<>();
+			while(rs.next()) {
+				UserVO user = new UserVO();
+				user.setUno(rs.getString("uno"));
+				user.setUid(rs.getString("uid"));
+				user.setUnick(rs.getString("unick"));
+				user.setUemail(rs.getString("uemail"));
+				user.setUstate(rs.getString("ustate"));
+				user.setUauthor(rs.getString("uauthor"));
+				user.setUrdate(rs.getString("urdate"));
+				user.setPname(rs.getString("pname"));
+				user.setFname(rs.getString("fname"));
+				request.setAttribute("user",user);
+				
+				BoardVO vo = new BoardVO();
+				 vo.setBno(rs.getInt("bno"));
+				 vo.setUno(rs.getInt("uno"));
+				 vo.setTitle(rs.getString("title"));
+				 vo.setContent(rs.getString("content"));
+				 vo.setRdate(rs.getString("rdate"));
+				 vo.setState(rs.getString("state"));
+				 vo.setUnick(rs.getString("unick"));
+				 vo.setPname(rs.getString("a.pname"));
+				 vo.setFname(rs.getString("a.fname"));
+				 board.add(vo);
+			}
+			request.setAttribute("board", board);
+			request.getRequestDispatcher("/WEB-INF/user/mypage.jsp").forward(request, response);	
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				DBConn.close(rs, psmt, conn);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 
