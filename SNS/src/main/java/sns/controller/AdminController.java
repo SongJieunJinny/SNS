@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONObject;
+
 import sns.util.DBConn;
 import sns.vo.BoardVO;
 import sns.vo.UserVO;
@@ -188,10 +190,12 @@ public class AdminController {
 		    	state = "E";
 		    }
 		    
-		    request.setAttribute("state", state);
-		    request.setAttribute("bno", bno);
-			request.getRequestDispatcher("/WEB-INF/admin/loadComplain.jsp").forward(request, response);
+		    JSONObject jsonObj = new JSONObject(); 
+		    jsonObj.put("bno", bno); 
+		    jsonObj.put("state", state);
 
+		    response.setContentType("application/json; charset=UTF-8");
+		    response.getWriter().write(jsonObj.toString());
 		} catch (Exception e) {
 		    e.printStackTrace();
 		} finally {

@@ -756,8 +756,22 @@ function loadComplain(bno) {
         type: "get",
         data: { bno: bno },
         success: function(data) {
-        	console.log(data);
-            $("#complainDiv").html(data);
+        	console.log("loadComplain data:"+data);
+        	let html = "";
+        	if(data.state === "E"){
+				html += `
+	        	<img style="width:20px; cursor:pointer;" 
+        	        src="https://img.icons8.com/?size=100&id=8773&format=png&color=FF7F50" />
+        	    <button id="infoBtn">신고</button>
+				`;        		
+        	}else{
+        		html += `
+       			<img style="width:20px; cursor:pointer;" 
+        	        src="https://img.icons8.com/?size=100&id=8773&format=png&color=767676" />
+        	    <button id="infoBtn">신고</button>
+   				`;        		
+        	}
+        	$('#complainDiv').html(html);
         }
     });
 }
