@@ -92,22 +92,35 @@ function stateFn(bno,state){
 	});
 }
 // 수정해야함
-function titleViewFn(bno){
-	console.log(bno);
-	$.ajax({
-		url : "admin/stopBoard.do",
-		type : "post",
-		data : {
-			// 보내야 할 데이터를 담음 
-			"bno" : bno,
-		},
-		success: function(response){
-		},
-		error: function(xhr, status, error) {
-            // 에러 처리
+function titleViewFn(bno) {
+    console.log(bno); // 확인용
+    $.ajax({
+        url: "<%= request.getContextPath() %>/board/view.do",  // HTML 응답을 반환하는 Controller 경로
+        type: "GET",
+        data: { "bno": bno },
+        success: function(response) {
+            // 모달에 가져온 HTML을 넣음
+            $('#modalBody').html(response);
+            
+            // 모달을 보여줌
+            $('#modal').show();
+        },
+        error: function(xhr, status, error) {
+            console.error("오류 발생:", error);
+            alert("게시글을 불러오지 못했습니다.");
         } 
-	});
+    });
 }
+
+// 모달 닫기 함수
+$(window).click(function(event) {
+	    if ($(event.target).is("#modal")) {
+	        $("#modal").fadeOut(); // 모달 창 숨기기
+	    }
+	});
+
+
+
 </script>
  
  
