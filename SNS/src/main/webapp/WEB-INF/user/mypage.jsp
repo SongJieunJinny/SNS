@@ -83,34 +83,45 @@ ArrayList<BoardVO> board = (ArrayList<BoardVO>)request.getAttribute("board");
             for (BoardVO bvo : board){ %>
             <!-- 게시글을 클릭할 때 해당하는 bno를 가진 게시글을 모달창에 띄우기 위해 id를 줌  -->
             <div class="listDiv" id="<%= bvo.getBno()%>">
+            <%System.out.println("vo.getBno=================================" +bvo.getBno() ); %>
                 <!-- 이미지 -->
-                <img src="<%= request.getContextPath() %>/upload/<%= bvo.getPname() %>" onclick="mypageViewFn()">
+                <img src="<%= request.getContextPath() %>/upload/<%= bvo.getPname() %>" onclick="mypageViewFn(<%=bvo.getBno()%>)">
             </div>	
             <% 
             }
             %>
-            
-            <div class="listDiv">
-                <!-- 이미지 -->
-            </div>
-            <div class="listDiv">
-                <!-- 이미지 -->
-            </div>
-            <div class="listDiv">
-                <!-- 이미지 -->
-            </div>
-            <div class="listDiv">
-                <!-- 이미지 -->
-            </div>
-            <div class="listDiv">
-                <!-- 이미지 -->
-            </div>
         </div> 
     </div>
 </section>
 <%@ include file="../include/aside.jsp" %>
 <script>
-function mypageViewFn(){
-	
+function mypageViewFn(bno) {
+    console.log(bno); // 확인용
+    $.ajax({
+    	// HTML 응답을 반환하는 Controller 경로
+        url: "<%= request.getContextPath() %>/board/view.do",  
+        type: "GET",
+        data: { "bno": bno },
+        success: function(response) {
+            // 모달에 가져온 HTML을 넣음
+            $('#modalBody').html(response);
+            
+            // 모달을 보여줌
+            $('#modal').show();
+        },
+        error: function(xhr, status, error) {
+            console.error("오류 발생:", error);
+            alert("게시글을 불러오지 못했습니다.");
+        } 
+    });
 }
+
+//모달 닫기 함수
+$(window).click(function(event) {
+	    if ($(event.target).is("#modal")) {
+	        $("#modal").fadeOut(); // 모달 창 숨기기
+	    }
+	});
+
+
 </script>

@@ -91,11 +91,12 @@ function stateFn(bno,state){
         } 
 	});
 }
-// 수정해야함
+
 function titleViewFn(bno) {
     console.log(bno); // 확인용
     $.ajax({
-        url: "<%= request.getContextPath() %>/board/view.do",  // HTML 응답을 반환하는 Controller 경로
+    	// HTML 응답을 반환하는 Controller 경로
+        url: "<%= request.getContextPath() %>/board/view.do",  
         type: "GET",
         data: { "bno": bno },
         success: function(response) {
