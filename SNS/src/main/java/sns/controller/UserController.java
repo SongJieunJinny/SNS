@@ -23,6 +23,7 @@ import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 import sns.util.DBConn;
 import sns.util.Sendmail;
 import sns.vo.BoardVO;
+import sns.vo.FollowVO;
 import sns.vo.UserVO;
 
 public class UserController {
@@ -86,7 +87,7 @@ public class UserController {
 			}
 		}
 	}
-	
+		
 	public void login(HttpServletRequest request
 			, HttpServletResponse response) throws ServletException, IOException {
 		request.getRequestDispatcher("/WEB-INF/user/login.jsp").forward(request, response);
@@ -161,6 +162,7 @@ public class UserController {
 		/* UserVO loginUser = (UserVO)session.getAttribute("loginUser"); */
 		String uno = request.getParameter("uno");
 		
+		
 		Connection conn = null;			//DB 연결
 		PreparedStatement psmt = null;	//SQL 등록 및 실행. 보안이 더 좋음!
 		ResultSet rs = null;			//조회 결과를 담음
@@ -188,6 +190,23 @@ public class UserController {
 				user.setFname(rs.getString("fname"));
 				request.setAttribute("user",user);
 				
+				//세션에 있는 uno와 일치하는 팔로우 테이블의 uno를 카운트를 조회한다
+				sql = " select count(*) as cnt from follow where tuno = ? " ;
+								
+				psmt = conn.prepareStatement(sql);
+				psmt.setInt(1, Integer.parseInt(uno));
+				
+				rs = psmt.executeQuery();
+				
+				int cnt =0;
+				if(rs.next()){
+					cnt =rs.getInt("cnt");
+				}
+				
+				request.setAttribute("fcnt", cnt);
+					
+							
+				//jsp 출력한다
 				
 				request.getRequestDispatcher("/WEB-INF/user/mypage.jsp").forward(request, response);
 			}else {

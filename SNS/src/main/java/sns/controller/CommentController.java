@@ -5,18 +5,16 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 
 import sns.util.DBConn;
-import sns.vo.BoardVO;
-import sns.vo.CommentsVO;
+import sns.vo.UserVO;
 
 public class CommentController {
 	public CommentController(HttpServletRequest request, HttpServletResponse response, String[] comments)
@@ -143,10 +141,12 @@ public class CommentController {
 		// 응답의 Content-Type을 JSON으로 설정
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
-
+		
+		HttpSession session = request.getSession();
+		UserVO loginUser = (UserVO)session.getAttribute("loginUser");
 		// 폼 데이터 가져오기
 		int bno = Integer.parseInt(request.getParameter("bno"));
-		int uno = Integer.parseInt(request.getParameter("uno"));
+		int uno = Integer.parseInt(loginUser.getUno());
 		String content = request.getParameter("content");
 
 		// DB연결
