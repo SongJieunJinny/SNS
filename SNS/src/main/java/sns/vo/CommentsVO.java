@@ -42,13 +42,22 @@ public class CommentsVO {
 	
 	public void setCno(int cno) {this.cno = cno;}
 	public void setBno(int bno) {this.bno = bno;}
-	public void setUno(int uno) {this.bno = uno;}
+	public void setUno(int uno) {this.uno = uno;}
 	public void setAno(int ano) {this.ano = ano;}
 	public void setContent(String content) {this.content = content;}
 	public void setRdate(String rdate) {this.rdate = rdate;}
 	public void setState(String state) {this.state = state;}
 	public void setUnick(String unick) {this.unick = unick;}
 	public void setPname(String pname) {this.pname = pname;}
+
+
+	@Override
+	public String toString() {
+		return "CommentsVO [cno=" + cno + ", bno=" + bno + ", uno=" + uno + ", ano=" + ano + ", content=" + content
+				+ ", rdate=" + rdate + ", state=" + state + ", unick=" + unick + ", pname=" + pname + "]";
+	}
+	
+	
 	
 
 }

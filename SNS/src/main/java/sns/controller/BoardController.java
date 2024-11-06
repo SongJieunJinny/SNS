@@ -327,6 +327,9 @@ public class BoardController {
 	public void view (HttpServletRequest request
 			, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
+		HttpSession session = request.getSession();
+		UserVO loginUser = (UserVO)session.getAttribute("loginUser");
+		String uno = loginUser.getUno();
 		String bno = request.getParameter("bno");
 		BoardVO vo = new BoardVO();
 		Connection conn = null;
@@ -342,7 +345,8 @@ public class BoardController {
 			conn = DBConn.conn();
 			String sql = " SELECT b.*,u.unick,a.pname,a.fname, "
 					+"   (select count(*) from love where bno = b.bno) as cnt, "
-					+"   (select pname from user where uno = b.uno) as upname "
+					+"   (select pname from user where uno = b.uno) as upname, "
+					+" (select count(*) from follow where uno = ? and tuno = b.uno) as isfollow "
 					+"   FROM board b "
 					+ " inner join user u " 
 					+ " on b.uno = u.uno "
@@ -351,7 +355,9 @@ public class BoardController {
 					+"  WHERE b.bno=? and state='E' ";
 			
 			psmt = conn.prepareStatement(sql);
-			psmt.setInt(1, Integer.parseInt(bno));
+			psmt.setInt(1, Integer.parseInt(uno));
+			psmt.setInt(2, Integer.parseInt(bno));
+
 			rs = psmt.executeQuery();
 			
 			if(rs.next()) {
@@ -366,7 +372,9 @@ public class BoardController {
 				 vo.setFname(rs.getString("fname"));
 				 vo.setRecommend(rs.getInt("cnt"));
 				 vo.setUpname(rs.getString("upname"));
+				 vo.setIsfollow(rs.getString("isfollow"));
 				 
+				 System.out.println("팔로우여부 : "+rs.getString("isfollow"));
 				 //조회수 증가
 				 int hit = rs.getInt("hit");
 				 String sqlHit = "update board set hit = ? where bno = ?";

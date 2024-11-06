@@ -313,10 +313,12 @@ function deleteFn(){
 			    	 <%
 					if(session.getAttribute("loginUser") != null){
 						if(uno != vo.getUno()){
-							
+							// 로그인 유저의 uno와 게시글 작성자의 uno로 팔로잉상태를 체크하는 sql문을 실행한다
+							String isfollow = vo.getIsfollow();
 						%>
 				        <input type="hidden" name="tuno" value="<%= vo.getUno() %>">
-			    	<button class="ssBtn" type="button" id="followId" onclick="follow()">팔로우</button>
+				        <!-- 팔로잉 상태에 따라 버튼의 클래스를 바꾼다 -->
+			    	<button class="<%= (isfollow.equals("0")) ? "ssBtn" : "ssFollowBtn" %>" type="button" id="followId" onclick="follow(this)"><%= (isfollow.equals("0")) ? "팔로우" : "팔로잉" %></button>
 						<%
 						}
 					%>
@@ -370,13 +372,16 @@ function deleteFn(){
 			for(int i =0; i< clist.size();i++){
 				System.out.println("index:::::::"+i);
 				CommentsVO cvo = clist.get(i);
+				
+				System.out.println(cvo.toString());
 				%>
 				<div>
 				<div style="display: flex; align-items: center; gap: 10px;">
         <!-- 댓글작성자 프로필이미지 -->
         	<div class="view_profil">
 						<img id="previewProfil" class="circular-img" 
-				        style="border:none; width:50px; height:50px;" 
+								onclick="location.href='<%= request.getContextPath() %>/user/mypage.do?uno=<%= cvo.getUno() %>'"
+				        style="border:none; width:50px; height:50px; cursor:pointer;" 
 				        src="<%= request.getContextPath() %>/upload/<%=cvo.getPname() %>" alt="프로필 이미지" />
 				  </div>
 				 <!-- 댓글작성자 닉네임 -->
