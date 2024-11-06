@@ -4,6 +4,7 @@
 <%@ include file="../include/nav.jsp" %>
 <%@ page import="sns.vo.* "%>
 <%
+UserVO login = (UserVO)session.getAttribute("loginUser");
 UserVO pageUser = (UserVO)request.getAttribute("user");
 System.out.println("pageUser=================================" +pageUser );
 String pUno = pageUser.getUno();
@@ -39,11 +40,11 @@ FollowVO vo = (FollowVO)request.getAttribute("follow");
 	        }
 	        %>
 	    	<div><%= pageUser.getUnick() %></div>
-	    	<%-- <%
+	    	<%
 	    	int cnt = (Integer)request.getAttribute("fcnt");
 	    	%>
-	    	<div id="followResult">팔로워 수 : <%= cnt %></div> --%> 
-	    	<div>
+	    	<div id="followResult">팔로워 수 : <span id="followcnt"><%= cnt %></span></div>
+	    	<div id= "followModifyMessegeBtn" style="width: 100%; display: flex; justify-content: center">
 	    		<%
 	    		if(loginUser != null && pUno.equals(loginUser.getUno())){
     			%>
@@ -53,9 +54,27 @@ FollowVO vo = (FollowVO)request.getAttribute("follow");
 	    		}else{
     			%>
 	    		<!-- 내가 아닌 다른 회원페이지인 경우 -->
-	    		<button class="ssBtn">메시지</button>
-	    		<button class="ssBtn">팔로우</button>
-    			<%		
+	    		<button class="ssBtn">메시지</button>&nbsp;&nbsp;
+	    		<form id="follow_form">
+			    <%-- <input type="hidden" name="tuno" value="<%= vo.getUno() %>">
+			    	<button class="ssBtn" type="button" id="followId" onclick="follow()">팔로우</button> --%>
+			    	 <%
+					if(session.getAttribute("loginUser") != null){
+						if(pUno != login.getUno()){
+							// 로그인 유저의 uno와 게시글 작성자의 uno로 팔로잉상태를 체크하는 sql문을 실행한다
+							String isfollow = (String)request.getAttribute("isfollow");
+						%>
+				        <input type="hidden" name="tuno" value="<%= pageUser.getUno() %>">
+				        <!-- 팔로잉 상태에 따라 버튼의 클래스를 바꾼다 -->
+			    	<button class="<%= (isfollow.equals("0")) ? "ssBtn" : "ssFollowBtn" %>" type="button" id="followId" onclick="followPage(this)"><%= (isfollow.equals("0")) ? "팔로우" : "팔로잉" %></button>
+						<%
+						}
+					%>
+			        <%
+					}
+					%>
+			    </form>
+    			<%	
 	    		}
 	    		%>
 			</div>
@@ -126,4 +145,6 @@ $(window).click(function(event) {
 	        $("#modal").fadeOut(); // 모달 창 숨기기
 	    }
 	});
+
+
 </script>

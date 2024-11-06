@@ -58,62 +58,7 @@ public class BoardController {
 			loadMore(request, response);
 		}else if(comments[comments.length-1].equals("followAdd.do")) {
 		followAdd(request,response);
-		}else if(comments[comments.length-1].equals("followReco.do")) {
-			followReco(request,response);
-		}	
-	}
-
-	public void followReco(HttpServletRequest request
-			, HttpServletResponse response) throws ServletException, IOException {
-		request.setCharacterEncoding("UTF-8");
-		
-		int fno = Integer.parseInt(request.getParameter("fno"));
-		int tuno = Integer.parseInt(request.getParameter("tuno"));
-		String uno = "0";
-		String fState = "D";
-		
-		HttpSession session = request.getSession();
-		if(session.getAttribute("loginUser") != null){
-			UserVO user = (UserVO)session.getAttribute("loginUser");
-			uno = user.getUno();
-		}
-		System.out.println("받은 tuno 값: " + tuno + ", uno : " + uno);
-		Connection conn = null;
-		PreparedStatement psmt = null;
-		ResultSet rs = null;
-		
-		try {
-		    conn = DBConn.conn();
-
-		    // 사용자가 이 게시물을 추천했는지 확인
-		    String checkFollowReco = "select * from sns.follow where uno = ? and tuno = ?";
-		    System.out.println("sql checkFollowReco: "+checkFollowReco);
-		    psmt = conn.prepareStatement(checkFollowReco);
-		    psmt.setString(1, uno);
-		    psmt.setInt(2, tuno);
-		    
-		    rs = psmt.executeQuery();
-		    
-		    if(rs.next()) {
-		    	fState = "E";
-		    }
-		    
-		    JSONObject jsonObj = new JSONObject(); 
-		    jsonObj.put("tuno", tuno); 
-		    jsonObj.put("FState", fState);
-
-		    response.setContentType("application/json; charset=UTF-8");
-		    response.getWriter().write(jsonObj.toString());
-
-		} catch (Exception e) {
-		    e.printStackTrace();
-		} finally {
-		    try {
-				DBConn.close(rs, psmt, conn);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
+		} 
 	}
 
 	public void followAdd(HttpServletRequest request
@@ -327,14 +272,17 @@ public class BoardController {
 	public void view (HttpServletRequest request
 			, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
+		
 		HttpSession session = request.getSession();
 		UserVO loginUser = (UserVO)session.getAttribute("loginUser");
 		String uno = "";
 		if(loginUser != null) {
 			uno = loginUser.getUno();
 		}
+		
 		String bno = request.getParameter("bno");
 		BoardVO vo = new BoardVO();
+		
 		Connection conn = null;
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
@@ -350,7 +298,7 @@ public class BoardController {
 					+"   (select count(*) from love where bno = b.bno) as cnt, "
 					+"   (select pname from user where uno = b.uno) as upname ";
 			
-			if(loginUser != null ) { sql += ", (select count(*) from follow where uno = ? and tuno = b.uno) as isfollow "; }
+			if(loginUser != null ) { sql += ",  (select count(*) from follow f where f.uno = ? and tuno = b.uno ) as isfollow "; }
 			
 			sql += "   FROM board b "
 					+ " inner join user u " 
@@ -385,7 +333,6 @@ public class BoardController {
 					 vo.setIsfollow(rs.getString("isfollow"));
 				 }
 				 
-//				 System.out.println("팔로우여부 : "+rs.getString("isfollow"));
 				 //조회수 증가
 				 int hit = rs.getInt("hit");
 				 String sqlHit = "update board set hit = ? where bno = ?";
