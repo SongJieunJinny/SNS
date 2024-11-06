@@ -39,10 +39,10 @@ FollowVO vo = (FollowVO)request.getAttribute("follow");
 	        }
 	        %>
 	    	<div><%= pageUser.getUnick() %></div>
-	    	<%
+	    	<%-- <%
 	    	int cnt = (Integer)request.getAttribute("fcnt");
 	    	%>
-	    	<div id="followResult">팔로워 수 : <%= cnt %></div>
+	    	<div id="followResult">팔로워 수 : <%= cnt %></div> --%> 
 	    	<div>
 	    		<%
 	    		if(loginUser != null && pUno.equals(loginUser.getUno())){
@@ -55,7 +55,7 @@ FollowVO vo = (FollowVO)request.getAttribute("follow");
 	    		<!-- 내가 아닌 다른 회원페이지인 경우 -->
 	    		<button class="ssBtn">메시지</button>
 	    		<button class="ssBtn">팔로우</button>
-    			<%	
+    			<%		
 	    		}
 	    		%>
 			</div>
@@ -126,6 +126,4 @@ $(window).click(function(event) {
 	        $("#modal").fadeOut(); // 모달 창 숨기기
 	    }
 	});
-
-
 </script>

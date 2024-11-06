@@ -441,6 +441,7 @@ public class BoardController {
 			}
 		}
 	}
+
 	
 	public void loadReco(HttpServletRequest request
 			, HttpServletResponse response) throws ServletException, IOException {
