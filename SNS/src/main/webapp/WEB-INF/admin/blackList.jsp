@@ -3,9 +3,39 @@
 <%@ include file="../include/header.jsp" %>
 <%@ include file="../include/nav.jsp" %>
 <%@ page import="sns.vo.* "%>
+<%@ page import="sns.util.* "%>
 <%
+	PagingUtil paging = (PagingUtil)request.getAttribute("paging");
 	ArrayList<UserVO> list = (ArrayList<UserVO>)request.getAttribute("list");
 %>
+<script>
+// post 방식으로 보내야하기 때문에 onclick 할 때 함수 안에 ajax를 사용해야함
+function stopFn(uno,ustate){
+	// 값을 가져왔나 확인 
+	// 만약 가져오지 않았다면, controller에서 vo에 담겨져 있는지 확인해야함
+	console.log(uno);
+	console.log(ustate);
+	$.ajax({
+		url : "admin/stopUser.do",
+		type : "post",
+		data : {
+			// 보내야 할 데이터를 담음 
+			"uno" : uno,
+			"ustate" : ustate
+		},
+		success: function(response){
+			alert("상태가 변경되었습니다.");
+            location.reload(); // 페이지 새로 고침으로 상태 갱신
+		},
+		error: function(xhr, status, error) {
+            // 에러 처리
+            console.error("오류 발생:", error);
+            alert("상태 변경에 실패했습니다.");
+        } 
+	});
+}
+
+</script>
 <!--웹페이지 본문-->
 <section>
        <div class="bcSpan">
@@ -61,33 +91,36 @@
                </tbody>
            </table>
        </div>
+            <%
+		if(paging.getStartPage() >1){
+	%>
+		<a href="complainList.do?nowPage=<%=paging.getStartPage()-1%><%-- &searchType=<%=searchType%>&searchValue=<%=searchValue%> --%>">&lt;</a>
+	<%
+		}
+	%>
+	
+	<!-- 시작 페이지 번호(pagingUtil->startPage)부터 종료 페이지 번호(paginUtil->endPage)까지-->
+	<%
+		for(int i=paging.getStartPage();
+				i<=paging.getEndPage();i++){
+			if(i == paging.getNowPage()){ //출력하는 페이지 번호와 현재페이지 번호가 같은 경우
+	%>
+		<strong><%=i %></strong>
+	<%	
+			}else{
+	%>
+		<a href="complainList.do?nowPage=<%= i %><%-- &searchType=<%=searchType%>&searchValue=<%=searchValue%> --%>"><%= i %></a>
+	<%		
+			}
+		}
+	%>
+	<!-- 다음페이지로 이동 링크(pagingUtil->endPage lastPage보다 작으면 출력) -->
+	<%
+		if(paging.getEndPage() < paging.getLastPage()){
+	%>
+		<a href="complainList.do?nowPage=<%=paging.getEndPage()+1%><%-- &searchType=<%=searchType%>&searchValue=<%=searchValue%> --%>">&gt;</a>
+	<%		
+		}
+	%>
 </section>
 <%@ include file="../include/aside.jsp" %>
-<script>
-// post 방식으로 보내야하기 때문에 onclick 할 때 함수 안에 ajax를 사용해야함
-function stopFn(uno,ustate){
-	// 값을 가져왔나 확인 
-	// 만약 가져오지 않았다면, controller에서 vo에 담겨져 있는지 확인해야함
-	console.log(uno);
-	console.log(ustate);
-	$.ajax({
-		url : "admin/stopUser.do",
-		type : "post",
-		data : {
-			// 보내야 할 데이터를 담음 
-			"uno" : uno,
-			"ustate" : ustate
-		},
-		success: function(response){
-			alert("상태가 변경되었습니다.");
-            location.reload(); // 페이지 새로 고침으로 상태 갱신
-		},
-		error: function(xhr, status, error) {
-            // 에러 처리
-            console.error("오류 발생:", error);
-            alert("상태 변경에 실패했습니다.");
-        } 
-	});
-}
-
-</script>

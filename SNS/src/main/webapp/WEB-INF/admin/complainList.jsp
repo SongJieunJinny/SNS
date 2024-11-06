@@ -3,67 +3,11 @@
 <%@ include file="../include/header.jsp" %>
 <%@ include file="../include/nav.jsp" %>
 <%@ page import="sns.vo.* "%>
+<%@ page import="sns.util.* "%>
 <%
+	PagingUtil paging = (PagingUtil)request.getAttribute("paging");
 	ArrayList<BoardVO> board = (ArrayList<BoardVO>)request.getAttribute("board");
 %>
-<!--웹페이지 본문-->
-<section>
-       <div class="bcSpan">
-           <a href="<%= request.getContextPath() %>/admin/blackList.do">
-           		<span class="bUnderline" style="color: lightgray;"> 블랙리스트 </span>
-           </a>
-           <a href="<%= request.getContextPath() %>/admin/complainList.do">
-          	 	<span class="cUnderline" > 신고 게시글 </span>
-           </a>
-       </div>
-        <% for(BoardVO vo : board){ %> 
-           <input type="hidden" name="bno" id ="bno" value="<%=vo.getBno()%>">
-       	   <input type="hidden" name="state" id ="state" value="<%=vo.getState()%>">  
-          <%}%>
-       <div class="complainTable">
-         
-           <table class="inner_table">
-               <thead>
-               	<tr>
-                   <th>번호</th>
-                   <th>닉네임</th>
-                   <th>제목</th>
-                   <th>작성일</th>
-                   <th>신고 횟수</th>
-                   <th>활성화 여부</th>
-                 </tr>
-               </thead>
-              <tbody>
-               <% for(BoardVO vo : board){ %>
-                   <tr>
-                       	<td>페이징 번호</td>
-                       	<td><%=vo.getUnick() %></td>
-                       	<td onclick ="titleViewFn(<%=vo.getBno()%>)" ><%=vo.getTitle() %></td>
-                       	<td><%=vo.getRdate() %></td>
-                       	<td><%=vo.getDeclaration() %></td>
-                       <%
-                       if(vo.getState().equals("E")){
-                    	%>	   
-                   	   <td>
-                       		<button type="button" class="ssBtn" onclick="stateFn(<%=vo.getBno()%>,'E')">비활성화</button>
-                       </td>
-                     	<%
-                     	}else{
-                    	%> 
-                   	    <td>
-                       		<button type="button" class="ssBtn" 
-                       		style="background-color:#767676; color:white;" onclick="stateFn(<%=vo.getBno()%>,'D')">활성화</button>
-                       </td>
-                       <%
-                       }
-                       %>
-                <% } %>
-                   </tr>
-               </tbody>
-           </table>
-       </div>
-</section>
-<%@ include file="../include/aside.jsp" %>
 <script>
 // post 방식으로 보내야하기 때문에 onclick 할 때 함수 안에 ajax를 사용해야함
 function stateFn(bno,state){
@@ -123,5 +67,95 @@ $(window).click(function(event) {
 
 
 </script>
- 
- 
+<!--웹페이지 본문-->
+<section>
+       <div class="bcSpan">
+           <a href="<%= request.getContextPath() %>/admin/blackList.do">
+           		<span class="bUnderline" style="color: lightgray;"> 블랙리스트 </span>
+           </a>
+           <a href="<%= request.getContextPath() %>/admin/complainList.do">
+          	 	<span class="cUnderline" > 신고 게시글 </span>
+           </a>
+       </div>
+        <% for(BoardVO vo : board){ %> 
+           <input type="hidden" name="bno" id ="bno" value="<%=vo.getBno()%>">
+       	   <input type="hidden" name="state" id ="state" value="<%=vo.getState()%>">  
+          <%}%>
+       <div class="complainTable">
+         
+           <table class="inner_table">
+               <thead>
+               	<tr>
+                   <th>신고 글 번호</th>
+                   <th>닉네임</th>
+                   <th>제목</th>
+                   <th>작성일</th>
+                   <th>신고 횟수</th>
+                   <th>활성화 여부</th>
+                 </tr>
+               </thead>
+              <tbody>
+               <% for(BoardVO vo : board){ %>
+                   <tr>
+                       	<%-- <td><%=vo.getBno() %></td> --%>
+                       	<td><%= vo.getBno()%></td>
+                       	<td><%=vo.getUnick() %></td>
+                       	<td onclick ="titleViewFn(<%=vo.getBno()%>)" ><%=vo.getTitle() %></td>
+                       	<td><%=vo.getRdate() %></td>
+                       	<td><%=vo.getDeclaration() %></td>
+                       <%
+                       if(vo.getState().equals("E") ){
+                    	%>	   
+                   	   <td>
+                       		<button type="button" class="ssBtn" onclick="stateFn(<%=vo.getBno()%>,'E')">비활성화</button>
+                       </td>
+                     	<%
+                     	}else{
+                    	%> 
+                   	    <td>
+                       		<button type="button" class="ssBtn" 
+                       		style="background-color:#767676; color:white;" onclick="stateFn(<%=vo.getBno()%>,'D')">활성화</button>
+                       </td>
+                       <%
+                       }
+                       %>
+                <% } %>
+                   </tr>
+               </tbody>
+           </table>
+   
+       </div>
+        <%
+		if(paging.getStartPage() >1){
+	%>
+		<a href="complainList.do?nowPage=<%=paging.getStartPage()-1%><%-- &searchType=<%=searchType%>&searchValue=<%=searchValue%> --%>">&lt;</a>
+	<%
+		}
+	%>
+	
+	<!-- 시작 페이지 번호(pagingUtil->startPage)부터 종료 페이지 번호(paginUtil->endPage)까지-->
+	<%
+		for(int i=paging.getStartPage();
+				i<=paging.getEndPage();i++){
+			if(i == paging.getNowPage()){ //출력하는 페이지 번호와 현재페이지 번호가 같은 경우
+	%>
+		<strong><%=i %></strong>
+	<%	
+			}else{
+	%>
+		<a href="complainList.do?nowPage=<%= i %><%-- &searchType=<%=searchType%>&searchValue=<%=searchValue%> --%>"><%= i %></a>
+	<%		
+			}
+		}
+	%>
+	<!-- 다음페이지로 이동 링크(pagingUtil->endPage lastPage보다 작으면 출력) -->
+	<%
+		if(paging.getEndPage() < paging.getLastPage()){
+	%>
+		<a href="complainList.do?nowPage=<%=paging.getEndPage()+1%><%-- &searchType=<%=searchType%>&searchValue=<%=searchValue%> --%>">&gt;</a>
+	<%		
+		}
+	%>
+       
+</section>
+<%@ include file="../include/aside.jsp" %>
