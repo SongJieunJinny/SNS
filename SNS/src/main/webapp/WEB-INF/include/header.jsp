@@ -813,6 +813,51 @@ function complainAdd(bno) {
         }
     }
     
+ // ------------팔로우 기능------------------
+ 
+ function follow(){
+	 $.ajax({		    
+		 url: "<%= request.getContextPath() %>/board/followAdd.do",		    
+		 type: "POST",		    
+		 cache: false,		   	    
+		 data: $('#follow_form').serialize(),   //아이디가 follow_form인 곳의 모든 정보를 가져와  파라미터 전송 형태(표준 쿼리형태)로 만들어줌		    
+		 success: 		    
+			 function(data){      					//ajax통신 성공시 넘어오는 데이터 통째 이름 =data		    	
+			 alert("'팔로우'가 신청됐습니다.") ;
+			 },  
+			 
+			 error: 		    
+				 function (request, status, error){
+				 alert("'로그인'을 해주세요.")
+				 }		  
+			 });
+	 }
+ 
+<%--  function followReco(fno) {
+	    $.ajax({
+	        url: "<%= request.getContextPath() %>/board/followReco.do",
+	        type: "get",
+	        data: { fno: fno},
+	        success: function(data) {
+	        	console.log("checkFollowReco data:"+data);
+	        	let html = "";
+	        	if(data.fState === "E"){
+					html += `
+						<button class="ssBtn" type="button" onclick="follow()">팔로우</button>
+					`;        		
+	        	}else{
+	        		html += `
+	        			<button class="ssFollowBtn" type="button" onclick="follow()">팔로우</button>
+	   				`;        		
+	        	}
+	        	$('#followId').html(html);
+	        },
+	        error: function(xhr, status, error) {
+	            console.error("AJAX 요청 실패: ", status, error);  // 오류 확인
+	        }
+	    });
+	} --%>
+
 </script>
 </head> 
 

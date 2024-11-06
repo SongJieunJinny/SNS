@@ -11,6 +11,7 @@ String pPname = pageUser.getPname();
 // 현재 보고있는 섹션을 페이지가 알 수 있도록 표시하기 위해 type 변수 선언 
 String type = request.getParameter("type");
 ArrayList<BoardVO> board = (ArrayList<BoardVO>)request.getAttribute("board");
+FollowVO vo = (FollowVO)request.getAttribute("follow");
 %>
 <!--웹페이지 본문-->
 <section>
@@ -38,7 +39,10 @@ ArrayList<BoardVO> board = (ArrayList<BoardVO>)request.getAttribute("board");
 	        }
 	        %>
 	    	<div><%= pageUser.getUnick() %></div>
-	    	<div>팔로워 수 10</div>
+	    	<%
+	    	int cnt = (Integer)request.getAttribute("fcnt");
+	    	%>
+	    	<div id="followResult">팔로워 수 : <%= cnt %></div>
 	    	<div>
 	    		<%
 	    		if(loginUser != null && pUno.equals(loginUser.getUno())){

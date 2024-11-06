@@ -15,7 +15,6 @@ if(session.getAttribute("loginUser") != null)
 List<CommentsVO> clist = (List<CommentsVO>)request.getAttribute("clist");
 %>
 <script>
-
 function setCommentDelete(cno,obj){
 	$.ajax({
 		url : '<%=request.getContextPath()%>/reply/cdele.do',
@@ -307,7 +306,24 @@ function deleteFn(){
 				}
 				%>
 			    <span><%= vo.getUnick() %></span>
-			    <button class="ssBtn">팔로우</button>
+			    
+			    <form id="follow_form">
+			    <%-- <input type="hidden" name="tuno" value="<%= vo.getUno() %>">
+			    	<button class="ssBtn" type="button" id="followId" onclick="follow()">팔로우</button> --%>
+			    	 <%
+					if(session.getAttribute("loginUser") != null){
+						if(uno != vo.getUno()){
+							
+						%>
+				        <input type="hidden" name="tuno" value="<%= vo.getUno() %>">
+			    	<button class="ssBtn" type="button" id="followId" onclick="follow()">팔로우</button>
+						<%
+						}
+					%>
+			        <%
+					}
+					%>
+			    </form>
 			</div>
 		&nbsp;
 		<%= vo.getRdate() %>&nbsp;
@@ -425,10 +441,11 @@ function deleteFn(){
 			  	 			</span>
 		  	 			</div>
 			    			<!-- 서브메뉴바 -->
-			    			<div class="commentMenutableA" style="display:none;">
+						<div class="commentMenutableA" style="display:none;">
 			        <%
 					if(session.getAttribute("loginUser") != null){
 						if(uno == vo.getUno()){
+							
 						%>
 				        <!-- 댓글수정 -->
 								<div class="commentMenu-container">

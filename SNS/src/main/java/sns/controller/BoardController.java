@@ -56,9 +56,128 @@ public class BoardController {
 			deleteOk(request, response);
 		}else if (comments[comments.length-1].equals("loadMore.do")) {
 			loadMore(request, response);
-		}
-		
+		}else if(comments[comments.length-1].equals("followAdd.do")) {
+		followAdd(request,response);
+		}else if(comments[comments.length-1].equals("followReco.do")) {
+			followReco(request,response);
+		}	
 	}
+
+	public void followReco(HttpServletRequest request
+			, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		
+		int fno = Integer.parseInt(request.getParameter("fno"));
+		int tuno = Integer.parseInt(request.getParameter("tuno"));
+		String uno = "0";
+		String fState = "D";
+		
+		HttpSession session = request.getSession();
+		if(session.getAttribute("loginUser") != null){
+			UserVO user = (UserVO)session.getAttribute("loginUser");
+			uno = user.getUno();
+		}
+		System.out.println("받은 tuno 값: " + tuno + ", uno : " + uno);
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+		
+		try {
+		    conn = DBConn.conn();
+
+		    // 사용자가 이 게시물을 추천했는지 확인
+		    String checkFollowReco = "select * from sns.follow where uno = ? and tuno = ?";
+		    System.out.println("sql checkFollowReco: "+checkFollowReco);
+		    psmt = conn.prepareStatement(checkFollowReco);
+		    psmt.setString(1, uno);
+		    psmt.setInt(2, tuno);
+		    
+		    rs = psmt.executeQuery();
+		    
+		    if(rs.next()) {
+		    	fState = "E";
+		    }
+		    
+		    JSONObject jsonObj = new JSONObject(); 
+		    jsonObj.put("tuno", tuno); 
+		    jsonObj.put("FState", fState);
+
+		    response.setContentType("application/json; charset=UTF-8");
+		    response.getWriter().write(jsonObj.toString());
+
+		} catch (Exception e) {
+		    e.printStackTrace();
+		} finally {
+		    try {
+				DBConn.close(rs, psmt, conn);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void followAdd(HttpServletRequest request
+		, HttpServletResponse response) throws ServletException, IOException {
+	
+	request.setCharacterEncoding("UTF-8");
+	
+	HttpSession session = request.getSession();
+	UserVO loginUser = (UserVO)session.getAttribute("loginUser");
+	// 폼 데이터 가져오기
+	String uno = loginUser.getUno();
+	int tuno = Integer.parseInt(request.getParameter("tuno"));
+
+	Connection conn = null;
+	PreparedStatement psmt = null;
+	ResultSet rs = null;
+	String sql = "";
+
+
+	try {
+	    conn = DBConn.conn();
+
+	    sql = " SELECT count(*) as cnt FROM sns.follow where uno=? and tuno=? ";
+
+	    psmt = conn.prepareStatement(sql);
+	   
+		psmt.setString(1, uno);
+	    psmt.setInt(2, tuno);
+
+	    rs = psmt.executeQuery();
+	    
+	    int cnt = 0;
+	    if(rs.next()) cnt = rs.getInt("cnt");
+
+	    if (cnt>0) {
+	        // 추천이 이미 존재하면 delete
+	    	sql = "delete from follow where uno = ? and tuno = ?";
+	        psmt = conn.prepareStatement(sql);
+	        psmt.setString(1, uno);
+	        psmt.setInt(2, tuno);
+	    } else {
+	        // 추천이 없으면 insert
+	        sql = "insert into follow (uno, tuno) values (?, ?)";
+	        psmt = conn.prepareStatement(sql);
+	        psmt.setString(1, uno);
+	        psmt.setInt(2, tuno);
+	    }
+	    psmt.executeUpdate();
+	    
+	    response.setCharacterEncoding("utf-8");
+	    response.setContentType("text/html;");
+	    response.getWriter().append("success").flush();
+
+	} catch (Exception e) {
+	    e.printStackTrace();
+	} finally {
+	    try {
+			DBConn.close(rs, psmt, conn);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+}
+
 	
 	public void write(HttpServletRequest request
 			, HttpServletResponse response) throws ServletException, IOException {
