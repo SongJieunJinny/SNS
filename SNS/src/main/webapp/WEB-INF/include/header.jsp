@@ -795,7 +795,7 @@ function complainAdd(bno) {
 }
 
 // ------------알림 모달창------------------
-    const alarmModal = document.querySelector(".alarm_modal");
+  /*   const alarmModal = document.querySelector(".alarm_modal");
     const openIcon = document.querySelector(".icon");
     const closeIcon = document.querySelector(".icon");
     
@@ -811,7 +811,7 @@ function complainAdd(bno) {
         if (event.target == alarmModal) {
         	alarmModal.style.display = "none";
         }
-    }
+    } */
     
  // ------------팔로우 기능------------------
  

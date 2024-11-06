@@ -239,6 +239,7 @@ public class AdminController {
 		        psmt = conn.prepareStatement(sql);
 		        psmt.setString(1, uno);
 		        psmt.setString(2, bno);
+		        psmt.executeUpdate();
 		        
 		        sqlA = "delete from alram where uno = ? and bno = ? and type=? ";
 		        psmtA = conn.prepareStatement(sql);
@@ -252,6 +253,7 @@ public class AdminController {
 		        psmt = conn.prepareStatement(sql);
 		        psmt.setString(1, uno);
 		        psmt.setString(2, bno);
+		        psmt.executeUpdate();
 		        
 		        sqlA = "insert into alram (uno, no, type) values (?, ?, ?)";
 		        psmtA = conn.prepareStatement(sql);
@@ -260,7 +262,7 @@ public class AdminController {
 		        psmtA.setString(3, "C");
 		        psmtA.executeUpdate();
 		    }
-		    psmt.executeUpdate();
+		    
 
 		} catch (Exception e) {
 		    e.printStackTrace();
