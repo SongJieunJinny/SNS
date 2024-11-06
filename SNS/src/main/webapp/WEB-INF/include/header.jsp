@@ -883,7 +883,7 @@ function complainAdd(bno) {
 		        </div>
 	        </div> --%>
 	        <div class="search_inner">
-	            <form action="index.jsp" method="get" name="searchFn" style="padding-bottom:30px;">
+	            <form action="<%= request.getContextPath() %>/index.jsp" method="get" name="searchFn" style="padding-bottom:30px;">
 	                <div class="search-wrapper">
 	                    <div id="seach-container"
 	                    style="display: flex;  align-items: center;

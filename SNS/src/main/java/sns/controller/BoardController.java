@@ -329,7 +329,10 @@ public class BoardController {
 		request.setCharacterEncoding("UTF-8");
 		HttpSession session = request.getSession();
 		UserVO loginUser = (UserVO)session.getAttribute("loginUser");
-		String uno = loginUser.getUno();
+		String uno = "";
+		if(loginUser != null) {
+			uno = loginUser.getUno();
+		}
 		String bno = request.getParameter("bno");
 		BoardVO vo = new BoardVO();
 		Connection conn = null;
@@ -345,9 +348,11 @@ public class BoardController {
 			conn = DBConn.conn();
 			String sql = " SELECT b.*,u.unick,a.pname,a.fname, "
 					+"   (select count(*) from love where bno = b.bno) as cnt, "
-					+"   (select pname from user where uno = b.uno) as upname, "
-					+" (select count(*) from follow where uno = ? and tuno = b.uno) as isfollow "
-					+"   FROM board b "
+					+"   (select pname from user where uno = b.uno) as upname ";
+			
+			if(loginUser != null ) { sql += ", (select count(*) from follow where uno = ? and tuno = b.uno) as isfollow "; }
+			
+			sql += "   FROM board b "
 					+ " inner join user u " 
 					+ " on b.uno = u.uno "
 					+ " inner join attach a " 
@@ -355,8 +360,12 @@ public class BoardController {
 					+"  WHERE b.bno=? and state='E' ";
 			
 			psmt = conn.prepareStatement(sql);
-			psmt.setInt(1, Integer.parseInt(uno));
-			psmt.setInt(2, Integer.parseInt(bno));
+			if(loginUser != null ) {
+				psmt.setInt(1, Integer.parseInt(uno));
+				psmt.setInt(2, Integer.parseInt(bno));
+			}else {
+				psmt.setInt(1, Integer.parseInt(bno));
+			}
 
 			rs = psmt.executeQuery();
 			
@@ -372,9 +381,11 @@ public class BoardController {
 				 vo.setFname(rs.getString("fname"));
 				 vo.setRecommend(rs.getInt("cnt"));
 				 vo.setUpname(rs.getString("upname"));
-				 vo.setIsfollow(rs.getString("isfollow"));
+				 if(loginUser != null ) {
+					 vo.setIsfollow(rs.getString("isfollow"));
+				 }
 				 
-				 System.out.println("팔로우여부 : "+rs.getString("isfollow"));
+//				 System.out.println("팔로우여부 : "+rs.getString("isfollow"));
 				 //조회수 증가
 				 int hit = rs.getInt("hit");
 				 String sqlHit = "update board set hit = ? where bno = ?";
@@ -430,6 +441,7 @@ public class BoardController {
 			}
 		}
 	}
+
 	
 	public void loadReco(HttpServletRequest request
 			, HttpServletResponse response) throws ServletException, IOException {

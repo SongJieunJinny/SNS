@@ -307,6 +307,10 @@ function deleteFn(){
 				%>
 			    <span><%= vo.getUnick() %></span>
 			    
+			    <%
+			    if(viewUser != null){
+			    	%>
+			    
 			    <form id="follow_form">
 			    <%-- <input type="hidden" name="tuno" value="<%= vo.getUno() %>">
 			    	<button class="ssBtn" type="button" id="followId" onclick="follow()">팔로우</button> --%>
@@ -326,6 +330,9 @@ function deleteFn(){
 					}
 					%>
 			    </form>
+			    <%
+			    }
+			    %>
 			</div>
 		&nbsp;
 		<%= vo.getRdate() %>&nbsp;
