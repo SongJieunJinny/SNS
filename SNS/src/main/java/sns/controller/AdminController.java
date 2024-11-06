@@ -219,7 +219,9 @@ public class AdminController {
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
 		String sql = "";
+		String sqlA = "";
 
+		PreparedStatement psmtA = null;
 
 		try {
 		    conn = DBConn.conn();
@@ -237,12 +239,26 @@ public class AdminController {
 		        psmt = conn.prepareStatement(sql);
 		        psmt.setString(1, uno);
 		        psmt.setString(2, bno);
+		        
+		        sqlA = "delete from alram where uno = ? and bno = ? and type=? ";
+		        psmtA = conn.prepareStatement(sql);
+		        psmtA.setString(1, uno);
+		        psmtA.setString(2, bno);
+		        psmtA.setString(3, "C");
+		        psmtA.executeUpdate();
 		    } else {
 		        // 신고가 없으면 insert
 		        sql = "insert into COMPLAINT_BOARD (uno, bno) values (?, ?)";
 		        psmt = conn.prepareStatement(sql);
 		        psmt.setString(1, uno);
 		        psmt.setString(2, bno);
+		        
+		        sqlA = "insert into alram (uno, no, type) values (?, ?, ?)";
+		        psmtA = conn.prepareStatement(sql);
+		        psmtA.setString(1, uno);
+		        psmtA.setString(2, bno);
+		        psmtA.setString(3, "C");
+		        psmtA.executeUpdate();
 		    }
 		    psmt.executeUpdate();
 

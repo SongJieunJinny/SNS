@@ -2,19 +2,43 @@ SET SESSION FOREIGN_KEY_CHECKS=0;
 
 /* Drop Tables */
 
+DROP TABLE IF EXISTS alram;
 DROP TABLE IF EXISTS ATTACH;
 DROP TABLE IF EXISTS COMMENTS;
 DROP TABLE IF EXISTS COMPLAINT_BOARD;
 DROP TABLE IF EXISTS LOVE;
 DROP TABLE IF EXISTS BOARD;
 DROP TABLE IF EXISTS FOLLOW;
-DROP TABLE IF EXISTS message;
 DROP TABLE IF EXISTS USER;
 
 
 
 
 /* Create Tables */
+
+CREATE TABLE alram
+(
+	alno int NOT NULL AUTO_INCREMENT,
+	uno int NOT NULL,
+	rdate timestamp DEFAULT now() NOT NULL,
+	-- 조회안함 - N
+	-- 조회함    - Y
+	state varchar(1) DEFAULT 'N' NOT NULL COMMENT '조회안함 - N
+조회함    - Y',
+	-- F - 알람 -> 팔로우
+	-- L - 알람 -> 좋아요
+	-- C - 알람 -> 신고
+	-- R - 알람 -> 댓글
+	-- 
+	type varchar(1) DEFAULT 'M' NOT NULL COMMENT 'F - 알람 -> 팔로우
+L - 알람 -> 좋아요
+C - 알람 -> 신고
+R - 알람 -> 댓글
+',
+	no int NOT NULL,
+	PRIMARY KEY (alno)
+);
+
 
 CREATE TABLE ATTACH
 (
@@ -84,17 +108,6 @@ CREATE TABLE LOVE
 );
 
 
-CREATE TABLE message
-(
-	mno int NOT NULL AUTO_INCREMENT,
-	uno int NOT NULL,
-	tuno int NOT NULL,
-	content text NOT NULL,
-	rdate timestamp DEFAULT now() NOT NULL,
-	PRIMARY KEY (mno)
-);
-
-
 CREATE TABLE USER
 (
 	uno int NOT NULL AUTO_INCREMENT,
@@ -154,6 +167,14 @@ ALTER TABLE LOVE
 ;
 
 
+ALTER TABLE alram
+	ADD FOREIGN KEY (uno)
+	REFERENCES USER (uno)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
 ALTER TABLE BOARD
 	ADD FOREIGN KEY (uno)
 	REFERENCES USER (uno)
@@ -196,22 +217,6 @@ ALTER TABLE FOLLOW
 
 ALTER TABLE LOVE
 	ADD FOREIGN KEY (uno)
-	REFERENCES USER (uno)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
-;
-
-
-ALTER TABLE message
-	ADD FOREIGN KEY (uno)
-	REFERENCES USER (uno)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
-;
-
-
-ALTER TABLE message
-	ADD FOREIGN KEY (tuno)
 	REFERENCES USER (uno)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT

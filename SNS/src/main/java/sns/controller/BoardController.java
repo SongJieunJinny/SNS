@@ -326,7 +326,10 @@ public class BoardController {
 		    conn = DBConn.conn();
 
 		    // 사용자가 이 게시물을 추천했는지 확인
-		    String checkReco = "select * from love where uno = ? and bno = ?";
+		    String checkReco = "select lno, b.uno as tuno from love "
+		    				+" innerjoin board b "
+		    				+" on love.bno=b.bno "
+	    					+" where uno = ? and bno = ?";
 		    System.out.println("sql checkReco: "+checkReco);
 		    psmt = conn.prepareStatement(checkReco);
 		    psmt.setString(1, uno);
@@ -368,7 +371,9 @@ public class BoardController {
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
 		String sql = "";
+		String sqlA = "";
 
+		PreparedStatement psmtA = null;
 
 		try {
 		    conn = DBConn.conn();
@@ -386,14 +391,30 @@ public class BoardController {
 		        psmt = conn.prepareStatement(sql);
 		        psmt.setString(1, uno);
 		        psmt.setString(2, bno);
+		        psmt.executeUpdate();
+		        
+		        sqlA = "delete from alram where uno = ? and bno = ? and type=? ";
+		        psmtA = conn.prepareStatement(sql);
+		        psmtA.setString(1, uno);
+		        psmtA.setString(2, bno);
+		        psmtA.setString(3, "L");
+		        psmtA.executeUpdate();
 		    } else {
 		        // 추천이 없으면 insert
 		        sql = "insert into love (uno, bno) values (?, ?)";
 		        psmt = conn.prepareStatement(sql);
 		        psmt.setString(1, uno);
 		        psmt.setString(2, bno);
+		        psmt.executeUpdate();
+		        
+		        sqlA = "insert into alram (uno, no, type) values (?, ?, ?)";
+		        psmtA = conn.prepareStatement(sql);
+		        psmtA.setString(1, uno);
+		        psmtA.setString(2, bno);
+		        psmtA.setString(3, "L");
+		        psmtA.executeUpdate();
 		    }
-		    psmt.executeUpdate();
+		    	
 
 		} catch (Exception e) {
 		    e.printStackTrace();

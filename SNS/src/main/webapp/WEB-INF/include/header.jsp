@@ -739,7 +739,7 @@ function recoAdd(bno) {
 	    $.ajax({
 	        url: "<%= request.getContextPath() %>/board/recoAdd.do",
 	        type: "post",
-	        data: { bno: bno },
+	        data: { bno: bno},
 	        success: function() {
 	            loadReco(bno);  // 추천 상태를 다시 로드
 	        }
