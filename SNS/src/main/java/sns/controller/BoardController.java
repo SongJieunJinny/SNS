@@ -445,10 +445,7 @@ public class BoardController {
 		    conn = DBConn.conn();
 
 		    // 사용자가 이 게시물을 추천했는지 확인
-		    String checkReco = "select lno, b.uno as tuno from love "
-		    				+" innerjoin board b "
-		    				+" on love.bno=b.bno "
-	    					+" where uno = ? and bno = ?";
+		    String checkReco = "select * from love where uno = ? and bno = ?";
 		    System.out.println("sql checkReco: "+checkReco);
 		    psmt = conn.prepareStatement(checkReco);
 		    psmt.setString(1, uno);
