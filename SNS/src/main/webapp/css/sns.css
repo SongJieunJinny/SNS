@@ -1768,3 +1768,49 @@ text-align: left;
     height: 57px;
 }
 
+
+/* 코멘트추가 css */
+
+.commentContentInput{
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+			background-color: white;
+			border: 2px solid #BFBFBF;
+			outline: none;
+			border-radius: 40px;
+			width:55%;
+			padding: 3%;
+			display: flex;
+			align-items: center; 
+			gap: 10px;
+}
+
+.commentModifyButton{
+		box-sizing: border-box;
+		border: 2px solid #BFBFBF;
+		outline: none;
+		font-weight:bold;
+		font-size:15px;
+		text-align: center;
+		box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+		background-color: #BFBFBF;
+		border-radius: 40px;
+		width:13%;
+		padding: 1%;
+		align-items: center;
+		gap: 10px;	
+}
+.commentModifyReset{
+		box-sizing: border-box;
+		border: 2px solid #BFBFBF;
+		outline: none;
+		font-weight:bold;
+		font-size:15px;
+		text-align: center;
+		box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+		background-color: #BFBFBF;
+		border-radius: 40px;
+		width:13%;
+		padding: 1%;
+		align-items: center;
+		gap: 10px;
+}
