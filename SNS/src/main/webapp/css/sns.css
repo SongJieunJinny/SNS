@@ -78,7 +78,7 @@ header img{
 
 #searchIcon{
 	margin-left:10px;
-	margin-top:7px;
+	margin-top:12px;
 	border-radius:50%;
 	width:35px;
 	height:35px;
@@ -228,6 +228,10 @@ body.dark-mode .profileicon {
     position: relative; /* 자식 요소의 위치를 기준으로 설정하기 위해 relative 설정 */
 }
 
+#seach-container .icon{
+	position: relative; 
+}
+
 .login-hover-menu {
     display: none;
     position: absolute;
@@ -253,7 +257,8 @@ body.dark-mode .profileicon {
     text-overflow: ellipsis; /* 넘치는 텍스트에 말줄임표(...) 처리 */
 }
 
-.userHeader_login .icon:hover .login-hover-menu {
+.userHeader_login .icon:hover .login-hover-menu,
+#seach-container .icon:hover .login-hover-menu {
     display: block; /* 마우스가 icon 위에 올라가면 메뉴가 보이도록 설정 */
 }
 
