@@ -900,11 +900,16 @@ function complainAdd(bno) {
 	                    width:45%; height: 52px;
 	                    margin-top: 1.5%; margin-left:40%;
 	                    ">
-			      	   		<img id="searchIcon" 
-			      	   		onclick="location.href='<%= request.getContextPath() %>'"
-			      	   		src="<%= request.getContextPath() %>/image/logo.jpg">
-	                        <input type="text" name="searchValue" id="search" placeholder="검색">
-	                        <i class="fas fa-times" id="clearBtn"></i>
+	                    	<div class="icon">
+				      	   		<img id="searchIcon" 
+				      	   		onclick="location.href='<%= request.getContextPath() %>'"
+				      	   		src="<%= request.getContextPath() %>/image/logo.jpg">
+				      	   		<div class="login-hover-menu">
+						            <p>홈이동</p>
+						        </div>
+	                        </div>
+		                        <input type="text" name="searchValue" id="search" placeholder="검색">
+		                        <i class="fas fa-times" id="clearBtn"></i>
 	                    </div>
 	                </div>
 	            </form>
