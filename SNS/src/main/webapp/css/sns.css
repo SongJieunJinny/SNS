@@ -212,6 +212,22 @@ body.dark-mode .profileicon {
     align-items: center; /* 수직 가운데 정렬 */
 }
 
+/* ----------알림 모달창 css-------------- */
+.userHeader_login .alarmCount {
+    position: absolute;
+    top: 3px;
+    right: 13px;
+    font-size: 14px;
+    background-color: #FE6450;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    color: white;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+}
+
 .userHeader_login .icon.round {
     border-radius: 50%;
     background-color: #EEEEEE;
@@ -1015,6 +1031,20 @@ body.dark-mode .login-hover-menu{
 body.dark-mode .modal-content {
     background-color: #333333;
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+
+/* 알림 모달창 스타일 */
+.alarm{
+    position: fixed;
+    top: -5%;
+    left: 85%;
+    /* transform: translate(-80%, -44%); */
+    width: 600px;
+    height: auto;
+    max-width: 250px;
+    background-color: white;
+    z-index: 1000;
 }
 
 /* 회원가입,로그인 모달 스타일 */
