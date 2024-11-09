@@ -17,6 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONObject;
+
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
@@ -76,9 +78,17 @@ public class UserController {
 			if (request.getMethod().equals("POST")) {
 				pwChangeOk(request, response);
 			}
-		} else if (comments[comments.length - 1].equals("checkMSG.do")) {
-			if (request.getMethod().equals("GET")) {
-				checkMSG(request, response);
+		} else if(comments[comments.length-1].equals("alarmCount.do")) {
+			if(request.getMethod().equals("GET")) {
+				alarmCount(request,response);
+			}
+		} else if(comments[comments.length-1].equals("alarmList.do")) {
+			if(request.getMethod().equals("GET")) {
+				alarmList(request,response);
+			}
+		} else if(comments[comments.length-1].equals("updateState.do")) {
+			if(request.getMethod().equals("GET")) {
+				updateState(request,response);
 			}
 		} else if (comments[comments.length - 1].equals("mypage_write.do")) {
 			if (request.getMethod().equals("GET")) {
@@ -847,24 +857,46 @@ public class UserController {
 
 	}
 
-	public void checkMSG(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		request.getRequestDispatcher("/WEB-INF/user/checkMSG.jsp").forward(request, response);
+	public void alarmCount(HttpServletRequest request
+			, HttpServletResponse response) throws ServletException, IOException {
+		// 파라메타로 넘어온 uno를 받습니다
+		request.setCharacterEncoding("UTF-8");
+		String uno = request.getParameter("uno");
+		System.out.println("alarmCount() : uno :" + uno);
+		
 		// DB 연결 조건
 		Connection conn = null;
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
 
-		// SB연결과 작성 사이
+		// SB연결과 작성 사이 
 		try {
 			// DB연결
 			conn = DBConn.conn();
 			// SQL 작성
-			String sql = " select u.*, m.* from message m innerjoin user u on u.uno = m.uno ";
-
-		} catch (Exception e) {
+			// 해당 uno에게 온 알림의 갯수를 셉니다
+			
+			String sql = " select count(*) as count from alarm where uno = ? and state = 'N' ";
+			
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(1,Integer.parseInt(uno));
+			rs = psmt.executeQuery();
+			
+			int result = 0;
+			
+			if(rs.next()){
+				//  json 객체에 데이터 넣기
+				result = rs.getInt("count");
+			}
+			
+			// 갯수를 반환합니다
+			PrintWriter out = response.getWriter();
+			out.print(result);
+			
+		}catch(Exception e ){
 			e.printStackTrace();
-		} finally {
+		}
+		finally {
 			try {
 				DBConn.close(rs, psmt, conn);
 			} catch (Exception e) {
@@ -872,9 +904,172 @@ public class UserController {
 				e.printStackTrace();
 			}
 		}
-
 	}
+	
+	public void alarmList(HttpServletRequest request
+			, HttpServletResponse response) throws ServletException, IOException {
+		
+		// 파라메타로 넘어온 uno를 받습니다
+		request.setCharacterEncoding("UTF-8");
+		String uno = request.getParameter("uno");
+		System.out.println("alarmCount() : uno :" + uno);
+		
+		// DB 연결 조건
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
 
+		// SB연결과 작성 사이 
+		try {
+			// DB연결
+			conn = DBConn.conn();
+			// SQL 작성
+			// 해당 uno에게 온 메세지 리스트를 요청합니다
+			
+			String sql  = " select a.*,( select u.unick from user u where u.uno= a.uno) as tuno, "
+						+" 		(select u.unick from user u where u.uno = f.uno) as funo "
+						+" 	from alarm a, follow f "
+						+"    where a.no = f.fno"
+						+"      and a.uno = f.tuno "
+						+"      and a.type='F'"
+						+" 	 and a.state = 'N' "
+						+" 	 and a.uno = ?"
+						+" union all"
+						+"  select  a.*,( select u.unick from user u where u.uno= a.uno) as tuno, "
+						+" 		(select u.unick from user u where u.uno = c.uno) as funo "
+						+"   from alarm a, comments c, board b"
+						+"  where a.no = c.cno"
+						+"    and c.bno = b.bno "
+						+"    and a.uno = b.uno "
+						+"    and a.type='R'"
+						+"    and a.state = 'N' "
+						+"    and a.uno = ?"
+						+" union all"
+						+"   select a.*,( select u.unick from user u where u.uno= a.uno) as tuno, "
+						+" 	 (select u.unick from user u where u.uno = l.uno) as funo "
+						+"   from alarm a, love l, board b"
+						+"  where a.no = l.lno"
+						+"    and l.bno = b.bno "
+						+"    and a.uno = b.uno  "
+						+"    and a.type='L'"
+						+"    and a.state='N'"
+						+"    and a.uno = ?"
+						+" union all"
+						+"  select a.*,( select u.unick from user u where u.uno= a.uno) as tuno, "
+						+" 	 (select u.unick from user u where u.uno = cp.uno) as funo "
+						+"   from alarm a, complaint_board cp, board b"
+						+"  where a.no = cp.cpno"
+						+"    and cp.bno= b.bno"
+						+"    and a.uno = b.uno  "
+						+"    and a.type='C'"
+						+"    and a.state='N'"
+						+"    and a.uno = ?"
+						+" order by rdate desc"; 
+			
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(1,Integer.parseInt(uno));
+			psmt.setInt(2,Integer.parseInt(uno));
+			psmt.setInt(3,Integer.parseInt(uno));
+			psmt.setInt(4,Integer.parseInt(uno));
+			rs = psmt.executeQuery();
+			
+			List<JSONObject> list = new ArrayList<JSONObject>();
+			
+			// 리스트 생성
+			while(rs.next()){
+				//	json 객체 생성
+				JSONObject json = new JSONObject();
+				//  json 객체에 데이터 넣기
+				json.put("alno", rs.getInt("alno"));		// 알람 번호
+				json.put("uno", rs.getInt("uno"));			// 알람을 받을 유저 번호
+				json.put("rdate", rs.getString("rdate"));
+				json.put("state", rs.getString("state"));	// 읽음 여부
+				json.put("type", rs.getString("type"));		// 알람 종류
+				json.put("tuno", rs.getString("tuno"));		// 팔로우 보낸 사람
+				json.put("funo", rs.getString("funo"));		// 팔로우 당한사람
+				json.put("no", rs.getInt("no"));			// 어느 글에서 팔로우 신청을 했는가
+				//  리스트에 json 객체 넣기
+				list.add(json);
+			//}
+			}
+			
+			// 응답의 Content-Type을 JSON으로 설정
+			response.setContentType("application/json");
+			response.setCharacterEncoding("UTF-8");
+			
+			// 리스트를 문자열로 바꿔서 반환
+			PrintWriter out = response.getWriter();
+			out.print(list.toString());
+			out.flush();
+			
+		}catch(Exception e ){
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				DBConn.close(rs, psmt, conn);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+	
+	}
+	
+	public void updateState(HttpServletRequest request
+			, HttpServletResponse response) throws ServletException, IOException {
+		// 파라메타로 넘어온 uno를 받습니다
+		request.setCharacterEncoding("UTF-8");
+		String alno = request.getParameter("alno");
+		System.out.println("updateState() : alno :" + alno);
+		
+		// DB 연결 조건
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		
+		// SB연결과 작성 사이 
+		try {
+			// DB연결
+			conn = DBConn.conn();
+			// SQL 작성
+			
+			// 받은 alno로 알람의 상태를 변경하는 sql문을 작성
+			
+			String sql = " update alarm "
+					   + "    set state = 'Y' "
+					   + "  where alno = ? ";
+			
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(1,Integer.parseInt(alno));
+			
+			int result = psmt.executeUpdate();
+					
+			PrintWriter out = response.getWriter();
+
+			if(result > 0){
+				//상태가 업데이트 됨.
+				out.print("ok");
+			}else {
+				//변경된 데이터가 없음.
+				out.print("fail");
+			}
+			
+
+			
+		}catch(Exception e ){
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				DBConn.close(psmt, conn);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	public void myPageWrite(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		

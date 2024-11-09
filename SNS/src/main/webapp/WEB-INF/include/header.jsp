@@ -39,6 +39,9 @@ $(document).ready(function() {
 	// 페이지 로드 시 다크모드 초기화
     DarkMode();	
     
+    // 알림 갯수를 세서 표시
+    countAlarm()
+	
 	// #menuA 클릭 시 #menutableA 토글
     $("#menuA").click(function(event) {
         $("#menutableA").toggle();  // 보이기/숨기기
@@ -275,8 +278,211 @@ $(document).ready(function() {
             $('.listDiv').css('display', 'flex'); // 스크롤이 헤더보다 위에 있을 때는 보이게 하기
         }
     });
+	
+	//-------------------------알림 기능 구현 시작--------------------------
+	
+	// 로그인 되었으면, 알림을 주기적으로 확인한다
+	
+	// java vo : loginUser
+	var loginUser = "<%= loginNo %>";
+	if( loginUser != ""){
+		const timer = setInterval(countAlarm, 60000);
+	}
+	
 });
 
+//알림 갯수를 세오는 servlet에 ajax 요청
+function countAlarm(){
+	$.ajax({
+		url:"<%= request.getContextPath() %>/user/alarmCount.do",
+		type:"get",
+		data: {"uno" : "<%= loginNo %>"},
+		dataType: "text",
+		success: function(response){
+			console.log(response.trim());
+			var count = parseInt(response.trim());
+			if(count>0){
+				$(".alarmCount").text(count);
+				$(".alarmCount").css("display","");
+			}else{
+				$(".alarmCount").text("");
+				$(".alarmCount").css("display","none");
+			}
+		}
+	});
+}
+
+//알람 버튼을 눌렀을때에 호출될 함수
+function getAlarmList(){
+	// 알람 모달창 객체를 찾습니다
+	$("#alarm_modal").toggle();
+	
+
+	//알람 모달창이 화면에 표시되어야 될때에
+	// 아래의 ajax를 실행
+	
+	//모달을 닫을때에는, 모달 내부의 태그를 삭제
+	$('#alarm_modalBody').html("")
+	
+	/* alert("call getAlarmList()"); */
+ 	$.ajax({
+		url:"<%= request.getContextPath() %>/user/alarmList.do",
+		type:"get",
+		data: {"uno" : "<%= loginNo %>"},
+		dataType: "json",
+		success: function(response){
+			console.log(response);
+			for ( var item of response) {
+				
+				var time_str = elapsedTime(item.rdate);
+				var content_str = "";
+				// 알람 종류에 따라서 목록을 작성한다
+				switch (item.type){
+				case "F" : content_str="<span style='text-decoration: none; cursor: pointer; color: black;' " 
+							+ " onclick='update_alarm(\"F\"," + item.uno + "," + item.alno + ");'>"
+							+ item.funo + "님이 " + item.tuno + "님께 팔로우를 신청했습니다</span>";
+						    break;
+				case "L" : content_str="<span style='text-decoration: none; cursor: pointer; color: black;' "
+							+" onclick='update_alarm(\"L\"," + item.uno + "," + item.alno + ");'>"			
+							+ item.funo + " 님이 " + item.tuno + " 님의 " + +item.no + "번 게시글을 좋아합니다</span>";
+							break;
+				case "C" : content_str="<span style='text-decoration: none; cursor: pointer; color: black;' "
+							+" onclick='update_alarm(\"C\"," + item.uno +  "," + item.alno + ");'>"
+							+ item.tuno + " 님의 "  + item.no + "번 게시글이 신고 되었습니다</span>";
+							break;				
+				case "R" : content_str="<span style='text-decoration: none; cursor: pointer; color: black;' "
+							+" onclick='update_alarm(\"R\"," + item.uno + "," + item.alno + ");'>"
+							+ item.funo + " 님이 " + item.tuno + " 님의 게시글에 댓글을 남겼습니다</span>";
+							break;		
+				}
+				var html_tag = `<div style="font-size: 12px; font-weight: lighter;">
+									<span style="font-size: 10px; color: gray; font-weight: lighter;">
+										\${time_str}
+									</span>
+									\${content_str}	
+								</div>`;
+				
+				$('#alarm_modalBody').append(html_tag);
+				
+			}
+		}
+	});
+}
+
+function update_alarm(type, no, alno){
+	// 알람을 클릭했을때에 호출될 함수
+	
+	switch (type)
+	{
+		case "F" : 
+			// ajax로 알람 상태를 읽음으로 업데이트 하도록 요청
+			// alert("읽음 상태 업데이트를 요청했습니다");
+			
+		 	$.ajax({
+				url:"<%= request.getContextPath() %>/user/updateState.do",
+				type:"get",
+				data: {"alno" : alno},
+				dataType: "json",
+				success: function(response){
+					console.log(response.trim());
+					// 응답이 ok면 상태가 변경
+					// 아니면 실패한것
+				}
+			});
+			
+			// 내 마이 페이지로 이동
+ 			location.href='<%= request.getContextPath() %>/user/mypage.do?uno=' + no;
+			break;
+			
+		case "L" : 
+			// ajax로 알람 상태를 읽음으로 업데이트 하도록 요청
+			// alert("읽음 상태 업데이트를 요청했습니다");
+			
+		 	$.ajax({
+				url:"<%= request.getContextPath() %>/user/updateState.do",
+				type:"get",
+				data: {"alno" : alno},
+				dataType: "json",
+				success: function(response){
+					console.log(response);
+					// 응답이 ok면 상태가 변경
+					// 아니면 실패한것
+				}
+			});
+			
+			// 좋아요 표시한 뷰 페이지로 이동
+ 			location.href='<%= request.getContextPath() %>/user/view.do?uno=' + no;
+			break;
+			
+		case "C" : 
+			// ajax로 알람 상태를 읽음으로 업데이트 하도록 요청
+			// alert("읽음 상태 업데이트를 요청했습니다");
+			
+		 	$.ajax({
+				url:"<%= request.getContextPath() %>/user/updateState.do",
+				type:"get",
+				data: {"alno" : alno},
+				dataType: "json",
+				success: function(response){
+					console.log(response);
+					// 응답이 ok면 상태가 변경
+					// 아니면 실패한것
+				}
+			});
+			
+			// 신고게시글 목록 페이지로 이동
+ 			location.href='<%= request.getContextPath() %>/admin/complainList.do?uno=' + no;
+			break;
+			
+		case "R" : 
+			// ajax로 알람 상태를 읽음으로 업데이트 하도록 요청
+			// alert("읽음 상태 업데이트를 요청했습니다");
+			
+		 	$.ajax({
+				url:"<%= request.getContextPath() %>/user/updateState.do",
+				type:"get",
+				data: {"alno" : alno},
+				dataType: "json",
+				success: function(response){
+					console.log(response);
+					// 응답이 ok면 상태가 변경
+					// 아니면 실패한것
+				}
+			});
+			
+			// 댓글 작성된 뷰 페이지로 이동
+ 			location.href='<%= request.getContextPath() %>/user/view.do?uno=' + no;
+			break;
+	}
+}
+
+function elapsedTime(rdate) {
+	  const target = new Date(rdate);
+	  const now = new Date();
+
+	  const diff = (now - target) / 1000;	// 초 단위
+	  
+	  const times = [
+	    { name: '년', milliSeconds: 60 * 60 * 24 * 365 },
+	    { name: '개월', milliSeconds: 60 * 60 * 24 * 30 },
+	    { name: '일', milliSeconds: 60 * 60 * 24 },
+	    { name: '시간', milliSeconds: 60 * 60 },
+	    { name: '분', milliSeconds: 60 },
+	  ];
+
+	  for (const value of times) {
+	    const betweenTime = Math.floor(diff / value.milliSeconds);
+
+	    if (betweenTime > 0) {
+	      return `\${betweenTime}\${value.name} 전`;
+	    }
+	  }
+	  return '방금 전';
+	}
+	
+	// ---------------------------------알림 기능 구현 종료-----------------------------
+	
+	
 function readURL(input) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
@@ -908,11 +1114,12 @@ function complainAdd(bno) {
 	                </div>
 	            </div> --%>
 		        <!-- 알림 표시 -->
-		        <div class="icon">
-	      	   		<img src="https://img.icons8.com/?size=100&id=3334&format=png&color=767676">
-	      	   		<div class="login-hover-menu">
-			            <p>알림</p>
-			        </div>
+		        <div class="icon" onclick="getAlarmList();">
+      	   			<img src="https://img.icons8.com/?size=100&id=3334&format=png&color=767676" >
+      	   			<span class="alarmCount"></span>
+      	   		</div>
+      	   		<div class="login-hover-menu">
+		            <p>알림</p>
 		        </div>
 		        <!-- 메시지 표시 -->
 		        <div class="icon">
@@ -1049,7 +1256,7 @@ function complainAdd(bno) {
 	
 	<!-- 알림 모달창 -->
 	<div id="alarm_modal" style="display:none;">
-		<div class="alarm_modal-content">
+		<div class="alarm modal-content">
 			<div id="alarm_modalBody">
 				<!-- 알람 내용 여기에 표시됨 -->
 			</div>
