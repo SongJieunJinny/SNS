@@ -13,6 +13,10 @@ String pPname = pageUser.getPname();
 String type = request.getParameter("type");
 ArrayList<BoardVO> board = (ArrayList<BoardVO>)request.getAttribute("board");
 FollowVO vo = (FollowVO)request.getAttribute("follow");
+int cnt = 0;
+if(request.getAttribute("fcnt") != null ){
+	cnt = (Integer)request.getAttribute("fcnt");
+}
 %>
 <!--웹페이지 본문-->
 <section>
@@ -40,9 +44,6 @@ FollowVO vo = (FollowVO)request.getAttribute("follow");
 	        }
 	        %>
 	    	<div><%= pageUser.getUnick() %></div>
-	    	<%
-	    	int cnt = (Integer)request.getAttribute("fcnt");
-	    	%>
 	    	<div id="followResult">팔로워 수 : <span id="followcnt"><%= cnt %></span></div>
 	    	<div id= "followModifyMessegeBtn" style="width: 100%; display: flex; justify-content: center">
 	    		<%
