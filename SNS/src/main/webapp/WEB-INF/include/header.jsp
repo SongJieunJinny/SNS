@@ -794,27 +794,7 @@ function complainAdd(bno) {
 	}
 }
 
-// ------------알림 모달창------------------
-  /*   const alarmModal = document.querySelector(".alarm_modal");
-    const openIcon = document.querySelector(".icon");
-    const closeIcon = document.querySelector(".icon");
-    
-    openIcon.onclick = function() {
-        alarmModal.style.display = "flex";
-    }
-    
-    closeIcon.onclick = function() {
-    	alarmModal.style.display = "none";
-    }
-
-    window.onclick = function(event) {
-        if (event.target == alarmModal) {
-        	alarmModal.style.display = "none";
-        }
-    } */
-    
- // ------------팔로우 기능------------------
- 
+ /* index화면에서 팔로우 기능 */
  function follow(obj){
 	 $.ajax({		    
 		 url: "<%= request.getContextPath() %>/board/followAdd.do",		    
@@ -857,14 +837,14 @@ function complainAdd(bno) {
 				 $(obj).removeClass("ssBtn");
 				 let cnt = Number($("#followcnt").text());
 				 $("#followcnt").text(cnt+1);
-			 }else{
+			 	}else{
 				 $(obj).text("팔로우");
 				 $(obj).addClass("ssBtn");
 				 $(obj).removeClass("ssFollowBtn");
 				 let cnt = Number($("#followcnt").text());
 				 if(cnt>0) $("#followcnt").text(cnt-1);
-			 }
-			 },  
+			 	}
+		 	},  
 			 
 			 error: 		    
 				 function (request, status, error){
@@ -872,10 +852,8 @@ function complainAdd(bno) {
 				 }		  
 			 });
 	 }
-
 </script>
 </head> 
-
 <body>
 	<!-- header 검색창, 프로필이미지, 알림, 메시지 -->
 	<header>
@@ -892,24 +870,25 @@ function complainAdd(bno) {
 	        <div class="search_inner">
 	            <form action="<%= request.getContextPath() %>/index.jsp" method="get" name="searchFn" style="padding-bottom:30px;">
 	                <div class="search-wrapper">
-	                    <div id="seach-container"
-	                    style="display: flex;  align-items: center;
-	                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-	                    background-color: white;
-	                    border-radius: 25px;
-	                    width:45%; height: 52px;
-	                    margin-top: 1.5%; margin-left:40%;
-	                    ">
+	                    <div id="seach-container" style="display: flex;  
+																											 align-items: center;
+																											 box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+																											 background-color: white;
+																											 border-radius: 25px;
+																											 width:45%;
+																											 height: 52px;
+																											 margin-top: 1.5%;
+																											 margin-left:40%">
 	                    	<div class="icon">
-				      	   		<img id="searchIcon" 
-				      	   		onclick="location.href='<%= request.getContextPath() %>'"
-				      	   		src="<%= request.getContextPath() %>/image/logo.jpg">
-				      	   		<div class="login-hover-menu">
-						            <p>홈이동</p>
-						        </div>
-	                        </div>
-		                        <input type="text" name="searchValue" id="search" placeholder="검색">
-		                        <i class="fas fa-times" id="clearBtn"></i>
+				      	   				<img id="searchIcon" 
+				      	   						 onclick="location.href='<%= request.getContextPath() %>'"
+				      	   						 src="<%= request.getContextPath() %>/image/logo.jpg">
+				      	   				<div class="login-hover-menu">
+						            		<p>홈이동</p>
+						        			</div>
+	                      </div>
+		                      <input type="text" name="searchValue" id="search" placeholder="검색">
+		                      <i class="fas fa-times" id="clearBtn"></i>
 	                    </div>
 	                </div>
 	            </form>
@@ -986,20 +965,20 @@ function complainAdd(bno) {
 			%>
 	        <!-- 로그인하지 않았을 경우 -->
 	        <div class="userHeader">
-	            <a id="join">회원가입</a>&nbsp;|&nbsp; 
-				<a id="login">로그인</a>
+	        	<a id="join">회원가입</a>&nbsp;|&nbsp; 
+						<a id="login">로그인</a>
 	        </div>
 			<%	
 			}
 			%>
 		</div>	
 	<nav>
-     	<ul>
-           <li>
-                <!-- 다크모드&라이트모드 전환 -->
-                <div class="menu-item" id="modeToggle">
+		<ul>
+    	<li>
+      <!-- 다크모드&라이트모드 전환 -->
+        <div class="menu-item" id="modeToggle">
                     <a>
-                        <img src="https://img.icons8.com/?size=100&id=101342&format=png&color=767676" alt="다크모드 전환">
+                       <img src="https://img.icons8.com/?size=100&id=101342&format=png&color=767676" alt="다크모드 전환"> 
                     </a>
                     <div class="hover-menu">
 	                    <p id="modeText">다크모드</p>

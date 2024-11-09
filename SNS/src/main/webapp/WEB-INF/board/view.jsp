@@ -14,6 +14,8 @@ if(session.getAttribute("loginUser") != null)
 List<CommentsVO> clist = (List<CommentsVO>)request.getAttribute("clist");
 %>
 <script>
+
+/* 댓글 삭제 버튼 */
 function setCommentDelete(cno,obj){
 	$.ajax({
 		url : '<%=request.getContextPath()%>/reply/cdele.do',
@@ -32,12 +34,14 @@ function setCommentDelete(cno,obj){
 	});
 }
 
+/* 댓글 수정 객체 이름 확인*/
 function setModify(obj){
 	console.log($(obj).parent().parent().parent().parent().prev().find(".commentContent"));
 	$(obj).parent().parent().parent().parent().prev().find(".commentContent").toggle();
 	$(obj).parent().parent().parent().parent().prev().find(".modifyForm").toggle();
 }
 
+/* 댓글 수정 버튼 */
 function commentsModify(obj) {
 	console.log($(obj));
 	console.log($(obj).parent().parent().children(".commentContent"));
@@ -66,6 +70,7 @@ function commentsModify(obj) {
   });
 }
 
+/* 댓글작성 버튼 */
 function btnComment() {
   var formData = $("#commentForm").serialize();  // 폼 데이터를 직렬화 (쿼리 문자열 형태로 변환)
 
@@ -104,6 +109,7 @@ function toggleA (obj) {
   // else는 필요없음. 원래 block이었으면 일괄적으로 none로 변경된 상태를 바꾸지 않아도 됨
 }
 
+/* 댓글 작성 버튼 클릭 성공시 구현화면 */
 // 서버에서 받은 데이터를 화면에 추가하는 함수 (역순 정렬)
 function displayResult(data) {
 	console.log(data.name);
@@ -368,9 +374,9 @@ function deleteFn(){
            					<span class="commentContent"><%= cvo.getContent() %></span>
            					<span style="display:none;" class="modifyForm" >
            						<input type="hidden" value="<%= cvo.getCno() %>" name="cno">
-	           					<input class="commentContentInput" type="text" value="<%= cvo.getContent() %>" name="content">
-	           					<button class="commentModifyButton" type="button" onclick="commentsModify(this);">수정</button>
-											<input class="commentModifyReset"type="reset" value="취소">
+	           					<input class="commentContentInput" type="text" value="<%= cvo.getContent() %>" name="content">  <!-- 댓글입력창 -->
+	           					<button class="commentModifyButton" type="button" onclick="commentsModify(this);">수정</button>  <!-- 댓글 수정버튼 -->
+											<input class="commentModifyReset"type="reset" value="취소">  <!-- 댓글 수정 취소버튼 -->
            					</span>
 									</form>
 								</div>
