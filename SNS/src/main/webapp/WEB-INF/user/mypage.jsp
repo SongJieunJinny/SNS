@@ -86,7 +86,7 @@ if(request.getAttribute("fcnt") != null ){
 					<!-- 로그인한 회원의 마이페이지인 경우 -->
 					<!-- 북마크를 클릭했을 때 해당 링크로 uno와 type 파라미터를 전송  -->
 					<!-- 응답받은 타입이 문자열과 일치할 때 스타일을 적용  -->
-					<a href="mypage.do?uno=<%= loginUser.getUno() %>&type=bookmark"
+					<a href="mypage_bookmark.do?uno=<%= loginUser.getUno() %>&type=bookmark"
 	   				style="<%= "bookmark".equals(type) ? "text-decoration: underline; text-underline-offset: 6px;" : "color:gray;" %>">북마크</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					<a href="mypage_write.do?uno=<%= loginUser.getUno() %>&type=written" 
 					style="<%= "written".equals(type) ? "text-decoration: underline; text-underline-offset: 6px;" : "color:gray;" %>">내가쓴글</a>
