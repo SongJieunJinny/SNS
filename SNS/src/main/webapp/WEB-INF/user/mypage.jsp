@@ -154,6 +154,16 @@ function mypageViewFn(bno) {
             
             // 모달을 보여줌
             $('#modal').show();
+            
+            $('script').each(function() {
+                if (this.src) {
+                    $.getScript(this.src);
+                } else {
+                    eval($(this).text());
+                }
+            });
+            loadReco(bno);
+            loadComplain(bno);
         },
         error: function(xhr, status, error) {
             console.error("오류 발생:", error);
