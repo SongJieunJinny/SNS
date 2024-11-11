@@ -11,6 +11,7 @@ if(session.getAttribute("loginUser") != null){
 UserVO pageUser = null;
 if(request.getAttribute("user") != null){
 	pageUser = (UserVO)request.getAttribute("user");
+}
 System.out.println("pageUser=================================" +pageUser );
 String pUno = "";
 String pPname = "";
