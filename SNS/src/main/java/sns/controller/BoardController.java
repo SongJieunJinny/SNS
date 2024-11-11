@@ -461,6 +461,8 @@ public class BoardController {
 		ResultSet rsT = null;
 		PreparedStatement psmtA = null;
 
+		PreparedStatement psmtL = null;
+		ResultSet rsL = null;
 		try {
 		    conn = DBConn.conn();
 		    
@@ -491,11 +493,10 @@ public class BoardController {
 		        psmt.setString(2, bno);
 		        psmt.executeUpdate();
 		        
-		        sqlA = "delete from alram where uno = ? and bno = ? and type=? ";
+		        sqlA = "delete from alram where no = ? and type=? ";
 		        psmtA = conn.prepareStatement(sqlA);
-		        psmtA.setString(1, tuno);
-		        psmtA.setString(2, bno);
-		        psmtA.setString(3, "L");
+		        psmtA.setString(1, rs.getString("lno"));
+		        psmtA.setString(2, "L");
 		        psmtA.executeUpdate();
 		    } else {
 		        // 추천이 없으면 insert
@@ -505,10 +506,19 @@ public class BoardController {
 		        psmt.setString(2, bno);
 		        psmt.executeUpdate();
 		        
+		        sql = "select last_insert_id() as lno";
+		        
+		        psmtL = conn.prepareStatement(sql);
+		        String lno = "";
+			    rsL = psmtL.executeQuery();
+			    if(rsL.next()) {
+			    	lno = rsL.getString("lno");
+			    }
+		        
 		        sqlA = "insert into alram (uno, no, type) values (?, ?, ?)";
 		        psmtA = conn.prepareStatement(sqlA);
 		        psmtA.setString(1, tuno);
-		        psmtA.setString(2, bno);
+		        psmtA.setString(2, lno);
 		        psmtA.setString(3, "L");
 		        psmtA.executeUpdate();
 		    }
