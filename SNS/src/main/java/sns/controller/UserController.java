@@ -1204,7 +1204,7 @@ public class UserController {
 		
 		try {
 			conn = DBConn.conn();
-			sql = " SELECT *"
+			sql = " SELECT *,u.uno as uuno"
 				+ "  FROM board b"
 				+ " INNER JOIN love l"
 				+ "    ON b.bno = l.bno"
@@ -1219,7 +1219,7 @@ public class UserController {
 			ArrayList<BoardVO> board = new ArrayList<>();
 			while (rs.next()) {
 				UserVO user = new UserVO();
-				user.setUno(rs.getString("uno"));
+				user.setUno(rs.getString("uuno"));
 				user.setUid(rs.getString("uid"));
 				user.setUnick(rs.getString("unick"));
 				user.setUemail(rs.getString("uemail"));
