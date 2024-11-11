@@ -220,9 +220,9 @@ function deleteFn(){
 					    		<!-- 게시글삭제 -->
 					    		<form action="">
 						  			<div class="menu-container">
-						       		<i class="fas fa-solid fa-eraser"></i>
-						       		<button id="infoBtn" onclick="deleteFn()">삭제</button>
-						       		<input type="hidden" id="bno" name="bno" value="<%=vo.getBno()%>">
+							       		<i class="fas fa-solid fa-eraser"></i>
+							       		<button id="infoBtn" onclick="deleteFn()">삭제</button>
+							       		<input type="hidden" id="bno" name="bno" value="<%=vo.getBno()%>">
 						   			</div>
 					    		</form>
 									<%
@@ -230,10 +230,13 @@ function deleteFn(){
 										System.out.println("writer.getUauthor() : " + viewUser.getUauthor());
 									%>
 										<!-- 게시글삭제 -->
-					        	<div class="menu-container">
-					          	<i class="fas fa-solid fa-eraser"></i>
-					          	<button id="infoBtn">삭제</button>
-					        	</div>
+								<form action="">
+						        	<div class="menu-container">
+							          	<i class="fas fa-solid fa-eraser"></i>
+							          	<button id="infoBtn" onclick="deleteFn()">삭제</button>
+							          	<input type="hidden" id="bno" name="bno" value="<%=vo.getBno()%>">
+						        	</div>
+					        	</form>
 									<%	
 										}
 									%>

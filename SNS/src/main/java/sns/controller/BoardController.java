@@ -94,19 +94,57 @@ public class BoardController {
 	    if(rs.next()) cnt = rs.getInt("cnt");
 
 	    if (cnt>0) {
+	    	
+		    sql = " SELECT fno FROM sns.follow where uno=? and tuno=? ";
+		    psmt = conn.prepareStatement(sql);
+			psmt.setString(1, uno);
+		    psmt.setInt(2, tuno);
+		    rs = psmt.executeQuery();
+		    
+		    rs.next();
+		    int fno = rs.getInt("fno");
+	    	
 	        // 추천이 이미 존재하면 delete
 	    	sql = "delete from follow where uno = ? and tuno = ?";
 	        psmt = conn.prepareStatement(sql);
 	        psmt.setString(1, uno);
 	        psmt.setInt(2, tuno);
+	        psmt.executeUpdate();
+	        
+	    	sql = "delete from alram where no = ?";
+	        psmt = conn.prepareStatement(sql);
+	        psmt.setInt(1, fno);
+	        psmt.executeUpdate();
+	        
 	    } else {
 	        // 추천이 없으면 insert
 	        sql = "insert into follow (uno, tuno) values (?, ?)";
+	        System.out.println(sql);
 	        psmt = conn.prepareStatement(sql);
 	        psmt.setString(1, uno);
 	        psmt.setInt(2, tuno);
+	        System.out.println(psmt.executeUpdate());
+
+	        //팔로우테이블에 새로들어간 데이터의 pk를 가져온
+	        
+	        sql = " SELECT last_insert_id() as no ";
+
+		    psmt = conn.prepareStatement(sql);
+
+		    rs = psmt.executeQuery();
+		    
+		    rs.next();
+		    
+	        
+	        sql = "insert into alram (uno, no, type) values (?, ?, ?)";
+	        System.out.println(sql);
+	        psmt = conn.prepareStatement(sql);
+	        psmt.setInt(1, tuno);
+	        psmt.setInt(2, rs.getInt("no"));
+	        psmt.setString(3, "F");
+	        System.out.println(psmt.executeUpdate());
+	        
 	    }
-	    psmt.executeUpdate();
 	    
 	    response.setCharacterEncoding("utf-8");
 	    response.setContentType("text/html;");
@@ -449,17 +487,34 @@ public class BoardController {
 		UserVO user = (UserVO)session.getAttribute("loginUser");
 		String uno = user.getUno();
 		String bno = request.getParameter("bno"); 
-
+		
 		Connection conn = null;
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
 		String sql = "";
 		String sqlA = "";
 
+		String tuno = "";
+		PreparedStatement psmtT = null;
+		ResultSet rsT = null;
 		PreparedStatement psmtA = null;
 
+		PreparedStatement psmtL = null;
+		ResultSet rsL = null;
 		try {
 		    conn = DBConn.conn();
+		    
+		    String sqlT = "select * from board where bno=?";
+		    psmtT = conn.prepareStatement(sqlT);
+		    psmtT.setString(1, bno);
+
+		    rsT = psmtT.executeQuery();
+
+		    if (rsT.next()) {
+		    	tuno = rsT.getString("uno");
+		    }
+		    
+		    
 
 		    sql = "select lno from love where uno = ? and bno = ?";
 		    psmt = conn.prepareStatement(sql);
@@ -476,11 +531,10 @@ public class BoardController {
 		        psmt.setString(2, bno);
 		        psmt.executeUpdate();
 		        
-		        sqlA = "delete from alram where uno = ? and bno = ? and type=? ";
+		        sqlA = "delete from alram where no = ? and type=? ";
 		        psmtA = conn.prepareStatement(sqlA);
-		        psmtA.setString(1, uno);
-		        psmtA.setString(2, bno);
-		        psmtA.setString(3, "L");
+		        psmtA.setString(1, rs.getString("lno"));
+		        psmtA.setString(2, "L");
 		        psmtA.executeUpdate();
 		    } else {
 		        // 추천이 없으면 insert
@@ -490,10 +544,19 @@ public class BoardController {
 		        psmt.setString(2, bno);
 		        psmt.executeUpdate();
 		        
+		        sql = "select last_insert_id() as lno";
+		        
+		        psmtL = conn.prepareStatement(sql);
+		        String lno = "";
+			    rsL = psmtL.executeQuery();
+			    if(rsL.next()) {
+			    	lno = rsL.getString("lno");
+			    }
+		        
 		        sqlA = "insert into alram (uno, no, type) values (?, ?, ?)";
 		        psmtA = conn.prepareStatement(sqlA);
-		        psmtA.setString(1, uno);
-		        psmtA.setString(2, bno);
+		        psmtA.setString(1, tuno);
+		        psmtA.setString(2, lno);
 		        psmtA.setString(3, "L");
 		        psmtA.executeUpdate();
 		    }

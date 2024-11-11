@@ -189,6 +189,26 @@ public class CommentController {
 			e.printStackTrace();
 		}
 		System.out.println("cno : " + cno);
+		
+		
+		// 댓글이 등록되면, 댓글 알림을 알람 테이블에 작성합니다
+		try {
+
+			conn = DBConn.conn();
+			// uno는 알림을 받을 사람
+			// no는 댓글번호
+			// bno는 알람 목록 가져오는 sql에서 cno롤 찾음
+			String sql = " insert into alram ( uno, type, no ) value ((select uno from board where bno = ?), 'R', ?); ";
+
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(1, bno);
+			psmt.setInt(2, cno);
+
+			psmt.executeUpdate();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		// 댓글번호로 댓글 정보를 db에서 받아온다
 		// 댓글을 쓴 사람 번호로 프로필 이미지 파일명과 유저네임을 가져온다

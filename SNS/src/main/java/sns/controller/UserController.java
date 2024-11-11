@@ -142,14 +142,39 @@ public class UserController {
 		        psmt = conn.prepareStatement(sql);
 		        psmt.setString(1, uno);
 		        psmt.setInt(2, tuno);
-		    } else {
-		        // 추천이 없으면 insert
-		        sql = "insert into follow (uno, tuno) values (?, ?)";
+		        psmt.executeUpdate();
+		        
+		    	sql = "delete from alram where no = ? and uno = ?";
 		        psmt = conn.prepareStatement(sql);
 		        psmt.setString(1, uno);
 		        psmt.setInt(2, tuno);
+		        psmt.executeUpdate();
+		        
+		    } else {
+		        // 추천이 없으면 insert
+		        sql = "insert into follow (uno, tuno) values (?, ?)";
+		        System.out.println(sql);
+		        psmt = conn.prepareStatement(sql);
+		        psmt.setString(1, uno);
+		        psmt.setInt(2, tuno);
+		        System.out.println(psmt.executeUpdate());
+		        
+				/*
+				 * sql = "insert into alram (uno, tuno) values (?, ?)"; psmt =
+				 * conn.prepareStatement(sql); psmt.setString(1, uno); psmt.setInt(2, tuno);
+				 * psmt.executeUpdate();
+				 */
+		        //팔로우테이블에 새로들어간 데이터의 pk를 가져온
+		        sql = "insert into alram (uno, no, type) values (?, ?, ?)";
+		        System.out.println(sql);
+		        psmt = conn.prepareStatement(sql);
+		        psmt.setInt(1, tuno);
+		        psmt.setString(2, uno);
+		        psmt.setString(3, "F");
+		        System.out.println(psmt.executeUpdate());
+		        
 		    }
-		    psmt.executeUpdate();
+		    
 		    
 		    response.setCharacterEncoding("utf-8");
 		    response.setContentType("text/html;");
@@ -278,6 +303,7 @@ public class UserController {
 				user.setPname(rs.getString("pname"));
 				user.setFname(rs.getString("fname"));
 				isfollow = rs.getString("isfollow");
+				System.out.println("isfollow : " + isfollow);
 				request.setAttribute("user", user);
 				request.setAttribute("isfollow", isfollow);
 
@@ -931,7 +957,7 @@ public class UserController {
 			// 해당 uno에게 온 메세지 리스트를 요청합니다
 			
 			String sql  = " select a.*,( select u.unick from user u where u.uno= a.uno) as tuno, "
-						+" 		(select u.unick from user u where u.uno = f.uno) as funo "
+						+" 		(select u.unick from user u where u.uno = f.uno) as funo , 0 as bno"
 						+" 	from alram a, follow f "
 						+"    where a.no = f.fno"
 						+"      and a.uno = f.tuno "
@@ -940,7 +966,7 @@ public class UserController {
 						+" 	 and a.uno = ?"
 						+" union all"
 						+"  select  a.*,( select u.unick from user u where u.uno= a.uno) as tuno, "
-						+" 		(select u.unick from user u where u.uno = c.uno) as funo "
+						+" 		(select u.unick from user u where u.uno = c.uno) as funo, b.bno "
 						+"   from alram a, comments c, board b"
 						+"  where a.no = c.cno"
 						+"    and c.bno = b.bno "
@@ -950,7 +976,7 @@ public class UserController {
 						+"    and a.uno = ?"
 						+" union all"
 						+"   select a.*,( select u.unick from user u where u.uno= a.uno) as tuno, "
-						+" 	 (select u.unick from user u where u.uno = l.uno) as funo "
+						+" 	 (select u.unick from user u where u.uno = l.uno) as funo, b.bno "
 						+"   from alram a, love l, board b"
 						+"  where a.no = l.lno"
 						+"    and l.bno = b.bno "
@@ -960,7 +986,7 @@ public class UserController {
 						+"    and a.uno = ?"
 						+" union all"
 						+"  select a.*,( select u.unick from user u where u.uno= a.uno) as tuno, "
-						+" 	 (select u.unick from user u where u.uno = cp.uno) as funo "
+						+" 	 (select u.unick from user u where u.uno = cp.uno) as funo, b.bno "
 						+"   from alram a, complaint_board cp, board b"
 						+"  where a.no = cp.cpno"
 						+"    and cp.bno= b.bno"
@@ -992,6 +1018,7 @@ public class UserController {
 				json.put("tuno", rs.getString("tuno"));		// 팔로우 보낸 사람
 				json.put("funo", rs.getString("funo"));		// 팔로우 당한사람
 				json.put("no", rs.getInt("no"));			// 어느 글에서 팔로우 신청을 했는가
+				json.put("bno", rs.getInt("bno"));			// 어느 글에서 팔로우 신청을 했는가
 				//  리스트에 json 객체 넣기
 				list.add(json);
 			//}
@@ -1183,6 +1210,8 @@ public class UserController {
 				+ "    ON b.bno = l.bno"
 				+ " INNER JOIN user u"
 				+ "	   ON l.uno = u.uno"
+				+ " INNER JOIN attach a"
+				+ "	   ON b.bno = a.bno"
 				+ " where u.uno = ? ";
 			psmt = conn.prepareStatement(sql);
 			psmt.setInt(1, uno);
@@ -1214,22 +1243,22 @@ public class UserController {
 				board.add(vo);
 			}
 			
-			String sqlFollow = " select count(*) as lcnt"
-							 + "   from love"
-							 + "  where uno = ?";
+			// 세션에 있는 uno와 일치하는 팔로우 테이블의 uno를 카운트를 조회한다
+			String sqlFollow = " select count(*) as cnt from follow where tuno = ? ";
 
 			psmtFollow = conn.prepareStatement(sqlFollow);
 			psmtFollow.setInt(1,uno);
 
 			rsFollow = psmtFollow.executeQuery();
 
-			int lcnt = 0;
+			int cnt = 0;
 			if (rsFollow.next()) {
-				lcnt = rsFollow.getInt("lcnt");
+				cnt = rsFollow.getInt("cnt");
 			}
-			request.setAttribute("lcnt", lcnt);
+			request.setAttribute("fcnt", cnt);
 			request.setAttribute("board", board);
 			request.getRequestDispatcher("/WEB-INF/user/mypage.jsp").forward(request, response);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
