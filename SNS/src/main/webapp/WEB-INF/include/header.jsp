@@ -347,7 +347,7 @@ function getalramList(){
 							break;
 				case "C" : content_str="<span style='text-decoration: none; cursor: pointer; ' "
 							+" onclick='update_alram(\"C\"," + item.uno +  "," + item.alno + "," + item.bno + ");'>"
-							+ item.tuno + " 님의 "  + item.no + "번 게시글이 신고 되었습니다</span>";
+							+ item.tuno + " 님의 "  + item.bno + "번 게시글이 신고 되었습니다</span>";
 							break;				
 				case "R" : content_str="<span style='text-decoration: none; cursor: pointer; ' "
 							+" onclick='update_alram(\"R\"," + item.uno + "," + item.alno + "," + item.bno + ");'>"
