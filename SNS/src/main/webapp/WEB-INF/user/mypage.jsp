@@ -4,15 +4,34 @@
 <%@ include file="../include/nav.jsp" %>
 <%@ page import="sns.vo.* "%>
 <%
-UserVO login = (UserVO)session.getAttribute("loginUser");
-UserVO pageUser = (UserVO)request.getAttribute("user");
+UserVO login = null;
+if(session.getAttribute("loginUser") != null){
+	login = (UserVO)session.getAttribute("loginUser");
+}
+UserVO pageUser = null;
+if(request.getAttribute("user") != null){
+	pageUser = (UserVO)request.getAttribute("user");
+}
 System.out.println("pageUser=================================" +pageUser );
-String pUno = pageUser.getUno();
-String pPname = pageUser.getPname();
+String pUno = "";
+String pPname = "";
+if(pageUser != null){
+	pUno = pageUser.getUno();
+	pPname = pageUser.getPname();
+}
 // 현재 보고있는 섹션을 페이지가 알 수 있도록 표시하기 위해 type 변수 선언 
-String type = request.getParameter("type");
-ArrayList<BoardVO> board = (ArrayList<BoardVO>)request.getAttribute("board");
-FollowVO vo = (FollowVO)request.getAttribute("follow");
+type = "bookmark";
+if (request.getParameter("type") != null && !request.getParameter("type").equals("")) {
+    type = request.getParameter("type");
+}
+ArrayList<BoardVO> board = null;
+if(request.getAttribute("board") != null ){
+	board = (ArrayList)request.getAttribute("board");
+}
+FollowVO vo = null;
+if(request.getAttribute("follow") != null ){
+	vo = (FollowVO)request.getAttribute("follow");
+}
 int cnt = 0;
 if(request.getAttribute("fcnt") != null ){
 	cnt = (Integer)request.getAttribute("fcnt");
@@ -87,9 +106,9 @@ if(request.getAttribute("fcnt") != null ){
 					<!-- 로그인한 회원의 마이페이지인 경우 -->
 					<!-- 북마크를 클릭했을 때 해당 링크로 uno와 type 파라미터를 전송  -->
 					<!-- 응답받은 타입이 문자열과 일치할 때 스타일을 적용  -->
-					<a href="mypage_bookmark.do?uno=<%= loginUser.getUno() %>&type=bookmark"
+					<a href="mypage.do?uno=<%= loginUser.getUno() %>&type=bookmark"
 	   				style="<%= "bookmark".equals(type) ? "text-decoration: underline; text-underline-offset: 6px;" : "color:gray;" %>">북마크</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<a href="mypage_write.do?uno=<%= loginUser.getUno() %>&type=written" 
+					<a href="mypage.do?uno=<%= loginUser.getUno() %>&type=written" 
 					style="<%= "written".equals(type) ? "text-decoration: underline; text-underline-offset: 6px;" : "color:gray;" %>">내가쓴글</a>
 				<%
 	    		}else{
@@ -105,14 +124,16 @@ if(request.getAttribute("fcnt") != null ){
 		<div id="indexDiv" class="scrollable">
             <!-- 1번째 줄 -->
             <%
-            for (BoardVO bvo : board){ %>
-            <!-- 게시글을 클릭할 때 해당하는 bno를 가진 게시글을 모달창에 띄우기 위해 id를 줌  -->
-            <div class="listDiv" id="<%= bvo.getBno()%>">
-            <%System.out.println("vo.getBno=================================" +bvo.getBno() ); %>
-                <!-- 이미지 -->
-                <img src="<%= request.getContextPath() %>/upload/<%= bvo.getPname() %>" onclick="mypageViewFn(<%=bvo.getBno()%>)">
-            </div>	
-            <% 
+            if(board != null){
+	            for (BoardVO bvo : board){ %>
+	            <!-- 게시글을 클릭할 때 해당하는 bno를 가진 게시글을 모달창에 띄우기 위해 id를 줌  -->
+	            <div class="listDiv" id="<%= bvo.getBno()%>">
+	            <%System.out.println("vo.getBno=================================" +bvo.getBno() ); %>
+	                <!-- 이미지 -->
+	                <img src="<%= request.getContextPath() %>/upload/<%= bvo.getPname() %>" onclick="mypageViewFn(<%=bvo.getBno()%>)">
+	            </div>	
+	            <% 
+	            }
             }
             %>
         </div> 
@@ -133,6 +154,16 @@ function mypageViewFn(bno) {
             
             // 모달을 보여줌
             $('#modal').show();
+            
+            $('script').each(function() {
+                if (this.src) {
+                    $.getScript(this.src);
+                } else {
+                    eval($(this).text());
+                }
+            });
+            loadReco(bno);
+            loadComplain(bno);
         },
         error: function(xhr, status, error) {
             console.error("오류 발생:", error);

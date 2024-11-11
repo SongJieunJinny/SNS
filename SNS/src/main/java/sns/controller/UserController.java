@@ -258,8 +258,15 @@ public class UserController {
 
 	public void mypage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		UserVO loginUser = (UserVO)session.getAttribute("loginUser");
+		UserVO loginUser = null;
+		if(session.getAttribute("loginUser") != null && !session.getAttribute("loginUser").equals("")) {
+			loginUser = (UserVO)session.getAttribute("loginUser");
+		}
 		String uno = request.getParameter("uno");
+		String type = "bookmark";
+		if(request.getParameter("type") != null && !request.getParameter("type").equals("")) {
+			type = request.getParameter("type");
+		}
 		request.setCharacterEncoding("UTf-8");
 
 		Connection conn = null; // DB 연결
@@ -271,27 +278,22 @@ public class UserController {
 		// try 영역
 		try {
 			conn = DBConn.conn();
-
-			/*String sql = "select * from user where uno=?";*/ 
-
-			String sql  =" SELECT * "
-						+"    , (select count(*) from follow f where f.uno = ? and tuno = ? ) as isfollow "
-						+" FROM board b "
-						+" INNER JOIN user u "
-						+" ON b.uno = u.uno"
-						+" INNER JOIN attach a"
-						+" ON b.bno = a.bno "
-						+" WHERE u.uno =? and state = 'E' ";
-			
-			psmt = conn.prepareStatement(sql);
-			psmt.setString(1, loginUser.getUno());
-			psmt.setString(2, uno);
-			psmt.setString(3, uno);
-			ArrayList<BoardVO> board = new ArrayList<>();
+			String sql = "";
+			if(loginUser != null) {
+				sql = "select *,(select count(*) from follow f where f.uno = ? and tuno = ? ) as isfollow from user where uno=?"; 
+				psmt = conn.prepareStatement(sql);
+				psmt.setString(1, loginUser.getUno()); 
+				psmt.setString(2, uno);
+				psmt.setString(3, uno);
+			}else {
+				sql = "select * from user where uno=?";
+				psmt = conn.prepareStatement(sql);
+				psmt.setString(1, uno); 
+			}
 			rs = psmt.executeQuery();
 			String isfollow="";
 			// 수정할 부분
-			while (rs.next()) {
+			if(rs.next()) {
 				UserVO user = new UserVO();
 				user.setUno(rs.getString("uno"));
 				user.setUid(rs.getString("uid"));
@@ -302,40 +304,35 @@ public class UserController {
 				user.setUrdate(rs.getString("urdate"));
 				user.setPname(rs.getString("pname"));
 				user.setFname(rs.getString("fname"));
-				isfollow = rs.getString("isfollow");
-				System.out.println("isfollow : " + isfollow);
+				if(loginUser != null) {
+					isfollow = rs.getString("isfollow");
+					System.out.println("isfollow : " + isfollow);
+					request.setAttribute("isfollow", isfollow);
+				}
 				request.setAttribute("user", user);
-				request.setAttribute("isfollow", isfollow);
-
-				BoardVO vo = new BoardVO();
-				vo.setBno(rs.getInt("bno"));
-				vo.setUno(rs.getInt("uno"));
-				vo.setTitle(rs.getString("title"));
-				vo.setContent(rs.getString("content"));
-				vo.setRdate(rs.getString("rdate"));
-				vo.setState(rs.getString("state"));
-				vo.setUnick(rs.getString("unick"));
-				vo.setPname(rs.getString("a.pname"));
-				vo.setFname(rs.getString("a.fname"));
-				board.add(vo);
 			}
+			if(loginUser != null) {
 				// 세션에 있는 uno와 일치하는 팔로우 테이블의 uno를 카운트를 조회한다
 				String sqlFollow = " select count(*) as cnt from follow where tuno = ? ";
-
+	
 				psmtFollow = conn.prepareStatement(sqlFollow);
 				psmtFollow.setInt(1, Integer.parseInt(uno));
-
+	
 				rsFollow = psmtFollow.executeQuery();
-
+	
 				int cnt = 0;
 				if (rsFollow.next()) {
 					cnt = rsFollow.getInt("cnt");
 				}
 				request.setAttribute("fcnt", cnt);
-				request.setAttribute("board", board);
-				// jsp 출력한다
-
-				request.getRequestDispatcher("/WEB-INF/user/mypage.jsp").forward(request, response);
+			}
+			if(type.equals("bookmark")) {
+				myPageBookmark(request, response);
+			}else {
+				myPageWrite(request, response);
+			}
+			
+			request.getRequestDispatcher("/WEB-INF/user/mypage.jsp").forward(request, response);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -1123,25 +1120,18 @@ public class UserController {
 		
 		try {
 			conn = DBConn.conn();
-			sql = " SELECT * FROM board b " + " INNER JOIN user u " + " ON b.uno = u.uno" + " INNER JOIN attach a "
-					+ " ON b.bno = a.bno" + " where u.uno =? ";
+			sql = " SELECT *,a.pname,a.fname "
+					+ "  FROM board b"
+					+ " INNER JOIN user u"
+					+ "	   ON b.uno = u.uno"
+					+ " INNER JOIN attach a"
+					+ "	   ON b.bno = a.bno"
+					+ " where u.uno = ? ";
 			psmt = conn.prepareStatement(sql);
 			psmt.setInt(1, uno);
 			rs = psmt.executeQuery();
 			ArrayList<BoardVO> board = new ArrayList<>();
 			while (rs.next()) {
-				UserVO user = new UserVO();
-				user.setUno(rs.getString("uno"));
-				user.setUid(rs.getString("uid"));
-				user.setUnick(rs.getString("unick"));
-				user.setUemail(rs.getString("uemail"));
-				user.setUstate(rs.getString("ustate"));
-				user.setUauthor(rs.getString("uauthor"));
-				user.setUrdate(rs.getString("urdate"));
-				user.setPname(rs.getString("pname"));
-				user.setFname(rs.getString("fname"));
-				request.setAttribute("user", user);
-
 				BoardVO vo = new BoardVO();
 				vo.setBno(rs.getInt("bno"));
 				vo.setUno(rs.getInt("uno"));
@@ -1154,22 +1144,7 @@ public class UserController {
 				vo.setFname(rs.getString("a.fname"));
 				board.add(vo);
 			}
-			
-			// 세션에 있는 uno와 일치하는 팔로우 테이블의 uno를 카운트를 조회한다
-			String sqlFollow = " select count(*) as cnt from follow where tuno = ? ";
-
-			psmtFollow = conn.prepareStatement(sqlFollow);
-			psmtFollow.setInt(1,uno);
-
-			rsFollow = psmtFollow.executeQuery();
-
-			int cnt = 0;
-			if (rsFollow.next()) {
-				cnt = rsFollow.getInt("cnt");
-			}
-			request.setAttribute("fcnt", cnt);
 			request.setAttribute("board", board);
-			request.getRequestDispatcher("/WEB-INF/user/mypage.jsp").forward(request, response);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -1198,10 +1173,6 @@ public class UserController {
 		ResultSet rs = null;
 		String sql = "";
 
-		PreparedStatement psmtFollow = null;
-		ResultSet rsFollow = null;
-		
-		
 		try {
 			conn = DBConn.conn();
 			sql = " SELECT *,u.uno as uuno"
@@ -1218,18 +1189,6 @@ public class UserController {
 			rs = psmt.executeQuery();
 			ArrayList<BoardVO> board = new ArrayList<>();
 			while (rs.next()) {
-				UserVO user = new UserVO();
-				user.setUno(rs.getString("uuno"));
-				user.setUid(rs.getString("uid"));
-				user.setUnick(rs.getString("unick"));
-				user.setUemail(rs.getString("uemail"));
-				user.setUstate(rs.getString("ustate"));
-				user.setUauthor(rs.getString("uauthor"));
-				user.setUrdate(rs.getString("urdate"));
-				user.setPname(rs.getString("pname"));
-				user.setFname(rs.getString("fname"));
-				request.setAttribute("user", user);
-
 				BoardVO vo = new BoardVO();
 				vo.setBno(rs.getInt("bno"));
 				vo.setUno(rs.getInt("uno"));
@@ -1243,21 +1202,7 @@ public class UserController {
 				board.add(vo);
 			}
 			
-			// 세션에 있는 uno와 일치하는 팔로우 테이블의 uno를 카운트를 조회한다
-			String sqlFollow = " select count(*) as cnt from follow where tuno = ? ";
-
-			psmtFollow = conn.prepareStatement(sqlFollow);
-			psmtFollow.setInt(1,uno);
-
-			rsFollow = psmtFollow.executeQuery();
-
-			int cnt = 0;
-			if (rsFollow.next()) {
-				cnt = rsFollow.getInt("cnt");
-			}
-			request.setAttribute("fcnt", cnt);
 			request.setAttribute("board", board);
-			request.getRequestDispatcher("/WEB-INF/user/mypage.jsp").forward(request, response);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
