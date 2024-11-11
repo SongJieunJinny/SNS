@@ -1118,7 +1118,7 @@ public class UserController {
 					+ "	   ON b.uno = u.uno"
 					+ " INNER JOIN attach a"
 					+ "	   ON b.bno = a.bno"
-					+ " where u.uno = ? ";
+					+ " where u.uno = ? and b.state='E'";
 			psmt = conn.prepareStatement(sql);
 			psmt.setInt(1, uno);
 			rs = psmt.executeQuery();
@@ -1175,7 +1175,7 @@ public class UserController {
 				+ "	   ON l.uno = u.uno"
 				+ " INNER JOIN attach a"
 				+ "	   ON b.bno = a.bno"
-				+ " where u.uno = ? ";
+				+ " where u.uno = ?  and b.state='E' ";
 			psmt = conn.prepareStatement(sql);
 			psmt.setInt(1, uno);
 			rs = psmt.executeQuery();
