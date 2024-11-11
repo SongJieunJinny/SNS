@@ -337,25 +337,25 @@ function getalramList(){
 				var content_str = "";
 				// 알람 종류에 따라서 목록을 작성한다
 				switch (item.type){
-				case "F" : content_str="<span style='text-decoration: none; cursor: pointer; color: black;' " 
+				case "F" : content_str="<span style='text-decoration: none; cursor: pointer; ' " 
 							+ " onclick='update_alram(\"F\"," + item.uno + "," + item.alno + "," + item.bno + ");'>"
 							+ item.funo + "님이 " + item.tuno + "님께 팔로우를 신청했습니다</span>";
 						    break;
-				case "L" : content_str="<span style='text-decoration: none; cursor: pointer; color: black;' "
+				case "L" : content_str="<span style='text-decoration: none; cursor: pointer; ' "
 							+" onclick='update_alram(\"L\"," + item.uno + "," + item.alno + "," + item.bno + ");'>"			
 							+ item.funo + " 님이 " + item.tuno + " 님의 " + +item.no + "번 게시글을 좋아합니다</span>";
 							break;
-				case "C" : content_str="<span style='text-decoration: none; cursor: pointer; color: black;' "
+				case "C" : content_str="<span style='text-decoration: none; cursor: pointer; ' "
 							+" onclick='update_alram(\"C\"," + item.uno +  "," + item.alno + "," + item.bno + ");'>"
 							+ item.tuno + " 님의 "  + item.no + "번 게시글이 신고 되었습니다</span>";
 							break;				
-				case "R" : content_str="<span style='text-decoration: none; cursor: pointer; color: black;' "
+				case "R" : content_str="<span style='text-decoration: none; cursor: pointer; ' "
 							+" onclick='update_alram(\"R\"," + item.uno + "," + item.alno + "," + item.bno + ");'>"
 							+ item.funo + " 님이 " + item.tuno + " 님의 게시글에 댓글을 남겼습니다</span>";
 							break;		
 				}
 				var html_tag = `<div style="font-size: 12px; font-weight: lighter;">
-									<span style="font-size: 10px; color: gray; font-weight: lighter;">
+									<span style="font-size: 10px; color: #999; font-weight: lighter;">
 										\${time_str}
 									</span>
 									\${content_str}	
