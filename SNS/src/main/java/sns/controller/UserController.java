@@ -78,13 +78,13 @@ public class UserController {
 			if (request.getMethod().equals("POST")) {
 				pwChangeOk(request, response);
 			}
-		} else if(comments[comments.length-1].equals("alarmCount.do")) {
+		} else if(comments[comments.length-1].equals("alramCount.do")) {
 			if(request.getMethod().equals("GET")) {
-				alarmCount(request,response);
+				alramCount(request,response);
 			}
-		} else if(comments[comments.length-1].equals("alarmList.do")) {
+		} else if(comments[comments.length-1].equals("alramList.do")) {
 			if(request.getMethod().equals("GET")) {
-				alarmList(request,response);
+				alramList(request,response);
 			}
 		} else if(comments[comments.length-1].equals("updateState.do")) {
 			if(request.getMethod().equals("GET")) {
@@ -861,12 +861,12 @@ public class UserController {
 
 	}
 
-	public void alarmCount(HttpServletRequest request
+	public void alramCount(HttpServletRequest request
 			, HttpServletResponse response) throws ServletException, IOException {
 		// 파라메타로 넘어온 uno를 받습니다
 		request.setCharacterEncoding("UTF-8");
 		String uno = request.getParameter("uno");
-		System.out.println("alarmCount() : uno :" + uno);
+		System.out.println("alramCount() : uno :" + uno);
 		
 		// DB 연결 조건
 		Connection conn = null;
@@ -880,7 +880,7 @@ public class UserController {
 			// SQL 작성
 			// 해당 uno에게 온 알림의 갯수를 셉니다
 			
-			String sql = " select count(*) as count from alarm where uno = ? and state = 'N' ";
+			String sql = " select count(*) as count from alram where uno = ? and state = 'N' ";
 			
 			psmt = conn.prepareStatement(sql);
 			psmt.setInt(1,Integer.parseInt(uno));
@@ -910,13 +910,13 @@ public class UserController {
 		}
 	}
 	
-	public void alarmList(HttpServletRequest request
+	public void alramList(HttpServletRequest request
 			, HttpServletResponse response) throws ServletException, IOException {
 		
 		// 파라메타로 넘어온 uno를 받습니다
 		request.setCharacterEncoding("UTF-8");
 		String uno = request.getParameter("uno");
-		System.out.println("alarmCount() : uno :" + uno);
+		System.out.println("alramCount() : uno :" + uno);
 		
 		// DB 연결 조건
 		Connection conn = null;
@@ -932,7 +932,7 @@ public class UserController {
 			
 			String sql  = " select a.*,( select u.unick from user u where u.uno= a.uno) as tuno, "
 						+" 		(select u.unick from user u where u.uno = f.uno) as funo "
-						+" 	from alarm a, follow f "
+						+" 	from alram a, follow f "
 						+"    where a.no = f.fno"
 						+"      and a.uno = f.tuno "
 						+"      and a.type='F'"
@@ -941,7 +941,7 @@ public class UserController {
 						+" union all"
 						+"  select  a.*,( select u.unick from user u where u.uno= a.uno) as tuno, "
 						+" 		(select u.unick from user u where u.uno = c.uno) as funo "
-						+"   from alarm a, comments c, board b"
+						+"   from alram a, comments c, board b"
 						+"  where a.no = c.cno"
 						+"    and c.bno = b.bno "
 						+"    and a.uno = b.uno "
@@ -951,7 +951,7 @@ public class UserController {
 						+" union all"
 						+"   select a.*,( select u.unick from user u where u.uno= a.uno) as tuno, "
 						+" 	 (select u.unick from user u where u.uno = l.uno) as funo "
-						+"   from alarm a, love l, board b"
+						+"   from alram a, love l, board b"
 						+"  where a.no = l.lno"
 						+"    and l.bno = b.bno "
 						+"    and a.uno = b.uno  "
@@ -961,7 +961,7 @@ public class UserController {
 						+" union all"
 						+"  select a.*,( select u.unick from user u where u.uno= a.uno) as tuno, "
 						+" 	 (select u.unick from user u where u.uno = cp.uno) as funo "
-						+"   from alarm a, complaint_board cp, board b"
+						+"   from alram a, complaint_board cp, board b"
 						+"  where a.no = cp.cpno"
 						+"    and cp.bno= b.bno"
 						+"    and a.uno = b.uno  "
@@ -1040,7 +1040,7 @@ public class UserController {
 			
 			// 받은 alno로 알람의 상태를 변경하는 sql문을 작성
 			
-			String sql = " update alarm "
+			String sql = " update alram "
 					   + "    set state = 'Y' "
 					   + "  where alno = ? ";
 			

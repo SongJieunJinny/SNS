@@ -310,11 +310,24 @@ public class AdminController {
 		ResultSet rs = null;
 		String sql = "";
 		String sqlA = "";
-
 		PreparedStatement psmtA = null;
 
+		String tuno = "";
+		PreparedStatement psmtT = null;
+		ResultSet rsT = null;
+		
 		try {
 		    conn = DBConn.conn();
+		    
+		    String sqlT = "select * from board where bno=?";
+		    psmtT = conn.prepareStatement(sqlT);
+		    psmtT.setString(1, bno);
+
+		    rsT = psmtT.executeQuery();
+
+		    if (rsT.next()) {
+		    	tuno = rsT.getString("uno");
+		    }
 
 		    sql = "select * from COMPLAINT_BOARD where uno = ? and bno = ?";
 		    psmt = conn.prepareStatement(sql);
@@ -333,7 +346,7 @@ public class AdminController {
 		        
 		        sqlA = "delete from alram where uno = ? and bno = ? and type=? ";
 		        psmtA = conn.prepareStatement(sqlA);
-		        psmtA.setString(1, uno);
+		        psmtA.setString(1, tuno);
 		        psmtA.setString(2, bno);
 		        psmtA.setString(3, "C");
 		        psmtA.executeUpdate();
@@ -347,7 +360,7 @@ public class AdminController {
 		        
 		        sqlA = "insert into alram (uno, no, type) values (?, ?, ?)";
 		        psmtA = conn.prepareStatement(sqlA);
-		        psmtA.setString(1, uno);
+		        psmtA.setString(1, tuno);
 		        psmtA.setString(2, bno);
 		        psmtA.setString(3, "C");
 		        psmtA.executeUpdate();

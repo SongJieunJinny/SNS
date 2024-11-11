@@ -449,17 +449,32 @@ public class BoardController {
 		UserVO user = (UserVO)session.getAttribute("loginUser");
 		String uno = user.getUno();
 		String bno = request.getParameter("bno"); 
-
+		
 		Connection conn = null;
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
 		String sql = "";
 		String sqlA = "";
 
+		String tuno = "";
+		PreparedStatement psmtT = null;
+		ResultSet rsT = null;
 		PreparedStatement psmtA = null;
 
 		try {
 		    conn = DBConn.conn();
+		    
+		    String sqlT = "select * from board where bno=?";
+		    psmtT = conn.prepareStatement(sqlT);
+		    psmtT.setString(1, bno);
+
+		    rsT = psmtT.executeQuery();
+
+		    if (rsT.next()) {
+		    	tuno = rsT.getString("uno");
+		    }
+		    
+		    
 
 		    sql = "select lno from love where uno = ? and bno = ?";
 		    psmt = conn.prepareStatement(sql);
@@ -478,7 +493,7 @@ public class BoardController {
 		        
 		        sqlA = "delete from alram where uno = ? and bno = ? and type=? ";
 		        psmtA = conn.prepareStatement(sqlA);
-		        psmtA.setString(1, uno);
+		        psmtA.setString(1, tuno);
 		        psmtA.setString(2, bno);
 		        psmtA.setString(3, "L");
 		        psmtA.executeUpdate();
@@ -492,7 +507,7 @@ public class BoardController {
 		        
 		        sqlA = "insert into alram (uno, no, type) values (?, ?, ?)";
 		        psmtA = conn.prepareStatement(sqlA);
-		        psmtA.setString(1, uno);
+		        psmtA.setString(1, tuno);
 		        psmtA.setString(2, bno);
 		        psmtA.setString(3, "L");
 		        psmtA.executeUpdate();
