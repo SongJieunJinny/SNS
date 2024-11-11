@@ -931,7 +931,7 @@ public class UserController {
 			// 해당 uno에게 온 메세지 리스트를 요청합니다
 			
 			String sql  = " select a.*,( select u.unick from user u where u.uno= a.uno) as tuno, "
-						+" 		(select u.unick from user u where u.uno = f.uno) as funo "
+						+" 		(select u.unick from user u where u.uno = f.uno) as funo , 0 as bno"
 						+" 	from alram a, follow f "
 						+"    where a.no = f.fno"
 						+"      and a.uno = f.tuno "
@@ -940,7 +940,7 @@ public class UserController {
 						+" 	 and a.uno = ?"
 						+" union all"
 						+"  select  a.*,( select u.unick from user u where u.uno= a.uno) as tuno, "
-						+" 		(select u.unick from user u where u.uno = c.uno) as funo "
+						+" 		(select u.unick from user u where u.uno = c.uno) as funo, b.bno "
 						+"   from alram a, comments c, board b"
 						+"  where a.no = c.cno"
 						+"    and c.bno = b.bno "
@@ -950,7 +950,7 @@ public class UserController {
 						+"    and a.uno = ?"
 						+" union all"
 						+"   select a.*,( select u.unick from user u where u.uno= a.uno) as tuno, "
-						+" 	 (select u.unick from user u where u.uno = l.uno) as funo "
+						+" 	 (select u.unick from user u where u.uno = l.uno) as funo, b.bno "
 						+"   from alram a, love l, board b"
 						+"  where a.no = l.lno"
 						+"    and l.bno = b.bno "
@@ -960,7 +960,7 @@ public class UserController {
 						+"    and a.uno = ?"
 						+" union all"
 						+"  select a.*,( select u.unick from user u where u.uno= a.uno) as tuno, "
-						+" 	 (select u.unick from user u where u.uno = cp.uno) as funo "
+						+" 	 (select u.unick from user u where u.uno = cp.uno) as funo, b.bno "
 						+"   from alram a, complaint_board cp, board b"
 						+"  where a.no = cp.cpno"
 						+"    and cp.bno= b.bno"
@@ -992,6 +992,7 @@ public class UserController {
 				json.put("tuno", rs.getString("tuno"));		// 팔로우 보낸 사람
 				json.put("funo", rs.getString("funo"));		// 팔로우 당한사람
 				json.put("no", rs.getInt("no"));			// 어느 글에서 팔로우 신청을 했는가
+				json.put("bno", rs.getInt("bno"));			// 어느 글에서 팔로우 신청을 했는가
 				//  리스트에 json 객체 넣기
 				list.add(json);
 			//}
@@ -1183,6 +1184,8 @@ public class UserController {
 				+ "    ON b.bno = l.bno"
 				+ " INNER JOIN user u"
 				+ "	   ON l.uno = u.uno"
+				+ " INNER JOIN attach a"
+				+ "	   ON b.bno = a.bno"
 				+ " where u.uno = ? ";
 			psmt = conn.prepareStatement(sql);
 			psmt.setInt(1, uno);

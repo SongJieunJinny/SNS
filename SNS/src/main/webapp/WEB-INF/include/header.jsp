@@ -338,19 +338,19 @@ function getalramList(){
 				// 알람 종류에 따라서 목록을 작성한다
 				switch (item.type){
 				case "F" : content_str="<span style='text-decoration: none; cursor: pointer; color: black;' " 
-							+ " onclick='update_alram(\"F\"," + item.uno + "," + item.alno + ");'>"
+							+ " onclick='update_alram(\"F\"," + item.uno + "," + item.alno + "," + item.bno + ");'>"
 							+ item.funo + "님이 " + item.tuno + "님께 팔로우를 신청했습니다</span>";
 						    break;
 				case "L" : content_str="<span style='text-decoration: none; cursor: pointer; color: black;' "
-							+" onclick='update_alram(\"L\"," + item.uno + "," + item.alno + ");'>"			
+							+" onclick='update_alram(\"L\"," + item.uno + "," + item.alno + "," + item.bno + ");'>"			
 							+ item.funo + " 님이 " + item.tuno + " 님의 " + +item.no + "번 게시글을 좋아합니다</span>";
 							break;
 				case "C" : content_str="<span style='text-decoration: none; cursor: pointer; color: black;' "
-							+" onclick='update_alram(\"C\"," + item.uno +  "," + item.alno + ");'>"
+							+" onclick='update_alram(\"C\"," + item.uno +  "," + item.alno + "," + item.bno + ");'>"
 							+ item.tuno + " 님의 "  + item.no + "번 게시글이 신고 되었습니다</span>";
 							break;				
 				case "R" : content_str="<span style='text-decoration: none; cursor: pointer; color: black;' "
-							+" onclick='update_alram(\"R\"," + item.uno + "," + item.alno + ");'>"
+							+" onclick='update_alram(\"R\"," + item.uno + "," + item.alno + "," + item.bno + ");'>"
 							+ item.funo + " 님이 " + item.tuno + " 님의 게시글에 댓글을 남겼습니다</span>";
 							break;		
 				}
@@ -368,7 +368,7 @@ function getalramList(){
 	});
 }
 
-function update_alram(type, no, alno){
+function update_alram(type, no, alno, bno){
 	// 알람을 클릭했을때에 호출될 함수
 	
 	switch (type)
@@ -410,7 +410,7 @@ function update_alram(type, no, alno){
 			});
 			
 			// 좋아요 표시한 뷰 페이지로 이동
- 			location.href='<%= request.getContextPath() %>/user/view.do?uno=' + no;
+ 			location.href='<%= request.getContextPath() %>/user/view.do?bno=' + bno;
 			break;
 			
 		case "C" : 
@@ -450,7 +450,7 @@ function update_alram(type, no, alno){
 			});
 			
 			// 댓글 작성된 뷰 페이지로 이동
- 			location.href='<%= request.getContextPath() %>/user/view.do?uno=' + no;
+ 			location.href='<%= request.getContextPath() %>/user/view.do?bno=' + bno;
 			break;
 	}
 }
