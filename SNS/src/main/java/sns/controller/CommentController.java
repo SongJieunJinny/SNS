@@ -198,7 +198,7 @@ public class CommentController {
 			// uno는 알림을 받을 사람
 			// no는 댓글번호
 			// bno는 알람 목록 가져오는 sql에서 cno롤 찾음
-			String sql = " insert into alram ( uno, type, no  ) value ((select uno from board where bno = ?), 'R', ?); ";
+			String sql = " insert into alram ( uno, type, no ) value ((select uno from board where bno = ?), 'R', ?); ";
 
 			psmt = conn.prepareStatement(sql);
 			psmt.setInt(1, bno);
