@@ -11,7 +11,10 @@ if(session.getAttribute("loginUser") != null)
 	viewUser = (UserVO)session.getAttribute("loginUser");
 	uno = Integer.parseInt(viewUser.getUno());
 }
-List<CommentsVO> clist = (List<CommentsVO>)request.getAttribute("clist");
+List<CommentsVO> clist = null;
+if(request.getAttribute("clist") != null && !request.getAttribute("clist").equals("")){
+	clist = (List<CommentsVO>)request.getAttribute("clist");
+}
 %>
 <script>
 

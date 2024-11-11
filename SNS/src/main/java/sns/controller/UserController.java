@@ -90,15 +90,7 @@ public class UserController {
 			if(request.getMethod().equals("GET")) {
 				updateState(request,response);
 			}
-		} else if (comments[comments.length - 1].equals("mypage_write.do")) {
-			if (request.getMethod().equals("GET")) {
-				myPageWrite(request, response);
-			}
-		} else if (comments[comments.length - 1].equals("mypage_bookmark.do")) {
-			if (request.getMethod().equals("GET")) {
-				myPageBookmark(request, response);
-			}
-		} else if (comments[comments.length - 1].equals("followAddPage.do")) {
+		}else if (comments[comments.length - 1].equals("followAddPage.do")) {
 			followAddPage(request, response);
 		}
 	}
