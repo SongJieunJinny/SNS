@@ -303,6 +303,7 @@ public class UserController {
 				user.setPname(rs.getString("pname"));
 				user.setFname(rs.getString("fname"));
 				isfollow = rs.getString("isfollow");
+				System.out.println("isfollow : " + isfollow);
 				request.setAttribute("user", user);
 				request.setAttribute("isfollow", isfollow);
 
@@ -1242,22 +1243,22 @@ public class UserController {
 				board.add(vo);
 			}
 			
-			String sqlFollow = " select count(*) as lcnt"
-							 + "   from love"
-							 + "  where uno = ?";
+			// 세션에 있는 uno와 일치하는 팔로우 테이블의 uno를 카운트를 조회한다
+			String sqlFollow = " select count(*) as cnt from follow where tuno = ? ";
 
 			psmtFollow = conn.prepareStatement(sqlFollow);
 			psmtFollow.setInt(1,uno);
 
 			rsFollow = psmtFollow.executeQuery();
 
-			int lcnt = 0;
+			int cnt = 0;
 			if (rsFollow.next()) {
-				lcnt = rsFollow.getInt("lcnt");
+				cnt = rsFollow.getInt("cnt");
 			}
-			request.setAttribute("lcnt", lcnt);
+			request.setAttribute("fcnt", cnt);
 			request.setAttribute("board", board);
 			request.getRequestDispatcher("/WEB-INF/user/mypage.jsp").forward(request, response);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

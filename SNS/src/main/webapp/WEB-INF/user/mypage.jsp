@@ -63,7 +63,8 @@ if(request.getAttribute("fcnt") != null ){
 					if(session.getAttribute("loginUser") != null){
 						if(pUno != login.getUno()){
 							// 로그인 유저의 uno와 게시글 작성자의 uno로 팔로잉상태를 체크하는 sql문을 실행한다
-							String isfollow = (String)request.getAttribute("isfollow");
+							String isfollow = "0";
+							if (request.getAttribute("isfollow") != null) isfollow = (String)request.getAttribute("isfollow");
 						%>
 				        <input type="hidden" name="tuno" value="<%= pageUser.getUno() %>">
 				        <!-- 팔로잉 상태에 따라 버튼의 클래스를 바꾼다 -->
