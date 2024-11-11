@@ -410,7 +410,8 @@ function update_alram(type, no, alno, bno){
 			});
 			
 			// 좋아요 표시한 뷰 페이지로 이동
- 			location.href='<%= request.getContextPath() %>/user/view.do?bno=' + bno;
+			viewBoardModal(bno);
+<%--  			location.href='<%= request.getContextPath() %>/user/view.do?bno=' + bno; --%>
 			break;
 			
 		case "C" : 
@@ -450,9 +451,37 @@ function update_alram(type, no, alno, bno){
 			});
 			
 			// 댓글 작성된 뷰 페이지로 이동
- 			location.href='<%= request.getContextPath() %>/user/view.do?bno=' + bno;
+			viewBoardModal(bno);
+<%--  			location.href='<%= request.getContextPath() %>/user/view.do?bno=' + bno; --%>
 			break;
 	}
+}
+
+function viewBoardModal(bno) {
+    $("#modal").fadeIn(); // 모달 창 보이게 하기
+    
+    console.log(bno);
+    
+    $.ajax({
+        url: "<%= request.getContextPath() %>/board/view.do",
+        data : {bno:bno},
+        type: "get",
+        success: function(data) {
+            $("#modalBody").html(data);
+			
+            // 동적으로 로드된 스크립트 실행
+            $('script').each(function() {
+                if (this.src) {
+                    $.getScript(this.src);
+                } else {
+                    eval($(this).text());
+                }
+            });
+            loadReco(bno);
+            loadComplain(bno);
+            DarkMode();
+        }
+    });
 }
 
 function elapsedTime(rdate) {
