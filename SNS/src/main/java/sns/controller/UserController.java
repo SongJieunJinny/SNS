@@ -258,7 +258,10 @@ public class UserController {
 
 	public void mypage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		UserVO loginUser = (UserVO)session.getAttribute("loginUser");
+		UserVO loginUser = null;
+		if(session.getAttribute("loginUser") != null && !session.getAttribute("loginUser").equals("")) {
+			loginUser = (UserVO)session.getAttribute("loginUser");
+		}
 		String uno = request.getParameter("uno");
 		String type = "bookmark";
 		if(request.getParameter("type") != null && !request.getParameter("type").equals("")) {
@@ -275,14 +278,18 @@ public class UserController {
 		// try 영역
 		try {
 			conn = DBConn.conn();
-
-			String sql = "select *,(select count(*) from follow f where f.uno = ? and tuno = ? ) as isfollow from user where uno=?"; 
-
-			psmt = conn.prepareStatement(sql);
-			psmt.setString(1, loginUser.getUno()); 
-			psmt.setString(2, uno);
-			psmt.setString(3, uno);
-			
+			String sql = "";
+			if(loginUser != null) {
+				sql = "select *,(select count(*) from follow f where f.uno = ? and tuno = ? ) as isfollow from user where uno=?"; 
+				psmt = conn.prepareStatement(sql);
+				psmt.setString(1, loginUser.getUno()); 
+				psmt.setString(2, uno);
+				psmt.setString(3, uno);
+			}else {
+				sql = "select * from user where uno=?";
+				psmt = conn.prepareStatement(sql);
+				psmt.setString(1, uno); 
+			}
 			rs = psmt.executeQuery();
 			String isfollow="";
 			// 수정할 부분
@@ -297,32 +304,35 @@ public class UserController {
 				user.setUrdate(rs.getString("urdate"));
 				user.setPname(rs.getString("pname"));
 				user.setFname(rs.getString("fname"));
-				isfollow = rs.getString("isfollow");
-				System.out.println("isfollow : " + isfollow);
+				if(loginUser != null) {
+					isfollow = rs.getString("isfollow");
+					System.out.println("isfollow : " + isfollow);
+					request.setAttribute("isfollow", isfollow);
+				}
 				request.setAttribute("user", user);
-				request.setAttribute("isfollow", isfollow);
 			}
+			if(loginUser != null) {
 				// 세션에 있는 uno와 일치하는 팔로우 테이블의 uno를 카운트를 조회한다
 				String sqlFollow = " select count(*) as cnt from follow where tuno = ? ";
-
+	
 				psmtFollow = conn.prepareStatement(sqlFollow);
 				psmtFollow.setInt(1, Integer.parseInt(uno));
-
+	
 				rsFollow = psmtFollow.executeQuery();
-
+	
 				int cnt = 0;
 				if (rsFollow.next()) {
 					cnt = rsFollow.getInt("cnt");
 				}
 				request.setAttribute("fcnt", cnt);
-				
-				if(type.equals("bookmark")) {
-					myPageBookmark(request, response);
-				}else {
-					myPageWrite(request, response);
-				}
-				
-				request.getRequestDispatcher("/WEB-INF/user/mypage.jsp").forward(request, response);
+			}
+			if(type.equals("bookmark")) {
+				myPageBookmark(request, response);
+			}else {
+				myPageWrite(request, response);
+			}
+			
+			request.getRequestDispatcher("/WEB-INF/user/mypage.jsp").forward(request, response);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
