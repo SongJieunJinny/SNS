@@ -254,7 +254,7 @@ function deleteFn(){
 						%>
 		    		<!-- 프로필 이미지가 있을 경우 -->
 		        <img id="previewProfil" class="circular-img" 
-								 onclick="location.href='<%= request.getContextPath() %>/user/mypage.do?uno=<%= vo.getUno() %>'"
+								 onclick="location.href='<%= request.getContextPath() %>/user/mypage.do?uno=<%= vo.getUno() %>&type=written'"
 		        		 style="border:none; width:50px; height:50px; cursor:pointer; " 
 		        		 src="<%= request.getContextPath() %>/upload/<%= vo.getUpname() %>" alt="프로필 이미지" />
 						<%
@@ -262,7 +262,7 @@ function deleteFn(){
 							String firstNick = vo.getUnick().substring(0, 1);
 	        		%>
 		        	<div class="icon profileicon" 
-			      			 onclick="location.href='<%= request.getContextPath() %>/user/mypage.do?uno=<%= vo.getUno() %>'"
+			      			 onclick="location.href='<%= request.getContextPath() %>/user/mypage.do?uno=<%= vo.getUno() %>&type=written'"
 			      			 style="background-color:#EEEEEE; border-radius: 50%; cursor: pointer;
 			      			 display: flex; justify-content: center; align-items: center; 
 			      			 font-size: 24px; font-weight: bold; width: 50px; height: 50px;">
@@ -350,7 +350,7 @@ function deleteFn(){
 								if(cvo.getPname() != null && !cvo.getPname().equals("")){
 							%>
 									<img id="previewProfil" class="circular-img" 
-												onclick="location.href='<%= request.getContextPath() %>/user/mypage.do?uno=<%= cvo.getUno() %>'"
+												onclick="location.href='<%= request.getContextPath() %>/user/mypage.do?uno=<%= cvo.getUno() %>&type=written'"
 				        				style="border:none; width:50px; height:50px; cursor:pointer;" 
 				        				src="<%= request.getContextPath() %>/upload/<%=cvo.getPname() %>" alt="프로필 이미지" />
 				 			<%
@@ -358,7 +358,7 @@ function deleteFn(){
 										String firstCommentsNick = cvo.getUnick().substring(0, 1);
 		        	%>
 			        			<div class="icon profileicon" 
-				       					 onclick="location.href='<%= request.getContextPath() %>/user/mypage.do?uno=<%= cvo.getUno() %>'"
+				       					 onclick="location.href='<%= request.getContextPath() %>/user/mypage.do?uno=<%= cvo.getUno() %>&type=written'"
 				        				 style="background-color:#EEEEEE; border-radius: 50%; cursor: pointer;
 				        								display: flex; justify-content: center; align-items: center; 
 				        								font-size: 24px; font-weight: bold; width: 50px; height: 50px;">
