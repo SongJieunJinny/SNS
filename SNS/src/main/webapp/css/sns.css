@@ -213,7 +213,7 @@ body.dark-mode .profileicon {
 }
 
 /* ----------알림 모달창 css-------------- */
-.userHeader_login .alarmCount {
+.userHeader_login .alramCount {
     position: absolute;
     top: 3px;
     right: 13px;
@@ -1036,7 +1036,7 @@ body.dark-mode .modal-content {
 
 
 /* 알림 모달창 스타일 */
-.alarm{
+.alram{
     position: fixed;
     top: -5%;
     left: 85%;

@@ -40,7 +40,7 @@ $(document).ready(function() {
     DarkMode();	
     
     // 알림 갯수를 세서 표시
-    countAlarm()
+    countalram()
 	
 	// #menuA 클릭 시 #menutableA 토글
     $("#menuA").click(function(event) {
@@ -286,15 +286,15 @@ $(document).ready(function() {
 	// java vo : loginUser
 	var loginUser = "<%= loginNo %>";
 	if( loginUser != ""){
-		const timer = setInterval(countAlarm, 60000);
+		const timer = setInterval(countalram, 60000);
 	}
 	
 });
 
 //알림 갯수를 세오는 servlet에 ajax 요청
-function countAlarm(){
+function countalram(){
 	$.ajax({
-		url:"<%= request.getContextPath() %>/user/alarmCount.do",
+		url:"<%= request.getContextPath() %>/user/alramCount.do",
 		type:"get",
 		data: {"uno" : "<%= loginNo %>"},
 		dataType: "text",
@@ -302,31 +302,31 @@ function countAlarm(){
 			console.log(response.trim());
 			var count = parseInt(response.trim());
 			if(count>0){
-				$(".alarmCount").text(count);
-				$(".alarmCount").css("display","");
+				$(".alramCount").text(count);
+				$(".alramCount").css("display","");
 			}else{
-				$(".alarmCount").text("");
-				$(".alarmCount").css("display","none");
+				$(".alramCount").text("");
+				$(".alramCount").css("display","none");
 			}
 		}
 	});
 }
 
 //알람 버튼을 눌렀을때에 호출될 함수
-function getAlarmList(){
+function getalramList(){
 	// 알람 모달창 객체를 찾습니다
-	$("#alarm_modal").toggle();
+	$("#alram_modal").toggle();
 	
 
 	//알람 모달창이 화면에 표시되어야 될때에
 	// 아래의 ajax를 실행
 	
 	//모달을 닫을때에는, 모달 내부의 태그를 삭제
-	$('#alarm_modalBody').html("")
+	$('#alram_modalBody').html("")
 	
-	/* alert("call getAlarmList()"); */
+	/* alert("call getalramList()"); */
  	$.ajax({
-		url:"<%= request.getContextPath() %>/user/alarmList.do",
+		url:"<%= request.getContextPath() %>/user/alramList.do",
 		type:"get",
 		data: {"uno" : "<%= loginNo %>"},
 		dataType: "json",
@@ -339,19 +339,19 @@ function getAlarmList(){
 				// 알람 종류에 따라서 목록을 작성한다
 				switch (item.type){
 				case "F" : content_str="<span style='text-decoration: none; cursor: pointer; color: black;' " 
-							+ " onclick='update_alarm(\"F\"," + item.uno + "," + item.alno + ");'>"
+							+ " onclick='update_alram(\"F\"," + item.uno + "," + item.alno + ");'>"
 							+ item.funo + "님이 " + item.tuno + "님께 팔로우를 신청했습니다</span>";
 						    break;
 				case "L" : content_str="<span style='text-decoration: none; cursor: pointer; color: black;' "
-							+" onclick='update_alarm(\"L\"," + item.uno + "," + item.alno + ");'>"			
+							+" onclick='update_alram(\"L\"," + item.uno + "," + item.alno + ");'>"			
 							+ item.funo + " 님이 " + item.tuno + " 님의 " + +item.no + "번 게시글을 좋아합니다</span>";
 							break;
 				case "C" : content_str="<span style='text-decoration: none; cursor: pointer; color: black;' "
-							+" onclick='update_alarm(\"C\"," + item.uno +  "," + item.alno + ");'>"
+							+" onclick='update_alram(\"C\"," + item.uno +  "," + item.alno + ");'>"
 							+ item.tuno + " 님의 "  + item.no + "번 게시글이 신고 되었습니다</span>";
 							break;				
 				case "R" : content_str="<span style='text-decoration: none; cursor: pointer; color: black;' "
-							+" onclick='update_alarm(\"R\"," + item.uno + "," + item.alno + ");'>"
+							+" onclick='update_alram(\"R\"," + item.uno + "," + item.alno + ");'>"
 							+ item.funo + " 님이 " + item.tuno + " 님의 게시글에 댓글을 남겼습니다</span>";
 							break;		
 				}
@@ -362,14 +362,14 @@ function getAlarmList(){
 									\${content_str}	
 								</div>`;
 				
-				$('#alarm_modalBody').append(html_tag);
+				$('#alram_modalBody').append(html_tag);
 				
 			}
 		}
 	});
 }
 
-function update_alarm(type, no, alno){
+function update_alram(type, no, alno){
 	// 알람을 클릭했을때에 호출될 함수
 	
 	switch (type)
@@ -1114,9 +1114,9 @@ function complainAdd(bno) {
 	                </div>
 	            </div> --%>
 		        <!-- 알림 표시 -->
-		        <div class="icon" onclick="getAlarmList();">
+		        <div class="icon" onclick="getalramList();">
       	   			<img src="https://img.icons8.com/?size=100&id=3334&format=png&color=767676" >
-      	   			<span class="alarmCount"></span>
+      	   			<span class="alramCount"></span>
       	   		</div>
       	   		<div class="login-hover-menu">
 		            <p>알림</p>
@@ -1255,9 +1255,9 @@ function complainAdd(bno) {
 	</div>
 	
 	<!-- 알림 모달창 -->
-	<div id="alarm_modal" style="display:none;">
-		<div class="alarm modal-content">
-			<div id="alarm_modalBody">
+	<div id="alram_modal" style="display:none;">
+		<div class="alram modal-content">
+			<div id="alram_modalBody">
 				<!-- 알람 내용 여기에 표시됨 -->
 			</div>
 		</div>
