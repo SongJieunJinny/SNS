@@ -1096,27 +1096,18 @@ function complainAdd(bno) {
 	<!-- header 검색창, 프로필이미지, 알림, 메시지 -->
 	<header>
 		<div class="top-bar">
-			<%-- <div class="logo_inner">
-	            <!-- 로고 표시 -->
-		        <div class="icon" onclick="location.href='<%= request.getContextPath() %>'">
-	      	   		<img id="logo" src="<%= request.getContextPath() %>/image/logo.jpg">
-	      	   		<div class="login-hover-menu">
-			            <p>홈이동</p>
-			        </div>
-		        </div>
-	        </div> --%>
 	        <div class="search_inner">
 	            <form action="<%= request.getContextPath() %>/index.jsp" method="get" name="searchFn" style="padding-bottom:30px;">
 	                <div class="search-wrapper">
 	                    <div id="seach-container" style="display: flex;  
-																											 align-items: center;
-																											 box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-																											 background-color: white;
-																											 border-radius: 25px;
-																											 width:45%;
-																											 height: 52px;
-																											 margin-top: 1.5%;
-																											 margin-left:40%">
+								 align-items: center;
+								 box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+								 background-color: white;
+								 border-radius: 25px;
+								 width:45%;
+								 height: 52px;
+								 margin-top: 1.5%;
+								 margin-left:40%">
 	                    	<div class="icon">
 				      	   				<img id="searchIcon" 
 				      	   						 onclick="location.href='<%= request.getContextPath() %>'"
@@ -1136,15 +1127,6 @@ function complainAdd(bno) {
 			%>
 	        <!-- 로그인했을 경우 -->
 	        <div class="userHeader_login">
-	    	    <%-- <div class="icon">
-		        	<a href="<%= request.getContextPath() %>/board/write.do">
-	                    <img style="margin-top:16px;"
-	                    src="https://img.icons8.com/?size=100&id=59864&format=png&color=767676" alt="글쓰기">
-	                </a>
-	                <div class="login-hover-menu">
-	                    <p>글쓰기</p>
-	                </div>
-	            </div> --%>
 		        <!-- 알림 표시 -->
 		        <div class="icon" onclick="getalramList();">
       	   			<img src="https://img.icons8.com/?size=100&id=3334&format=png&color=767676" >
@@ -1170,13 +1152,6 @@ function complainAdd(bno) {
 			            style="border:none;" 
 			            src="<%= request.getContextPath()%>/upload/<%= userPname %>"
 		           		alt="첨부된 이미지" style="max-width: 100%; height: auto;" />
-		        	<%-- <img id="previewProfil" class="circular-img" 
-		        	onclick="location.href='<%= request.getContextPath() %>/user/mypage.do'"
-			            style="border:none;" 
-			            src="<%= userPname != null && !userPname.equals("") 
-			            ? request.getContextPath()+"/upload/" + userPname 
-		           		: "https://img.icons8.com/?size=100&id=115346&format=png&color=000000" %>" 
-		           		alt="첨부된 이미지" style="max-width: 100%; height: auto;" /> --%>
 	           		<div class="login-hover-menu">
 			            <p>프로필</p>
 			        </div>

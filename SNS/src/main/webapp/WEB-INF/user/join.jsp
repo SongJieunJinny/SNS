@@ -57,20 +57,6 @@
                           	 <label for="deleteFile"><i class="fas fa-solid fa-circle-xmark"></i></label>
                             </div>
                        </div>
-                        <!-- <div class="user-container" id="fileLabelInput">
-							<input class="joinInput" 
-										 id="fileNameDisplay"
-										 name="profile" 
-										 style="background-image: url('./photo.png'); background-repeat: no-repeat; background-size: 30px; background-position-y: center ; background-position-x: 10px;" 
-										 placeholder="프로필 이미지 선택" 
-										 type="text"
-										 readonly >
-								<img src="./profile.png" id="imagePreview" class="joinInputProfile">
-								<input type="file"
-											 id="imageInput"
-											 accept="image/*" 
-											 style="display:none">
-						</div> -->
                    </td>
                </tr>
                <tr>

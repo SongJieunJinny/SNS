@@ -76,8 +76,6 @@ if(request.getAttribute("fcnt") != null ){
 	    		<!-- 내가 아닌 다른 회원페이지인 경우 -->
 	    		<button class="ssBtn">메시지</button>&nbsp;&nbsp;
 	    		<form id="follow_form">
-			    <%-- <input type="hidden" name="tuno" value="<%= vo.getUno() %>">
-			    	<button class="ssBtn" type="button" id="followId" onclick="follow()">팔로우</button> --%>
 			    	 <%
 					if(session.getAttribute("loginUser") != null){
 						if(pUno != login.getUno()){
