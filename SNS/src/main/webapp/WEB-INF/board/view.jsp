@@ -250,8 +250,8 @@ function deleteFn(){
 				</div>
 			</div>
       <p style="font-size:26px; margin:10px 0;"><%= vo.getTitle() %></p>
-			<div style="font-size:16px; margin-top:5px;">
-				<div class="view_profil">
+			<div style="font-size:18px; margin-top:5px;">
+				<div class="view_profil" style="margin-bottom:10px;">
 						<%
 					if(vo.getUpname() != null && !vo.getUpname().equals("")){
 						%>
