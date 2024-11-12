@@ -689,12 +689,37 @@ public class BoardController {
 		
 		Connection conn = null;			
 		PreparedStatement psmt = null;
+
+		String existingFilename = null;
+		String existingPhyename = null;
+		PreparedStatement psmtExist = null;
+		ResultSet rsExist = null;  
+		
 		
 		Connection connAttach = null;			
 		PreparedStatement psmtAttach = null;
 		int resultAttach =0;
 		try {
 			conn = DBConn.conn();
+			
+			String sqlExist = "select * from attach where bno =?";
+			psmtExist = conn.prepareStatement(sqlExist);
+			psmtExist.setInt(1,bno);
+			rsExist = psmtExist.executeQuery();
+			
+			if(rsExist.next()) {
+				existingFilename = rsExist.getString("fname");
+				existingPhyename = rsExist.getString("pname");
+			}
+			
+			if (phyname == null || phyname.isEmpty()) 
+			{
+				phyname =  existingPhyename ;
+			} 
+			if (filename == null || filename.isEmpty()){
+				filename = existingFilename ;
+			} 
+			
 			String sql = " UPDATE board SET title = ?, content = ? "
 					+ " WHERE bno =?";
 			// sql을 담고, 리턴 키를 받음
@@ -754,6 +779,8 @@ public class BoardController {
 		}finally {
 			try {
 				DBConn.close(psmt, conn);
+		        DBConn.close(rsExist, psmtExist, conn);
+		        DBConn.close(psmtAttach, connAttach);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
