@@ -364,8 +364,8 @@ nav li div {
     border: 2px solid #BFBFBF;
     /* border-radius: 50%; */
     border-radius: 15px;
-    width: 2.5vw; /* div의 너비 */
-    height: 2.5vw; /* div의 높이 */
+    width: 3vw; /* div의 너비 */
+    height: 3vw; /* div의 높이 */
     display: flex;
     justify-content: center; /* 수평 가운데 정렬 */
     align-items: center; /* 수직 가운데 정렬 */
@@ -374,8 +374,8 @@ nav li div {
 }
 
 nav li img {
-    width: 1.3vw; /* 화면 너비의 2.3%에 해당하는 크기 */
-    height: 1.3vw; /* 화면 너비의 2.3%에 해당하는 크기 */
+    width: 1.6vw; /* 화면 너비의 2.3%에 해당하는 크기 */
+    height: 1.6vw; /* 화면 너비의 2.3%에 해당하는 크기 */
     display: block;
     margin: 0;
 }
@@ -1039,7 +1039,7 @@ body.dark-mode .modal-content {
 .alram{
     position: fixed;
     top: -1%;
-    left: 72%;
+    left: 67%;
     /* transform: translate(-80%, -44%); */
     width: 600px;
     height: auto;

@@ -358,8 +358,8 @@ function getalramList(){
 							+ item.funo + " 님이 " + item.tuno + " 님의 게시글에 댓글을 남겼습니다</span>";
 							break;		
 				}
-				var html_tag = `<div style="font-size: 12px; font-weight: lighter;">
-									<span style="font-size: 10px; color: #999; font-weight: lighter;">
+				var html_tag = `<div style="font-size: 18px; font-weight: lighter;">
+									<span style="font-size: 16px; color: #999; font-weight: lighter;">
 										\${time_str}
 									</span>
 									\${content_str}	
