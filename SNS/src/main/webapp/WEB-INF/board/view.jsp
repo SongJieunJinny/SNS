@@ -301,7 +301,7 @@ function deleteFn(){
 				</div>
 				&nbsp;
 				<%= vo.getRdate() %>&nbsp;
-				추천수&nbsp; <%= vo.getRecommend() %>&nbsp;
+				추천수&nbsp; <span id="recoCount"><%= vo.getRecommend() %></span>&nbsp;
 				조회수&nbsp; <%= vo.getHit() %>
 			</div><br>
 			<div><%= vo.getContent() %></div>

@@ -462,9 +462,20 @@ public class BoardController {
 		    	lState = "E";
 		    }
 		    
+		    String countReco = "select count(*) as rCnt from love where bno = ?";
+	        psmt = conn.prepareStatement(countReco);
+	        psmt.setString(1, bno);
+	        rs = psmt.executeQuery();
+	        int rCnt = 0;
+	        if (rs.next()) {
+	        	rCnt = rs.getInt("rCnt");
+	        }
+		    
+		    
 		    JSONObject jsonObj = new JSONObject(); 
 		    jsonObj.put("bno", bno); 
 		    jsonObj.put("lState", lState);
+		    jsonObj.put("rCnt", rCnt);
 
 		    response.setContentType("application/json; charset=UTF-8");
 		    response.getWriter().write(jsonObj.toString());
