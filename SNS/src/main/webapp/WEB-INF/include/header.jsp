@@ -1149,10 +1149,10 @@ function complainAdd(bno) {
 		        <div class="icon" onclick="getalramList();">
       	   			<img src="https://img.icons8.com/?size=100&id=3334&format=png&color=767676" >
       	   			<span class="alramCount"></span>
+	      	   		<div class="login-hover-menu">
+			            <p>알림</p>
+			        </div>
       	   		</div>
-      	   		<div class="login-hover-menu">
-		            <p>알림</p>
-		        </div>
 		        <!-- 메시지 표시 -->
 		        <div class="icon">
 		       		<img src="https://img.icons8.com/?size=100&id=37966&format=png&color=767676">
