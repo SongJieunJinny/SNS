@@ -457,7 +457,7 @@ aside {
     /* justify-content: space-between; */
     justify-content: flex-start;
     width: 100%;
-    margin-top:20px;
+    margin-top:36px;
     margin-left:1.5%;
     /* max-height: 100vh; */  /* 최대 높이 설정, 화면을 넘지 않게 함 */
     /* overflow-y: auto; */ /* 스크롤 가능하게 설정 */
@@ -483,6 +483,13 @@ aside {
 	width: 250px;
     height: 250px;
 }
+
+#indexDiv .listDiv:hover {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* 그림자 확대 */
+    transform: translateY(-10px); /* 살짝 위로 올리는 효과 */
+    background-color: #f0f0f0; /* 배경색 변경 */
+}
+
 body.dark-mode .listDiv img{
 	filter: none; 
 }
@@ -714,7 +721,7 @@ body.dark-mode .view_inner img{
     gap: 10px;                   /* 요소 간의 간격 설정 */
     width: 100%;
     box-sizing: border-box;
-    margin-top:30px;
+    margin-top:42px;
 }
 
 .mypage_page {
