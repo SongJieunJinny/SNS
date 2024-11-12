@@ -704,7 +704,7 @@ public class BoardController {
 			psmt.setInt(3, bno);
 			int result = psmt.executeUpdate();
 			if(result>0) {
-				if (filename != null ) {
+				if (filename != null && phyname != null ) {
 				String sql1 = " UPDATE attach SET pname = ? , fname = ? "
 						+ " WHERE bno = ?";
 				// select last_insert_id()를 받아와서 , bno를 대입 

@@ -54,7 +54,7 @@ function stopFn(uno,ustate){
            <table class="inner_table">
                <thead>
                	<tr>
-                    <th>번호</th>
+                    <th>신고당한 회원 번호</th>
                     <th>닉네임</th>
                     <th>이메일</th>
                     <th>가입일</th>
@@ -65,7 +65,7 @@ function stopFn(uno,ustate){
                <tbody>
                <% for(UserVO vo : list){ %>
                    <tr>
-                       	<td>페이징 번호</td>
+                       	<td><%=vo.getUno() %></td>
                        	<td><%=vo.getUnick() %></td>
                        	<td><%=vo.getUemail() %></td>
                        	<td><%=vo.getUrdate() %></td>

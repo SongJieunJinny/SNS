@@ -6,37 +6,6 @@
 	BoardVO vo = (BoardVO)request.getAttribute("vo");
 	request.setCharacterEncoding("UTF-8");
 %>
-<!--웹페이지 본문-->
-<section>
-<form name="modify" method="post"  action=""> 
-	<div class="div_inner">
-			<div class="view_div">
-		 	   <div class="view_inner">
-		 	   		<div class="view_img">
-						<label>
-							<span class="imgSpan">
-								<img  id="wPreview" src="<%=request.getContextPath() %>/upload/<%=vo.getPname()%>" alt="고양이" 
-								  style="width: 100%;height: 100%; border-radius: 40px;">
-							</span>
-							<input type="file" style="display: none;" name="attach" id="attach" onchange="readURL(this);">
-						</label>
-					</div>
-					<div class="view_content" style="width: 50%; margin-left:40px; overflow: hidden;">
-						<input type="text" class="titleInput" placeholder="글제목" id="title" value="<%=vo.getTitle()%>">
-						<textarea class="contentInput" placeholder="글내용" id="content"name="content"><%=vo.getContent()%></textarea>
-						<div class="btnDiv">
-							<input type="hidden" name ="bno" value="<%=vo.getBno()%>" id="bno">
-							<input class="userBtn" type="button" style="width: 95%;" value="수정" onclick="modifyFn()">
-							<input class="userBtn" type="button" style="width: 95%;" value="취소" 
-							onclick="location.href='<%= request.getContextPath() %>'">
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</form>
-</section>
-<%@ include file="../include/aside.jsp" %>
 <script>
 function readURL(input) {
 	if (input.files && input.files[0]) {
@@ -111,3 +80,34 @@ function modifyFn(){
 	});
 } 
 </script>
+<!--웹페이지 본문-->
+<section>
+<form name="modify" method="post"  action=""> 
+	<div class="div_inner">
+			<div class="view_div">
+		 	   <div class="view_inner">
+		 	   		<div class="view_img">
+						<label>
+							<span class="imgSpan">
+								<img  id="wPreview" src="<%=request.getContextPath() %>/upload/<%=vo.getPname()%>" alt="고양이" 
+								  style="width: 100%;height: 100%; border-radius: 40px;">
+							</span>
+							<input type="file" style="display: none;" name="attach" id="attach" onchange="readURL(this);">
+						</label>
+					</div>
+					<div class="view_content" style="width: 50%; margin-left:40px; overflow: hidden;">
+						<input type="text" class="titleInput" placeholder="글제목" id="title" value="<%=vo.getTitle()%>">
+						<textarea class="contentInput" placeholder="글내용" id="content"name="content"><%=vo.getContent()%></textarea>
+						<div class="btnDiv">
+							<input type="hidden" name ="bno" value="<%=vo.getBno()%>" id="bno">
+							<input class="userBtn" type="button" style="width: 95%;" value="수정" onclick="modifyFn()">
+							<input class="userBtn" type="button" style="width: 95%;" value="취소" 
+							onclick="location.href='<%= request.getContextPath() %>'">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+</section>
+<%@ include file="../include/aside.jsp" %>
