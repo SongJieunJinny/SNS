@@ -37,6 +37,10 @@ let emailcode = false;
 $(document).ready(function() {
 	// 페이지 로드 시 다크모드 초기화
     DarkMode();	
+	
+    $(document).on('click', '#emailBtn', function() {
+    	$("#emailBtn").text("메일발송중");
+    });
     
     // 알림 갯수를 세서 표시
     countalram()
