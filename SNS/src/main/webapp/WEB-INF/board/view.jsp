@@ -280,10 +280,10 @@ function deleteFn(){
 			    		%>
 			    	    <form id="follow_form">
 			    	 <%
-								if(session.getAttribute("loginUser") != null){
-									if(uno != vo.getUno()){
-										// 로그인 유저의 uno와 게시글 작성자의 uno로 팔로잉상태를 체크하는 sql문을 실행한다
-										String isfollow = vo.getIsfollow();
+							if(session.getAttribute("loginUser") != null){
+								if(uno != vo.getUno()){
+									// 로그인 유저의 uno와 게시글 작성자의 uno로 팔로잉상태를 체크하는 sql문을 실행한다
+									String isfollow = vo.getIsfollow();
 							%>
 				        			<input type="hidden" name="tuno" value="<%= vo.getUno() %>">
 				        				<!-- 팔로잉 상태에 따라 버튼의 클래스를 바꾼다 -->
