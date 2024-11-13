@@ -235,6 +235,11 @@ function readURL(input) {
 							</td>
 						</tr>
 						<tr>
+		                	<td style="text-align: center;">
+		                    	<span class="msg" style="color:green;"></span>
+		                	</td>
+		                </tr>
+						<tr>
 							<td>
 								<div class="profileListBtn">
 									<input class="usersBtn" type="submit" value="수정">
