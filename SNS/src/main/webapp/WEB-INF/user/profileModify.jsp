@@ -214,7 +214,7 @@ function readURL(input) {
 							<td>
 								<div class="user-container">
 									<i class="fas fa-envelope" id="user_itag6"></i>
-									<input class="profileList" type="text" name="uemail" placeholder="<%= userUemail %>" readonly>
+									<input class="profileList" type="text" name="uemail" style="color: #333333;"  placeholder="<%= userUemail %>" readonly>
 								</div>
 							</td>
 						</tr>
