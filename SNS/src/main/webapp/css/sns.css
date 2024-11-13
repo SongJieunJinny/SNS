@@ -1692,13 +1692,14 @@ section > h2 {
 }
 
 .bUnderline{
-        text-decoration: underline; 
-        margin-right:10px;
+    margin-right:10px;
+    font-size:18px;
 }
 
 .cUnderline{
     text-decoration: underline; 
     margin-left:10px;
+    font-size:18px;
 }
 
 .complainTable {
@@ -1707,7 +1708,8 @@ section > h2 {
     margin-right: 5%;
     font-size: 1.2rem;
     text-align: center;
-    border:solid 1px;
+    /* border:solid 1px; */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 40px 40px 40px 40px;
     overflow: hidden;
     justify-items: center;

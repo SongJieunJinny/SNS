@@ -49,6 +49,17 @@ function titleViewFn(bno) {
             
             // 모달을 보여줌
             $('#modal').show();
+            
+            $('script').each(function() {
+                if (this.src) {
+                    $.getScript(this.src);
+                } else {
+                    eval($(this).text());
+                }
+            });
+            loadReco(bno);
+            loadComplain(bno);
+            DarkMode();
         },
         error: function(xhr, status, error) {
             console.error("오류 발생:", error);
@@ -70,12 +81,11 @@ $(window).click(function(event) {
 <!--웹페이지 본문-->
 <section>
        <div class="bcSpan">
-           <a href="<%= request.getContextPath() %>/admin/blackList.do">
-           		<span class="bUnderline" style="color: lightgray;"> 블랙리스트 </span>
-           </a>
-           <a href="<%= request.getContextPath() %>/admin/complainList.do">
-          	 	<span class="cUnderline" > 신고 게시글 </span>
-           </a>
+           <a href="<%= request.getContextPath() %>/admin/blackList.do" 
+           style="font-size:24px; color: gray; text-decoration-line:none;">블랙리스트</a>
+           &nbsp;
+           <a href="<%= request.getContextPath() %>/admin/complainList.do" 
+           style="font-size:24px; text-decoration: underline;  text-underline-offset: 6px; color:#333333;">신고게시글</a>
        </div>
         <% for(BoardVO vo : board){ %> 
            <input type="hidden" name="bno" id ="bno" value="<%=vo.getBno()%>">
@@ -125,10 +135,10 @@ $(window).click(function(event) {
            </table>
    
        </div>
-        <%
+       <%--  <%
 		if(paging.getStartPage() >1){
 	%>
-		<a href="complainList.do?nowPage=<%=paging.getStartPage()-1%><%-- &searchType=<%=searchType%>&searchValue=<%=searchValue%> --%>">&lt;</a>
+		<a href="complainList.do?nowPage=<%=paging.getStartPage()-1%>&searchType=<%=searchType%>&searchValue=<%=searchValue%>">&lt;</a>
 	<%
 		}
 	%>
@@ -139,11 +149,11 @@ $(window).click(function(event) {
 				i<=paging.getEndPage();i++){
 			if(i == paging.getNowPage()){ //출력하는 페이지 번호와 현재페이지 번호가 같은 경우
 	%>
-		<strong><%=i %></strong>
+		<span style="text-align:center;"><strong><%=i %></strong></span>
 	<%	
 			}else{
 	%>
-		<a href="complainList.do?nowPage=<%= i %><%-- &searchType=<%=searchType%>&searchValue=<%=searchValue%> --%>"><%= i %></a>
+		<a href="complainList.do?nowPage=<%= i %>&searchType=<%=searchType%>&searchValue=<%=searchValue%>"><%= i %></a>
 	<%		
 			}
 		}
@@ -152,10 +162,10 @@ $(window).click(function(event) {
 	<%
 		if(paging.getEndPage() < paging.getLastPage()){
 	%>
-		<a href="complainList.do?nowPage=<%=paging.getEndPage()+1%><%-- &searchType=<%=searchType%>&searchValue=<%=searchValue%> --%>">&gt;</a>
+		<a href="complainList.do?nowPage=<%=paging.getEndPage()+1%>&searchType=<%=searchType%>&searchValue=<%=searchValue%>">&gt;</a>
 	<%		
 		}
-	%>
+	%> --%>
        
 </section>
 <%@ include file="../include/aside.jsp" %>

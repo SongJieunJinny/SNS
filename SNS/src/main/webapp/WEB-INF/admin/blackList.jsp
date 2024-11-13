@@ -39,12 +39,11 @@ function stopFn(uno,ustate){
 <!--웹페이지 본문-->
 <section>
        <div class="bcSpan">
-           <a href="<%= request.getContextPath() %>/admin/blackList.do">
-           		<span class="bUnderline" > 블랙리스트 </span>
-           </a>
-           <a href="<%= request.getContextPath() %>/admin/complainList.do">
-          	 	<span class="cUnderline" style="color: lightgray;"> 신고 게시글 </span>
-           </a>
+           <a href="<%= request.getContextPath() %>/admin/blackList.do" 
+           style="font-size:24px; text-decoration: underline;  text-underline-offset: 6px; color:#333333;">블랙리스트</a>
+           &nbsp;
+           <a href="<%= request.getContextPath() %>/admin/complainList.do" 
+           style="font-size:24px; color: gray; text-decoration-line:none;">신고게시글</a>
        </div>
        <div class="complainTable">
           <% for(UserVO vo : list){ %> 
@@ -91,10 +90,10 @@ function stopFn(uno,ustate){
                </tbody>
            </table>
        </div>
-            <%
+       <%--      <%
 		if(paging.getStartPage() >1){
 	%>
-		<a href="complainList.do?nowPage=<%=paging.getStartPage()-1%><%-- &searchType=<%=searchType%>&searchValue=<%=searchValue%> --%>">&lt;</a>
+		<a href="complainList.do?nowPage=<%=paging.getStartPage()-1%>&searchType=<%=searchType%>&searchValue=<%=searchValue%>">&lt;</a>
 	<%
 		}
 	%>
@@ -109,7 +108,7 @@ function stopFn(uno,ustate){
 	<%	
 			}else{
 	%>
-		<a href="complainList.do?nowPage=<%= i %><%-- &searchType=<%=searchType%>&searchValue=<%=searchValue%> --%>"><%= i %></a>
+		<a href="complainList.do?nowPage=<%= i %>&searchType=<%=searchType%>&searchValue=<%=searchValue%>"><%= i %></a>
 	<%		
 			}
 		}
@@ -118,9 +117,9 @@ function stopFn(uno,ustate){
 	<%
 		if(paging.getEndPage() < paging.getLastPage()){
 	%>
-		<a href="complainList.do?nowPage=<%=paging.getEndPage()+1%><%-- &searchType=<%=searchType%>&searchValue=<%=searchValue%> --%>">&gt;</a>
+		<a href="complainList.do?nowPage=<%=paging.getEndPage()+1%>&searchType=<%=searchType%>&searchValue=<%=searchValue%>">&gt;</a>
 	<%		
 		}
-	%>
+	%> --%>
 </section>
 <%@ include file="../include/aside.jsp" %>
