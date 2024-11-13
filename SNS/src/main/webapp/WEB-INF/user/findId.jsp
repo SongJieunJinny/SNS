@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <!--웹페이지 본문-->
 <div>
-	<div class="user_title" id="findIdPw">
+	<div class="user_title">
 		<a id="findId"  onclick="findPage('findId');">
 			아이디찾기
 		</a>

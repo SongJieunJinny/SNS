@@ -1009,6 +1009,10 @@ body.dark-mode .login-hover-menu{
     box-sizing: border-box; 패딩 포함한 크기 계산
 } */
 
+.cTr:hover{
+	background-color: #EEEEEE;
+}
+
 #modal {
     display: none;
     position: fixed;

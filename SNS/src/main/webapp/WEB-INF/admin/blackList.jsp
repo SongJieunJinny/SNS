@@ -50,10 +50,10 @@ function stopFn(uno,ustate){
            <input type="hidden" name="uno" id ="uno" value="<%=vo.getUno()%>">
        	   <input type="hidden" name="ustate" id ="ustate" value="<%=vo.getUstate()%>">  
           <%}%>
-           <table class="inner_table">
+           <table class="inner_table" style="border-collapse: collapse;">
                <thead>
                	<tr>
-                    <th>신고당한 회원 번호</th>
+                    <!-- <th>신고당한 회원 번호</th> -->
                     <th>닉네임</th>
                     <th>이메일</th>
                     <th>가입일</th>
@@ -63,8 +63,8 @@ function stopFn(uno,ustate){
                </thead>
                <tbody>
                <% for(UserVO vo : list){ %>
-                   <tr>
-                       	<td><%=vo.getUno() %></td>
+                   <tr class="cTr">
+                       	<%-- <td><%=vo.getUno() %></td> --%>
                        	<td><%=vo.getUnick() %></td>
                        	<td><%=vo.getUemail() %></td>
                        	<td><%=vo.getUrdate() %></td>

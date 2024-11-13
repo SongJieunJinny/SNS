@@ -93,10 +93,10 @@ $(window).click(function(event) {
           <%}%>
        <div class="complainTable">
          
-           <table class="inner_table">
+           <table class="inner_table" style="border-collapse: collapse;">
                <thead>
                	<tr>
-                   <th>신고 글 번호</th>
+                   <!-- <th>신고 글 번호</th> -->
                    <th>닉네임</th>
                    <th>제목</th>
                    <th>작성일</th>
@@ -106,11 +106,11 @@ $(window).click(function(event) {
                </thead>
               <tbody>
                <% for(BoardVO vo : board){ %>
-                   <tr>
+                   <tr class="cTr">
                        	<%-- <td><%=vo.getBno() %></td> --%>
-                       	<td><%= vo.getBno()%></td>
+                       	<%-- <td><%= vo.getBno()%></td> --%>
                        	<td><%=vo.getUnick() %></td>
-                       	<td onclick ="titleViewFn(<%=vo.getBno()%>)" ><%=vo.getTitle() %></td>
+                       	<td onclick ="titleViewFn(<%=vo.getBno()%>)" style="cursor:pointer;"><%=vo.getTitle() %></td>
                        	<td><%=vo.getRdate() %></td>
                        	<td><%=vo.getDeclaration() %></td>
                        <%
