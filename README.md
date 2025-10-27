@@ -104,10 +104,10 @@
 ![회원가입시퀀스_SNS](https://github.com/user-attachments/assets/c4725022-7356-48b0-b3cc-cdacb7f3900c)
 
 ### 프로토타입
-- [📎 Prototype_SNS.pptx]
+- [📎 Prototype_SNS.pptx](https://github.com/SongJieunJinny/SNS/document/PPT/Prototype_SNS.pptx?raw=true)
 
 ### 최종PPT
-- [📎 Presentation_SNS.pptx]
+- [📎 Presentation_SNS.pptx](https://github.com/SongJieunJinny/SNS/document/PPT/Presentation_SNS.pptx?raw=true)
 
 --- 
 ## 🖥담당기능
