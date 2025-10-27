@@ -89,19 +89,25 @@
 ## 🔗PPT 및 추가 자료들
 
 ### ERD
-
+![ERD_SNS](https://github.com/user-attachments/assets/2385c6f2-d27d-4102-86d3-69c2a6f3d70b)
 
 ### UseCase
-
+![UseCase_SNS](https://github.com/user-attachments/assets/13f96540-0ec8-4b60-a8f4-f1cf1d221421)
 
 ### 시퀀스(로그인)
+![로그인시퀀스_SNS](https://github.com/user-attachments/assets/612917a7-5c2f-45a4-a252-0d47ef4a6a72)
 
+### 시퀀스(글쓰기)
+![글쓰기시퀀스_SNS](https://github.com/user-attachments/assets/92554610-2f57-4edb-a195-f0ac56e2ae10)
+
+### 시퀀스(회원가입)
+![회원가입시퀀스_SNS](https://github.com/user-attachments/assets/c4725022-7356-48b0-b3cc-cdacb7f3900c)
 
 ### 프로토타입
-
+- [📎 Prototype_SNS.pptx]
 
 ### 최종PPT
-
+- [📎 Presentation_SNS.pptx]
 
 --- 
 ## 🖥담당기능
